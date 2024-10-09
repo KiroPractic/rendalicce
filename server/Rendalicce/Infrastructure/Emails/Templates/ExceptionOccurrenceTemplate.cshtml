@@ -1,0 +1,157 @@
+@model Rendalicce.Infrastructure.Emails.Templates.ExceptionOccurrenceTemplateModel
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exception Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0; /* Light gray background */
+            padding: 20px;
+            margin: 0;
+        }
+
+        .container {
+            background-color: #ffffff;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+            font-size: 24px;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 16px;
+            color: #666;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .details {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            color: #555;
+        }
+
+        .details td {
+            padding: 10px;
+        }
+
+        .details .label {
+            font-weight: bold;
+            color: #333;
+            width: 150px;
+        }
+
+        .sub-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .sub-table td {
+            padding: 5px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .sub-table tr:nth-child(even) {
+            background-color: #f0f0f0;
+        }
+
+        .footer {
+            margin-top: 30px;
+            font-size: 12px;
+            text-align: center;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Exception Occurred</h1>
+        <p>An exception has occurred in your application. Please review the details below.</p>
+
+        <table class="details" border="1" cellpadding="0" cellspacing="0">
+            <tr>
+                <td class="label">Exception Message:</td>
+                <td>@Model.ExceptionMessage</td>
+            </tr>
+            <tr>
+                <td class="label">Stack Trace:</td>
+                <td>@Model.ExceptionStackTrace</td>
+            </tr>
+
+            @if (Model.InnerExceptions.Count > 0)
+            {
+                @foreach (var innerException in Model.InnerExceptions)
+                {
+                    <tr>
+                        <td colspan="2">
+                            <table class="sub-table" border="1" cellpadding="0" cellspacing="0">
+                                <tr>
+                                    <td class="label">Inner Exception Message:</td>
+                                    <td>@innerException.Message</td>
+                                </tr>
+                                <tr>
+                                    <td class="label">Inner Exception Stack Trace:</td>
+                                    <td>@innerException.StackTrace</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                }
+            }
+
+            <tr>
+                <td colspan="2">
+                    <h3>HTTP Context Details</h3>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">Request URL:</td>
+                <td>@Model.RequestUrl</td>
+            </tr>
+            <tr>
+                <td class="label">HTTP Method:</td>
+                <td>@Model.HttpMethod</td>
+            </tr>
+            <tr>
+                <td class="label">Query String:</td>
+                <td>@Model.QueryString</td>
+            </tr>
+            <tr>
+                <td class="label">Request Headers:</td>
+                <td>
+                    <ul>
+                        @foreach (var header in Model.RequestHeaders)
+                        {
+                            <li>@header.Key: @header.Value</li>
+                        }
+                    </ul>
+                </td>
+            </tr>
+        </table>
+
+        <div class="footer">
+            <p>This is an automated email. Please do not reply.</p>
+        </div>
+    </div>
+</body>
+</html>
