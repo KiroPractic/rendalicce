@@ -1,0 +1,34 @@
+<section class="min-h-screen grid place-items-center bg-gray-100">
+  <div class="w-full max-w-md p-8 space-y-4 bg-white shadow-md rounded-xl">
+    <h2 class="text-2xl font-semibold text-center text-gray-700">
+      Log in to your account
+    </h2>
+    <form [formGroup]="loginForm" (ngSubmit)="login()" class="space-y-6">
+      <div class="flex flex-col">
+        <label class="text-sm font-medium text-gray-700" htmlFor="email">
+          Email Address
+        </label>
+        <input type="email" id="email" formControlName="email" required class="border rounded-md p-1" />
+      </div>
+      <div class="flex flex-col">
+        <label class="text-sm font-medium text-gray-700" htmlFor="password">
+          Password
+        </label>
+        <input type="password" formControlName="password" id="password" required class="border p-1 rounded-md" />
+      </div>
+      @if (error) {
+      <div class="text-red-500 text-sm text-center">{{ error }}</div>
+      }
+      <button type="submit" class="bg-blue-600 hover:bg-blue-300 transition-colors w-full rounded-md py-1 text-white">Log In</button>
+    </form>
+    <div class="flex items-center justify-center">
+      <span class="text-sm text-gray-600">
+        Don't have an account?
+      </span>
+      <a class="ml-1 text-sm font-medium text-blue-600 hover:text-blue-300 transition-colors hover:underline"
+        href="/register">
+        Sign Up
+      </a>
+    </div>
+  </div>
+</section>
