@@ -5,13 +5,13 @@
     </h2>
     <form [formGroup]="loginForm" (ngSubmit)="login()" class="space-y-6">
       <div class="flex flex-col">
-        <label class="text-sm font-medium text-gray-700" htmlFor="email">
+        <label class="text-sm font-medium text-gray-700">
           Email Address
         </label>
         <input type="email" id="email" formControlName="email" required class="border rounded-md p-1" />
       </div>
       <div class="flex flex-col">
-        <label class="text-sm font-medium text-gray-700" htmlFor="password">
+        <label class="text-sm font-medium text-gray-700">
           Password
         </label>
         <input type="password" formControlName="password" id="password" required class="border p-1 rounded-md" />
