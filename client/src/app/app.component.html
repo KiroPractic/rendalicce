@@ -1,1 +1,13 @@
 <router-outlet></router-outlet>
+
+<p-toast [position]="screenSizeService.isMobile() ? 'bottom-center' : 'top-center'" styleClass="custom-toast" [preventOpenDuplicates]="true">
+    <ng-template let-message pTemplate="message">
+      <div class="flex flex-col">
+        <div class="p-text-center">
+          <h3 style="color: #20262e">{{ message.summary }}</h3>
+          <p>{{ message.detail }}</p>
+        </div>
+      </div>
+    </ng-template>
+  </p-toast>
+  

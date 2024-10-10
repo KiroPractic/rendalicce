@@ -2,3 +2,26 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.p-toast .p-toast-message .p-toast-message-content {
+  justify-content: space-between !important;
+  padding: 0.5rem 1rem;
+}
+
+.p-toast .p-toast-message.p-toast-message-success {
+  background: rgba(228, 248, 240, 0.9);
+}
+
+.p-toast .p-toast-message.p-toast-message-info {
+  background: rgba(219, 234, 254, 0.9);
+}
+
+.p-toast .p-toast-message .p-toast-message-content .p-button-text {
+    color:#20262e;
+}
+
+@media screen and (max-width: 768px) {
+  .p-toast {
+    width: 20rem;
+  }
+}

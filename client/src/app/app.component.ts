@@ -1,8 +1,11 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, HostListener, inject } from '@angular/core';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { PrimeNGConfig } from 'primeng/api';
 import { Aura } from 'primeng/themes/aura';
 import { definePreset } from 'primeng/themes';
+import { filter } from 'rxjs';
+import { ToastModule } from "primeng/toast";
+import { ScreenSizeService } from './services/screen-size.service';
 
 const CustomPreset = definePreset(Aura, {
   semantic: {
@@ -25,13 +28,18 @@ const CustomPreset = definePreset(Aura, {
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, ToastModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  constructor(private config: PrimeNGConfig) {
-    this.config.theme.set({
+  #config: PrimeNGConfig = inject(PrimeNGConfig);
+  #router: Router = inject(Router);
+
+  screenSizeService: ScreenSizeService = inject(ScreenSizeService);
+
+  constructor() {
+    this.#config.theme.set({
       preset: CustomPreset,
       options: {
         prefix: 'p',
@@ -39,5 +47,20 @@ export class AppComponent {
         cssLayer: false
       }
     })
+
+    this.#router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      window.scrollTo(0, 0);
+    });
+  }
+
+  ngOnInit() {
+    this.screenSizeService.updateScreenSizeRequest$.next();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.screenSizeService.updateScreenSizeRequest$.next();
   }
 }
