@@ -5,6 +5,7 @@ import { routes } from './app.routes';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { jwtInterceptor } from './interceptors/jwt.interceptor';
 import { MessageService } from "primeng/api";
+import { errorInterceptor } from './interceptors/error.interceptor';
 
 
 export const appConfig: ApplicationConfig = {
@@ -12,7 +13,8 @@ export const appConfig: ApplicationConfig = {
   provideAnimationsAsync(),
   provideHttpClient(
     withInterceptors([
-      jwtInterceptor
+      jwtInterceptor,
+      errorInterceptor,
     ])
   ),
     MessageService
