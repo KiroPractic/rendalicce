@@ -14,14 +14,10 @@ public sealed class RequestPasswordReset
 
     public sealed class RequestPasswordResetEndpoint : Endpoint<RequestPasswordResetRequest, object>
     {
-        private readonly DatabaseContext _dbContext;
-        private readonly EmailSendingService _emailSendingService;
+        public required DatabaseContext DbContext { get; init; }
+        public required EmailSendingService EmailSendingService { get; init; }
+        public required JwtProvider JwtProvider { get; init; }
         
-        public RequestPasswordResetEndpoint(DatabaseContext databaseContext, AuthenticationProvider authenticationProvider, EmailSendingService emailSendingService)
-        {
-            _dbContext = databaseContext;
-            _emailSendingService = emailSendingService;
-        }
 
         public override void Configure()
         {
@@ -31,9 +27,10 @@ public sealed class RequestPasswordReset
 
         public override async Task HandleAsync(RequestPasswordResetRequest req, CancellationToken ct)
         {
-            var user = await _dbContext.Users.SingleOrDefaultAsync(u => u.Email == req.Email, ct);
+            var user = await DbContext.Users.SingleOrDefaultAsync(u => u.Email == req.Email, ct);
+            var settings = await DbContext.ApplicationSettings.FirstAsync(ct);
             if (user is not null)
-                _ = _emailSendingService.SendPasswordResetRequested(user.Email, user.FirstName, "TODO-FK");
+                _ = EmailSendingService.SendPasswordResetRequested(user.Email, user.FirstName, $"{settings.WebsiteRootUrl}/auth/password-reset/{JwtProvider.GeneratePasswordResetToken(user.Id)}");
             
             await SendAsync(new {}, cancellation: ct);
         }
