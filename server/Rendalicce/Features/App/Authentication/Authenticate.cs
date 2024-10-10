@@ -15,12 +15,12 @@ public sealed class Authenticate
     public sealed class AuthenticateEndpoint : Endpoint<AuthenticateRequest, AuthenticateResult>
     {
         private readonly DatabaseContext _dbContext;
-        private readonly AuthenticationProvider _authenticationProvider;
+        private readonly JwtProvider _jwtProvider;
         
-        public AuthenticateEndpoint(DatabaseContext databaseContext, AuthenticationProvider authenticationProvider)
+        public AuthenticateEndpoint(DatabaseContext databaseContext, JwtProvider jwtProvider)
         {
             _dbContext = databaseContext;
-            _authenticationProvider = authenticationProvider;
+            _jwtProvider = jwtProvider;
         }
 
         public override void Configure()
@@ -35,7 +35,7 @@ public sealed class Authenticate
             if(user is null || !user.IsCorrectPassword(req.Password))
                 ThrowError("Invalid credentials.");
             
-            await SendAsync(new AuthenticateResult(_authenticationProvider.GenerateJwtToken(user, req.RememberMe)), cancellation: ct);
+            await SendAsync(new AuthenticateResult(_jwtProvider.GenerateJwtToken(user, req.RememberMe)), cancellation: ct);
         }
     }
 

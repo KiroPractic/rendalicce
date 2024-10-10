@@ -14,7 +14,7 @@ public sealed class UpdateAccountInformation
     public sealed class UpdateAccountEndpoint : Endpoint<UpdateAccountInformationRequest, UpdateAccountInformationResult>
     {
         public DatabaseContext DbContext { get; init; }
-        public AuthenticationProvider AuthenticationProvider { get; init; }
+        public JwtProvider JwtProvider { get; init; }
 
         public override void Configure()
         {
@@ -27,7 +27,7 @@ public sealed class UpdateAccountInformation
             user!.Update(req.FirstName, req.LastName, req.Email);
             await DbContext.SaveChangesAsync(ct);
 
-            await SendAsync(new UpdateAccountInformationResult(Token: AuthenticationProvider.GenerateJwtToken(user)), cancellation: ct);
+            await SendAsync(new UpdateAccountInformationResult(Token: JwtProvider.GenerateJwtToken(user)), cancellation: ct);
         }
     }
 

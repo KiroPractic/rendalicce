@@ -81,7 +81,7 @@ builder.Services.SwaggerDocument(
 );
 
 builder.Services.AddSingleton(jwtConfiguration);
-builder.Services.AddSingleton<AuthenticationProvider, AuthenticationProvider>();
+builder.Services.AddSingleton<JwtProvider, JwtProvider>();
 builder.AddSingletonConfiguration<ApplicationErrorNotificationConfiguration>();
 builder.Services.AddTransient<EmailSendingService, EmailSendingService>();
 

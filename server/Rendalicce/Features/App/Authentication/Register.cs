@@ -12,7 +12,7 @@ public sealed class Register
     public sealed record RegisterRequest(string FirstName, string LastName, string Email, string Password);
     public sealed record RegisterResult(string Token);
 
-    public sealed class RegisterEndpoint(DatabaseContext databaseContext, AuthenticationProvider authenticationProvider)
+    public sealed class RegisterEndpoint(DatabaseContext databaseContext, JwtProvider jwtProvider)
         : Endpoint<RegisterRequest, RegisterResult>
     {
         public override void Configure()
@@ -32,7 +32,7 @@ public sealed class Register
             databaseContext.Users.Add(user);
             await databaseContext.SaveChangesAsync(ct);
 
-            await SendAsync(new RegisterResult(authenticationProvider.GenerateJwtToken(user)), cancellation: ct);
+            await SendAsync(new RegisterResult(jwtProvider.GenerateJwtToken(user)), cancellation: ct);
         }
     }
 
