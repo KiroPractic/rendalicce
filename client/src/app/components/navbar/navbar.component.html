@@ -23,7 +23,7 @@
       <a href="#" class="hover:text-[#FF5722] transition-colors">O nama</a>
       <a href="/chat" class="hover:text-[#FF5722] transition-colors">Poruke</a>
       @if(jwtService.token()) {
-        <a [routerLink]="'/profile/' + jwtService.token().id" class="hover:text-[#FF5722] transition-colors">Profil</a>
+        <a [routerLink]="'/profile/' + jwtService.token().Id" class="hover:text-[#FF5722] transition-colors">Profil</a>
       }
     </nav>
     @if (!jwtService.token()) {
