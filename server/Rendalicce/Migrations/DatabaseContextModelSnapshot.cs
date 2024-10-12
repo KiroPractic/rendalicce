@@ -22,6 +22,36 @@ namespace Rendalicce.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("ChatMessageUser", b =>
+                {
+                    b.Property<Guid>("ChatMessageId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("SeenByParticipantsId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("ChatMessageId", "SeenByParticipantsId");
+
+                    b.HasIndex("SeenByParticipantsId");
+
+                    b.ToTable("ChatMessageUser");
+                });
+
+            modelBuilder.Entity("ChatUser", b =>
+                {
+                    b.Property<Guid>("ChatId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ParticipantsId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("ChatId", "ParticipantsId");
+
+                    b.HasIndex("ParticipantsId");
+
+                    b.ToTable("ChatUser");
+                });
+
             modelBuilder.Entity("Rendalicce.Domain.ApplicationSettings.ApplicationSettings", b =>
                 {
                     b.Property<Guid>("Id")
@@ -38,6 +68,58 @@ namespace Rendalicce.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ApplicationSettings");
+                });
+
+            modelBuilder.Entity("Rendalicce.Domain.Chats.Chat", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTimeOffset>("LastActivity")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Chats");
+                });
+
+            modelBuilder.Entity("Rendalicce.Domain.Chats.ChatMessage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("ChatId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("OriginalContent")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("SenderId")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("Updated")
+                        .HasColumnType("boolean");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChatId");
+
+                    b.HasIndex("SenderId");
+
+                    b.ToTable("ChatMessage");
                 });
 
             modelBuilder.Entity("Rendalicce.Domain.Reviews.Review", b =>
@@ -228,6 +310,52 @@ namespace Rendalicce.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("ChatMessageUser", b =>
+                {
+                    b.HasOne("Rendalicce.Domain.Chats.ChatMessage", null)
+                        .WithMany()
+                        .HasForeignKey("ChatMessageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Rendalicce.Domain.Users.User", null)
+                        .WithMany()
+                        .HasForeignKey("SeenByParticipantsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ChatUser", b =>
+                {
+                    b.HasOne("Rendalicce.Domain.Chats.Chat", null)
+                        .WithMany()
+                        .HasForeignKey("ChatId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Rendalicce.Domain.Users.User", null)
+                        .WithMany()
+                        .HasForeignKey("ParticipantsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Rendalicce.Domain.Chats.ChatMessage", b =>
+                {
+                    b.HasOne("Rendalicce.Domain.Chats.Chat", null)
+                        .WithMany("Messages")
+                        .HasForeignKey("ChatId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Rendalicce.Domain.Users.User", "Sender")
+                        .WithMany()
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Sender");
+                });
+
             modelBuilder.Entity("Rendalicce.Domain.Reviews.Review", b =>
                 {
                     b.HasOne("Rendalicce.Domain.ServiceProviders.ServiceProvider", null)
@@ -265,6 +393,11 @@ namespace Rendalicce.Migrations
                         .IsRequired();
 
                     b.Navigation("Owner");
+                });
+
+            modelBuilder.Entity("Rendalicce.Domain.Chats.Chat", b =>
+                {
+                    b.Navigation("Messages");
                 });
 
             modelBuilder.Entity("Rendalicce.Domain.ServiceProviders.ServiceProvider", b =>
