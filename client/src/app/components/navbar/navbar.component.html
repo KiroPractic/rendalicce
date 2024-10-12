@@ -22,9 +22,18 @@
       </div>
       <a href="#" class="hover:text-[#FF5722] transition-colors">O nama</a>
       <a href="/chat" class="hover:text-[#FF5722] transition-colors">Poruke</a>
+      @if(jwtService.token()) {
+        <a [routerLink]="'/profile/' + jwtService.token().id" class="hover:text-[#FF5722] transition-colors">Profil</a>
+      }
     </nav>
-    <div class="flex justify-end">
-      <a href="/login" class="btn bg-[#FF5722] hover:bg-[#ff8a50] text-white px-8">Prijava</a>
-    </div>
+    @if (!jwtService.token()) {
+      <div class="flex justify-end">
+        <a routerLink="/login" class="btn bg-[#FF5722] hover:bg-[#ff8a50] text-white px-8">Prijava</a>
+      </div>
+    } @else {
+      <div class="flex justify-end">
+        <a (click)="authService.logout()" class="btn bg-[#FF5722] hover:bg-[#ff8a50] text-white px-8">Odjava</a>
+      </div>
+    }
   </div>
 </header>

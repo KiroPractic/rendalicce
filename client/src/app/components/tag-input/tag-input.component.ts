@@ -1,13 +1,12 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {FormsModule} from "@angular/forms";
-import {NgClass, NgForOf} from "@angular/common";
+import {NgClass} from "@angular/common";
 
 @Component({
   selector: 'app-tag-input',
   standalone: true,
   imports: [
     FormsModule,
-    NgForOf,
     NgClass
   ],
   templateUrl: './tag-input.component.html',

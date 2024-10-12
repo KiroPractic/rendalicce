@@ -8,6 +8,7 @@ import {PasswordModule} from "primeng/password";
 import {ButtonModule} from "primeng/button";
 import {InputTextModule} from "primeng/inputtext";
 import {NavbarComponent} from "../../../components/navbar/navbar.component";
+import {GlobalMessageService} from "../../../services/global-message.service";
 
 @Component({
   selector: 'app-login',
@@ -21,6 +22,7 @@ export class LoginComponent {
   #authenticationService: AuthenticationService = inject(AuthenticationService);
   #jwtService: JwtService = inject(JwtService);
   #router: Router = inject(Router);
+  #globalMessageService: GlobalMessageService = inject(GlobalMessageService);
 
   loginForm: FormGroup;
   error: string = '';
@@ -45,7 +47,9 @@ export class LoginComponent {
     this.#authenticationService.login(payload).subscribe(
       (response: any) => {
         this.#jwtService.set(response.token);
-        this.#router.navigate(['/']);
+        this.#router.navigateByUrl("/").then(() => {
+          this.#globalMessageService.showInformationMessage({title: '', content: 'Uspješna prijava, dobrodošli'});
+        });
       }
     );
   }
