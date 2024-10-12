@@ -12,7 +12,7 @@ public sealed class GetUser
     public sealed record GetUserRequest(Guid Id);
 
     public sealed record GetUserResponse(User User, IEnumerable<ServiceProvider> ServiceProviders, IEnumerable<ServiceSeeker> ServiceSeekers);
-
+    
     public sealed class GetUserEndpoint : Endpoint<GetUserRequest, GetUserResponse>
     {
         public required DatabaseContext DbContext { get; init; }
