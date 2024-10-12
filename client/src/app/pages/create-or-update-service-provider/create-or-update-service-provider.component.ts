@@ -1,14 +1,20 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {FloatLabelModule} from "primeng/floatlabel";
 import {InputTextModule} from "primeng/inputtext";
-import {DropdownModule} from "primeng/dropdown";
 import {serviceCategories} from "../../utils/service-categories";
 import {InputTextareaModule} from 'primeng/inputtextarea';
 import {TextareaModule} from "primeng/textarea";
 import {InputNumberModule} from 'primeng/inputnumber';
 import {MapInputComponent} from "../../components/map-input/map-input.component";
 import {ButtonModule} from "primeng/button";
+import {ActivatedRoute, Router} from "@angular/router";
+import {CreateOrUpdateServiceProviderService} from "./create-or-update-service-provider.service";
+import {Select} from "primeng/select";
+import {NgClass} from "@angular/common";
+import {TagInputComponent} from "../../components/tag-input/tag-input.component";
+import {paymentTypes} from '../../utils/payment-types';
+import {GlobalMessageService} from "../../services/global-message.service";
 
 @Component({
   selector: 'app-create-or-update-service-provider',
@@ -17,37 +23,144 @@ import {ButtonModule} from "primeng/button";
     ReactiveFormsModule,
     FloatLabelModule,
     InputTextModule,
-    DropdownModule,
     InputTextareaModule,
     TextareaModule,
     InputNumberModule,
     MapInputComponent,
-    ButtonModule
+    ButtonModule,
+    Select,
+    NgClass,
+    TagInputComponent
   ],
   templateUrl: './create-or-update-service-provider.component.html',
-  styleUrl: './create-or-update-service-provider.component.scss'
+  styleUrls: ['./create-or-update-service-provider.component.scss']
 })
-export class CreateOrUpdateServiceProviderComponent {
-  #fb: FormBuilder = inject(FormBuilder);
+export class CreateOrUpdateServiceProviderComponent implements OnInit {
+  private fb: FormBuilder = inject(FormBuilder);
+  private route: ActivatedRoute = inject(ActivatedRoute);
+  private service: CreateOrUpdateServiceProviderService = inject(CreateOrUpdateServiceProviderService);
+  private router: Router = inject(Router);
+  private globalMessageService: GlobalMessageService = inject(GlobalMessageService);
+
+  state: string;
   createOrUpdateServiceProviderForm: FormGroup;
   serviceCategories = serviceCategories;
+  paymentTypes = paymentTypes;
+  selectedFile: File | null = null;
+  imagePreview: string | ArrayBuffer | null = null;
+  isDragOver: boolean = false;
+
 
   constructor() {
-    this.createOrUpdateServiceProviderForm = this.#fb.group({
+    this.createOrUpdateServiceProviderForm = this.fb.group({
       name: ['', Validators.required],
       description: ['', Validators.required],
       category: [null, Validators.required],
-      tags: ['', Validators.required],
+      tags: [[], Validators.required],
       email: ['', [Validators.required, Validators.email]],
       phoneNumber: [null, Validators.required],
       companyName: [''],
-      geoLocation: ['', Validators.required]
+      paymentType: [{
+        name: 'Plaćanje po satu',
+        value: 'Plaćanje po satu'
+      }, Validators.required],
+      geoLocation: ['', Validators.required],
+      price: [null],
     });
   }
 
+  ngOnInit(): void {
+    this.state = this.route.snapshot.paramMap.get('state');
+
+    if (this.state === 'update') {
+      const id = this.route.snapshot.paramMap.get('id');
+      this.service.getById(id).subscribe((response: any) => {
+        this.createOrUpdateServiceProviderForm.patchValue(response.serviceProvider);
+        this.imagePreview = response.serviceProvider.image;
+      });
+    }
+  }
+
+  onFileSelected(event: any): void {
+    const file: File = event.target.files[0];
+    if (file) {
+      this.handleFile(file);
+    }
+  }
+
+  handleFile(file: File): void {
+    this.selectedFile = file;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.imagePreview = reader.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  onDragOver(event: DragEvent): void {
+    event.preventDefault();
+    this.isDragOver = true;
+  }
+
+  onDragLeave(event: DragEvent): void {
+    event.preventDefault();
+    this.isDragOver = false;
+  }
+
+  onDrop(event: DragEvent): void {
+    event.preventDefault();
+    this.isDragOver = false;
+
+    const file = event.dataTransfer?.files[0];
+    if (file) {
+      this.handleFile(file);
+    }
+  }
+
+  removeImage(): void {
+    this.selectedFile = null;
+    this.imagePreview = null;
+    this.createOrUpdateServiceProviderForm.patchValue({image: null});
+  }
+
   createOrUpdate() {
+    this.createOrUpdateServiceProviderForm.markAllAsTouched();
+    if (this.createOrUpdateServiceProviderForm.invalid) return;
 
+    const formData = new FormData();
 
-    console.log(this.createOrUpdateServiceProviderForm.get('geoLocation').value);
+    Object.keys(this.createOrUpdateServiceProviderForm.value).forEach((key) => {
+      let value = this.createOrUpdateServiceProviderForm.value[key];
+
+      if (key === 'category' && value && value.value) {
+        formData.append(key, value.value);
+      } else if (key === 'paymentType' && value && value.value) {
+        formData.append(key, value.value);
+      } else if (Array.isArray(value)) {
+        formData.append(key, value.join(','));
+      } else {
+        formData.append(key, value);
+      }
+    });
+
+    if (this.selectedFile) {
+      formData.append('image', this.selectedFile);
+    }
+
+    if (this.state === 'create') {
+      this.service.create(formData).subscribe((response: any) => {
+        this.router.navigateByUrl('/service-providers/edit/' + response.id).then(() => {
+          this.globalMessageService.showSuccessMessage({title: '', content: 'Uspješno ste kreirali uslugu'});
+        });
+      });
+    } else {
+      const id = this.route.snapshot.paramMap.get('id');
+      this.service.update(id, formData).subscribe((response: any) => {
+        this.router.navigateByUrl('/service-providers/edit/' + response.id).then(() => {
+          this.globalMessageService.showSuccessMessage({title: '', content: 'Uspješno ste ažurirali uslugu'});
+        });
+      });
+    }
   }
 }
