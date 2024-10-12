@@ -40,6 +40,41 @@ namespace Rendalicce.Migrations
                     b.ToTable("ApplicationSettings");
                 });
 
+            modelBuilder.Entity("Rendalicce.Domain.Reviews.Review", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("Banned")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ContentPhotoBase64")
+                        .HasColumnType("text");
+
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("RevieweeId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ReviewerId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReviewerId");
+
+                    b.ToTable("Reviews");
+                });
+
             modelBuilder.Entity("Rendalicce.Domain.ServiceProviders.ServiceProvider", b =>
                 {
                     b.Property<Guid>("Id")
@@ -183,6 +218,17 @@ namespace Rendalicce.Migrations
                         .IsUnique();
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("Rendalicce.Domain.Reviews.Review", b =>
+                {
+                    b.HasOne("Rendalicce.Domain.Users.User", "Reviewer")
+                        .WithMany()
+                        .HasForeignKey("ReviewerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Reviewer");
                 });
 
             modelBuilder.Entity("Rendalicce.Domain.ServiceProviders.ServiceProvider", b =>
