@@ -9,7 +9,7 @@ namespace Rendalicce.Features.App.Authentication;
 
 public sealed class Register
 {
-    public sealed record RegisterRequest(string FirstName, string LastName, string Email, string Password);
+    public sealed record RegisterRequest(string FirstName, string LastName, string Email, string? Description, string Password);
     public sealed record RegisterResult(string Token);
 
     public sealed class RegisterEndpoint(DatabaseContext databaseContext, JwtProvider jwtProvider)
@@ -27,7 +27,7 @@ public sealed class Register
             if (existingUser is not null)
                 ThrowError("Email is already in use.");
             
-            var user = Domain.Users.User.Initialize(req.FirstName, req.LastName, req.Email, req.Password);
+            var user = Domain.Users.User.Initialize(req.FirstName, req.LastName, req.Email, req.Description, req.Password);
             
             databaseContext.Users.Add(user);
             await databaseContext.SaveChangesAsync(ct);

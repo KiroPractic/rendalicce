@@ -12,6 +12,7 @@ public sealed class UpdateAccountInformation
         string FirstName,
         string LastName,
         IFormFile? ProfilePhoto,
+        string? Description,
         string Email);
 
     public sealed record UpdateAccountInformationResult(string Token);
@@ -31,7 +32,7 @@ public sealed class UpdateAccountInformation
         {
             var user = HttpContext.GetAuthenticatedUserOrNull();
             var profilePhotoBase64 = req.ProfilePhoto is null ? null : await req.ProfilePhoto.ToBase64(ct);
-            user!.Update(req.FirstName, req.LastName, req.Email, profilePhotoBase64);
+            user!.Update(req.FirstName, req.LastName, req.Email, req.Description, profilePhotoBase64);
             await DbContext.SaveChangesAsync(ct);
 
             await SendAsync(new UpdateAccountInformationResult(Token: JwtProvider.GenerateJwtToken(user)), cancellation: ct);
