@@ -3,11 +3,10 @@
     <h2>Uredi Profil</h2>
     <div class="image-upload">
       <img
-        [src]="'data:image/jpeg;base64,' + (updateUser.profilePhotoBase64 || user()?.user.profilePhotoBase64)"
+        [src]="getImageSrc()"
         alt="Profilna Slika"
         class="profile-img-edit"
       />
-
       <label for="profileImage" class="upload-btn">Promijeni Sliku</label>
       <input
         type="file"

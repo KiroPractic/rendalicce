@@ -1,8 +1,9 @@
-import {Component, effect, inject, input, OnInit, output} from '@angular/core';
+import { Component, effect, inject, input, OnInit, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { SaveButtonComponent } from '../buttons/save-button/save-button.component';
 import { CloseButtonComponent } from '../buttons/close-button/close-button.component';
 import { ProfileService } from "../../pages/profile/profile.service";
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-edit-profile-modal',
@@ -13,6 +14,7 @@ import { ProfileService } from "../../pages/profile/profile.service";
 })
 export class EditProfileModalComponent implements OnInit {
   #service: ProfileService = inject(ProfileService);
+  #sanitizer: DomSanitizer = inject(DomSanitizer);
 
   user = input.required<any>();
   updateUser = {
@@ -71,5 +73,18 @@ export class EditProfileModalComponent implements OnInit {
 
   closeEditModal() {
     this.closeModal.emit();
+  }
+
+  getImageSrc(): SafeUrl {
+    const imageData = this.updateUser.profilePhotoBase64 || this.user()?.user.profilePhotoBase64;
+    if (imageData) {
+      // Check if the string already starts with 'data:'
+      if (imageData.startsWith('data:')) {
+        return this.#sanitizer.bypassSecurityTrustUrl(imageData);
+      } else {
+        return this.#sanitizer.bypassSecurityTrustUrl('data:image/jpeg;base64,' + imageData);
+      }
+    }
+    return '';
   }
 }
