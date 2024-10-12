@@ -19,7 +19,7 @@ public sealed class ServiceProvider : Entity
     public string PaymentType { get; set; } = null!;
     public string? HeaderPhotoBase64 { get; private set; }
     public User Owner { get; init; } = null!;
-    public IEnumerable<Review> Reviews { get; } = new List<Review>();
+    public IEnumerable<Review> Reviews { get; private set; } = new List<Review>();
     
     public static ServiceProvider Initialize(string name, string description, string category, string tags, string geolocation, string email, string? phoneNumber, string? companyName, decimal? price, string paymentType, string? headerPhotoBase64, User owner)
     {

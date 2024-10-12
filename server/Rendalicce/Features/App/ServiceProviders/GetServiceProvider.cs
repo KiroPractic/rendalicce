@@ -10,7 +10,7 @@ namespace Rendalicce.Features.App.ServiceProviders;
 public sealed class GetServiceProvider
 {
     public sealed record GetServiceProviderRequest(Guid Id);
-    public sealed record GetServiceProviderResult(ServiceProvider ServiceProvider, IEnumerable<Review> Reviews);
+    public sealed record GetServiceProviderResult(ServiceProvider ServiceProvider);
 
     public sealed class GetServiceProviderEndpoint : Endpoint<GetServiceProviderRequest, GetServiceProviderResult>
     {
@@ -28,13 +28,12 @@ public sealed class GetServiceProvider
         {
             var serviceProvider = await _dbContext.ServiceProviders
                 .Include(sp => sp.Owner)
+                .Include(sp => sp.Reviews)
                 .FirstOrDefaultAsync(sp => sp.Id == req.Id, ct);
             if(serviceProvider is null)
                 ThrowError("Entitet ne postoji.");
             
-            var reviews = await _dbContext.Reviews.Where(r => r.RevieweeId == serviceProvider.Id && r.Banned == false).ToListAsync(ct);
-            
-            await SendAsync(new GetServiceProviderResult(serviceProvider, reviews), cancellation: ct);
+            await SendAsync(new GetServiceProviderResult(serviceProvider), cancellation: ct);
         }
     }
 }
