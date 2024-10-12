@@ -16,7 +16,6 @@ import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import {ButtonModule} from "primeng/button";
 import {ConfirmationService} from "primeng/api";
 
-
 @Component({
   selector: 'app-profile',
   standalone: true,
@@ -118,5 +117,16 @@ export class ProfileComponent {
         this.deleteService(serviceId);
       }
     });
+  }
+
+  updateUser(event: any) {
+    this.service.updateAccountInformation(event).subscribe((user: User) => {
+      this.service.getAccountInformation(this.user.user.id).subscribe(
+        (user: User) => {
+          this.user = user;
+        }
+      );
+    });
+    this.closeEditModal();
   }
 }

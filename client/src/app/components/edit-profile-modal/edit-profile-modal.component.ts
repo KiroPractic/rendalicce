@@ -1,17 +1,19 @@
-import { Component, input, OnInit, output } from '@angular/core';
+import {Component, effect, inject, input, OnInit, output} from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { User } from '../../model/user.model';
 import { SaveButtonComponent } from '../buttons/save-button/save-button.component';
 import { CloseButtonComponent } from '../buttons/close-button/close-button.component';
+import { ProfileService } from "../../pages/profile/profile.service";
 
 @Component({
   selector: 'app-edit-profile-modal',
   standalone: true,
   imports: [FormsModule, SaveButtonComponent, CloseButtonComponent],
   templateUrl: './edit-profile-modal.component.html',
-  styleUrl: './edit-profile-modal.component.scss',
+  styleUrls: ['./edit-profile-modal.component.scss'],
 })
 export class EditProfileModalComponent implements OnInit {
+  #service: ProfileService = inject(ProfileService);
+
   user = input.required<any>();
   updateUser = {
     firstName: '',
@@ -19,34 +21,49 @@ export class EditProfileModalComponent implements OnInit {
     email: '',
     phoneNumber: '',
     description: '',
-    image: '',
+    profilePhotoBase64: '',
+    profilePhotoFile: null as File | null,
   };
+
+  closeModalWithData = output<any>();
   closeModal = output();
 
   ngOnInit(): void {
     this.updateUser = {
-      firstName: this.user().user.firstName,
+      firstName: this.user()?.user.firstName,
       lastName: this.user().user.lastName,
       email: this.user().user.email,
       phoneNumber: this.user().user.phoneNumber,
       description: this.user().user.description,
-      image: this.user().user.image,
+      profilePhotoBase64: this.user().user.profilePhotoBase64,
+      profilePhotoFile: null,
     };
   }
 
   saveChanges() {
-    const payload = {
+    const formData = new FormData();
 
-    };
-    this.closeModal.emit();
+    formData.append('firstName', this.updateUser.firstName);
+    formData.append('lastName', this.updateUser.lastName);
+    formData.append('email', this.updateUser.email);
+    formData.append('phoneNumber', this.updateUser.phoneNumber);
+    formData.append('description', this.updateUser.description);
+
+    if (this.updateUser.profilePhotoFile) {
+      formData.append('profilePhoto', this.updateUser.profilePhotoFile);
+    }
+
+    this.closeModalWithData.emit(formData);
   }
 
   onImageSelected(event: any) {
     const file = event.target.files[0];
     if (file) {
+      this.updateUser.profilePhotoFile = file;
+
       const reader = new FileReader();
       reader.onload = (e: any) => {
-        this.updateUser.image = e.target.result;
+        this.updateUser.profilePhotoBase64 = e.target.result;
       };
       reader.readAsDataURL(file);
     }

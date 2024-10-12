@@ -4,7 +4,7 @@
       <button class="edit-btn" (click)="openEditModal()">
         <span class="pi pi-pencil"></span>
       </button>
-      <img [src]="user?.user.image" alt="Profile Picture" class="profile-img" />
+      <img  [src]="'data:image/jpeg;base64,' + (user.user.profilePhotoBase64)" alt="Profile Picture" class="profile-img" />
       <h2>{{ user?.user.firstName }} {{ user?.user.lastName }}</h2>
       <p>
         <span class="pi pi-envelope"></span>
@@ -125,5 +125,6 @@
 <app-edit-profile-modal
   [user]="user"
   (closeModal)="closeEditModal()"
+  (closeModalWithData)="updateUser($event)"
 ></app-edit-profile-modal>
 }
