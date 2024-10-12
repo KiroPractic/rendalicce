@@ -1,6 +1,7 @@
 ﻿using FastEndpoints;
 using FluentValidation;
 using Rendalicce.Infrastructure.Authentication;
+using Rendalicce.Infrastructure.Extensions;
 using Rendalicce.Persistency;
 
 namespace Rendalicce.Features.App.Account;
@@ -29,19 +30,11 @@ public sealed class UpdateAccountInformation
         public override async Task HandleAsync(UpdateAccountInformationRequest req, CancellationToken ct)
         {
             var user = HttpContext.GetAuthenticatedUserOrNull();
-            var profilePhotoBase64 = req.ProfilePhoto is null ? null : await GetBase64(req.ProfilePhoto, ct);
+            var profilePhotoBase64 = req.ProfilePhoto is null ? null : await req.ProfilePhoto.ToBase64(ct);
             user!.Update(req.FirstName, req.LastName, req.Email, profilePhotoBase64);
             await DbContext.SaveChangesAsync(ct);
 
             await SendAsync(new UpdateAccountInformationResult(Token: JwtProvider.GenerateJwtToken(user)), cancellation: ct);
-        }
-
-        private static async Task<string> GetBase64(IFormFile file, CancellationToken ct)
-        {
-            using var ms = new MemoryStream();
-            await file.CopyToAsync(ms, ct);
-            var fileBytes = ms.ToArray();
-            return Convert.ToBase64String(fileBytes);
         }
     }
 
