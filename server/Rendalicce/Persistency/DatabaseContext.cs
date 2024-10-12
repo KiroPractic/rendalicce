@@ -2,6 +2,7 @@
 using Rendalicce.Domain.ApplicationSettings;
 using Rendalicce.Domain.Users;
 using Rendalicce.Persistency.EntityTypeConfigurations;
+using ServiceProvider = Rendalicce.Domain.ServiceProviders.ServiceProvider;
 
 namespace Rendalicce.Persistency;
 
@@ -12,6 +13,7 @@ public sealed class DatabaseContext : DbContext
     
     public required DbSet<ApplicationSettings> ApplicationSettings { get; init; }
     public required DbSet<User> Users { get; init; }
+    public required DbSet<ServiceProvider> ServiceProviders { get; init; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

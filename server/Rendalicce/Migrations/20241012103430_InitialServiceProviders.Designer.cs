@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Rendalicce.Persistency;
@@ -11,9 +12,11 @@ using Rendalicce.Persistency;
 namespace Rendalicce.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20241012103430_InitialServiceProviders")]
+    partial class InitialServiceProviders
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,21 +53,10 @@ namespace Rendalicce.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("CompanyName")
-                        .HasColumnType("text");
-
                     b.Property<DateTimeOffset>("CreatedOn")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Geolocation")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -74,9 +66,6 @@ namespace Rendalicce.Migrations
 
                     b.Property<Guid>("OwnerId")
                         .HasColumnType("uuid");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("text");
 
                     b.Property<string>("Tags")
                         .IsRequired()
