@@ -1,6 +1,7 @@
 using System.Net;
 using System.Net.Mail;
 using System.Text.Json.Serialization;
+using DotNetEnv;
 using FastEndpoints;
 using FastEndpoints.Swagger;
 using FastEndpoints.Security;
@@ -14,12 +15,14 @@ using Rendalicce.Infrastructure.BackgroundJobs;
 using Rendalicce.Infrastructure.Emails;
 using Rendalicce.Infrastructure.Errors;
 using Rendalicce.Infrastructure.Extensions;
+using Rendalicce.Infrastructure.OpenApi;
 using Rendalicce.Persistency;
 using Serilog;
 using Serilog.Events;
 
 var builder = WebApplication.CreateBuilder();
 
+Env.Load();
 var connectionString = builder.Configuration.GetConnectionString("Database");
 builder.Services.AddDbContext<DatabaseContext>(o => o.UseNpgsql(connectionString));
 
