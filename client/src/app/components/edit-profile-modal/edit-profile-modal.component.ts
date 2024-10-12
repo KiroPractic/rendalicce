@@ -12,7 +12,7 @@ import { CloseButtonComponent } from '../buttons/close-button/close-button.compo
   styleUrl: './edit-profile-modal.component.scss',
 })
 export class EditProfileModalComponent implements OnInit {
-  user = input.required<User>();
+  user = input.required<any>();
   updateUser = {
     firstName: '',
     lastName: '',
@@ -25,12 +25,12 @@ export class EditProfileModalComponent implements OnInit {
 
   ngOnInit(): void {
     this.updateUser = {
-      firstName: this.user().firstName,
-      lastName: this.user().lastName,
-      email: this.user().email,
-      phone: this.user().phone,
-      description: this.user().description,
-      image: this.user().image,
+      firstName: this.user().user.firstName,
+      lastName: this.user().user.lastName,
+      email: this.user().user.email,
+      phone: this.user().user.phone,
+      description: this.user().user.description,
+      image: this.user().user.image,
     };
   }
 

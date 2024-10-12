@@ -1,69 +1,55 @@
-import { Component, inject } from '@angular/core';
-import { Service } from '../../model/service.model';
-import { User } from '../../model/user.model';
-import { Review } from '../../model/review.model';
-import { ReviewsService } from '../../services/reviews.service';
-import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
-import { FormsModule } from '@angular/forms';
-import { EditProfileModalComponent } from '../../components/edit-profile-modal/edit-profile-modal.component';
-import { CreateOrUpdateServiceProviderService } from '../create-or-update-service-provider/create-or-update-service-provider.service';
+import {Component, inject} from '@angular/core';
+import {User} from '../../model/user.model';
+import {Review} from '../../model/review.model';
+import {ReviewsService} from '../../services/reviews.service';
+import {CommonModule} from '@angular/common';
+import {ActivatedRoute, Router} from '@angular/router';
+import {FormsModule} from '@angular/forms';
+import {EditProfileModalComponent} from '../../components/edit-profile-modal/edit-profile-modal.component';
+import {
+  CreateOrUpdateServiceProviderService
+} from '../create-or-update-service-provider/create-or-update-service-provider.service';
+import {ProfileService} from "./profile.service";
+import {GlobalMessageService} from "../../services/global-message.service";
+import {ToastModule} from "primeng/toast";
+import { ConfirmPopupModule } from 'primeng/confirmpopup';
+import {ButtonModule} from "primeng/button";
+import {ConfirmationService} from "primeng/api";
+
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, FormsModule, EditProfileModalComponent],
+  imports: [CommonModule, FormsModule, EditProfileModalComponent, ToastModule, ConfirmPopupModule, ButtonModule],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
+  providers: [ConfirmationService]
 })
 export class ProfileComponent {
-  user: User = {
-    id: '1',
-    firstName: 'John',
-    lastName: 'Doe',
-    image: 'https://via.placeholder.com/120',
-    description:
-      'Full-stack developer with a passion for building scalable applications.',
-    phone: '+123456789',
-    email: 'test@gmail.com',
-  };
-
-  services: Service[] = [
-    {
-      id: 'a7adf1e5-0837-4594-b9ac-d46767e147c8',
-      name: 'Web Development',
-      description:
-        'Building responsive and fast websites using Angular, React, or Vue.js.',
-      price: '$1000',
-      image: 'https://via.placeholder.com/100',
-    },
-    {
-      id: '2',
-      name: 'Mobile App Development',
-      description:
-        'Creating mobile applications for Android and iOS platforms.',
-      price: '$1500',
-      image: 'https://via.placeholder.com/100',
-    },
-    {
-      id: '3',
-      name: 'UI/UX Design',
-      description:
-        'Designing intuitive and user-friendly interfaces for web and mobile apps.',
-      price: '$800',
-      image: 'https://via.placeholder.com/100',
-    },
-  ];
-
+  user: any;
   private reviewService = inject(ReviewsService);
   private routerService = inject(Router);
+  private activateRoute = inject(ActivatedRoute);
+  private service: ProfileService = inject(ProfileService);
+  private globalMessageService = inject(GlobalMessageService);
   private createOrUpdateServiceProviderService = inject(
     CreateOrUpdateServiceProviderService
   );
+  private confirmationService = inject(ConfirmationService);
   reviews: Review[] = this.reviewService.getRandomReviews();
   isEditModalOpen = false;
   isEmailModalOpen = false;
 
+  ngOnInit() {
+    this.activateRoute.params.subscribe((params: any) => {
+      const userId = params.id;
+
+      this.service.getAccountInformation(userId).subscribe((user: User) => {
+        this.user = user;
+        console.log(user);
+      });
+    });
+  }
   openEditModal() {
     this.isEditModalOpen = true;
   }
@@ -98,29 +84,40 @@ export class ProfileComponent {
     this.routerService.navigate(['/service', serviceId]);
   }
 
-  getServices() {
-    this.createOrUpdateServiceProviderService.get().subscribe({
-      next: (services: Service[]) => {
-        this.services = services;
-      },
-      error: (error) => {
-        console.error('Error fetching services:', error);
-      },
-    });
-  }
-
-  deleteService(serviceId: string) {
-    this.createOrUpdateServiceProviderService.delete(serviceId).subscribe({
-      next: () => {
-        this.getServices();
-      },
-      error: (error) => {
-        console.error('Error deleting service:', error);
-      },
-    });
-  }
-
   editService(serviceId) {
     this.routerService.navigate(['/service-provider/edit', serviceId]);
+  }
+
+  deleteService(serviceId) {
+    this.createOrUpdateServiceProviderService.delete(serviceId).subscribe(
+      (response) => {
+        this.service.getAccountInformation(this.user.user.id).subscribe(
+          (user: User) => {
+            this.user = user;
+          }
+        );
+        this.globalMessageService.showInformationMessage({title: '', content: 'Uspješno ste obrisali uslugu'});
+      },
+    );
+  }
+
+  confirm2(event: Event, serviceId: string) {
+    this.confirmationService.confirm({
+      target: event.target as EventTarget,
+      message: 'Jeste li sigurni da želite obrisati ovu uslugu?',
+      icon: 'pi pi-info-circle',
+      rejectButtonProps: {
+        label: 'Cancel',
+        severity: 'secondary',
+        outlined: true
+      },
+      acceptButtonProps: {
+        label: 'Delete',
+        severity: 'danger'
+      },
+      accept: () => {
+        this.deleteService(serviceId);
+      }
+    });
   }
 }

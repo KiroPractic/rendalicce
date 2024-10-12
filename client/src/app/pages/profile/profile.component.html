@@ -4,22 +4,22 @@
       <button class="edit-btn" (click)="openEditModal()">
         <span class="pi pi-pencil"></span>
       </button>
-      <img [src]="user?.image" alt="Profile Picture" class="profile-img" />
-      <h2>{{ user?.firstName }} {{ user?.lastName }}</h2>
+      <img [src]="user?.user.image" alt="Profile Picture" class="profile-img" />
+      <h2>{{ user?.user.firstName }} {{ user?.user.lastName }}</h2>
       <p>
         <span class="pi pi-envelope"></span>
-        <a [href]="'mailto:' + user?.email">{{ user?.email }}</a>
+        <a [href]="'mailto:' + user?.user.email">{{ user?.user.email }}</a>
       </p>
       <p>
         <span class="pi pi-phone"></span>
-        <a [href]="'tel:' + user?.phone">{{ user?.phone }}</a>
+        <a [href]="'tel:' + user?.user.phone">{{ user?.user.phone }}</a>
       </p>
-      <button class="message-btn" (click)="openChat(user?.id)">Poruka</button>
+      <button class="message-btn" (click)="openChat(user?.user.id)">Poruka</button>
     </div>
 
     <div class="about-section section">
       <h4>O Meni</h4>
-      <p>{{ user?.description }}</p>
+      <p>{{ user?.user.description }}</p>
     </div>
   </div>
 
@@ -27,7 +27,7 @@
     <div class="skills-section section">
       <h4>Usluge</h4>
       <div class="skills-list">
-        @for(service of services; track $index) {
+        @for(service of user.serviceProviders; track $index) {
         <div class="skill-tag">
           <img
             [src]="service?.image"
@@ -39,16 +39,19 @@
             <div class="skill-buttons">
               <button
                 class="edit-skill-button"
-                (click)="editService(service.id)"
               >
                 <span class="pi pi-pencil"></span>
               </button>
               <button
                 class="delete-skill-button"
-                (click)="deleteService(service.id)"
+                (click)="confirm2($event, service.id)"
               >
                 <span class="pi pi-trash"></span>
               </button>
+              <div class="card flex justify-center gap-2">
+                <p-toast />
+                <p-confirmpopup />
+              </div>
             </div>
             <p class="skill-name" (click)="openService(service.id)">
               {{ service?.name }}
@@ -80,7 +83,7 @@
           </span>
           <div class="stat-info">
             <p class="stat-label">Broj Usluga</p>
-            <p class="stat-number">{{ services?.length }}</p>
+            <p class="stat-number">{{ user.serviceProviders?.length }}</p>
           </div>
         </div>
         <div class="stat">

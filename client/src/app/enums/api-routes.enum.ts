@@ -5,4 +5,5 @@ export enum ApiRoutes {
   registerRoute = '/register',
   serviceProvidersRoute = '/service-providers',
   headerPhotoPropositionRoute = '/header-photo-proposition',
+  usersRoute = '/users',
 }
