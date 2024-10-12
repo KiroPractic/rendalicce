@@ -27,7 +27,7 @@ export class NavbarComponent {
         return;
       }
       if (this.jwtService.token()) {
-        this.profileService.getUser().subscribe(user => {console.log(user);this.user = user});
+        this.profileService.getUser().subscribe(user => this.user = user);
       }
     })
   }
