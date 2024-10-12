@@ -45,6 +45,7 @@ export class ProfileComponent {
       const userId = params.id;
 
       this.service.getAccountInformation(userId).subscribe((user: User) => {
+        console.log(user);
         this.user = user;
       });
     });
