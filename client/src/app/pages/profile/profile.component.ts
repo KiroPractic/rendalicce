@@ -3,11 +3,13 @@ import { Service } from '../../model/service.model';
 import { User } from '../../model/user.model';
 import { Review } from '../../model/review.model';
 import { ReviewsService } from '../../services/reviews.service';
+import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
 })
@@ -19,6 +21,7 @@ export class ProfileComponent {
     description:
       'Full-stack developer with a passion for building scalable applications.',
     phone: '+123456789',
+    email: 'test@gmail.com',
   };
 
   services: Service[] = [
@@ -49,11 +52,25 @@ export class ProfileComponent {
   ];
 
   private reviewService = inject(ReviewsService);
+  private routerService = inject(Router);
   reviews: Review[] = this.reviewService.getRandomReviews();
 
   getStars(rating: number): string[] {
     const filledStars = Array(rating).fill('filled');
     const emptyStars = Array(5 - rating).fill('empty');
     return [...filledStars, ...emptyStars];
+  }
+
+  getAverageRating(): number {
+    const totalRatings = this.reviews.reduce((acc, review) => acc + review.rating, 0);
+    return totalRatings / this.reviews.length;
+  }
+
+  editProfile() {
+    console.log('Editing profile...');
+  }
+
+  openService(serviceId) {
+    this.routerService.navigate(['/service', serviceId]);
   }
 }

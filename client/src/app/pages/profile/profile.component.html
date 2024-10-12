@@ -1,53 +1,98 @@
-<div class="profile-wrapper">
-  <div class="profile-description">
-    <div class="profile-picture">
-      <img src="{{ user.image }}" alt="Profile Picture" />
-    </div>
-    <div class="profile-info">
-      <h1>{{ user.firstName }} {{ user.lastName }}</h1>
-      <p>{{ user.description }}</p>
+<div class="profile-container">
+  <div class="left-section">
+    <div class="profile-card">
+      <img [src]="user?.image" alt="Profile Picture" class="profile-img" />
+      <h2>{{ user?.firstName }} {{ user?.lastName }}</h2>
       <p>
-        <a [href]="'tel:' + user?.phone">
-          <span class="pi pi-phone"></span> {{ user?.phone }}
-        </a>
+        <span class="pi pi-envelope"></span>
+        <a [href]="'mailto:' + user?.email">{{ user?.email }}</a>
       </p>
-      <button class="edit-button"><span class="pi pi-pencil"></span></button>
+      <p>
+        <span class="pi pi-phone"></span>
+        <a [href]="'tel:' + user?.phone">{{ user?.phone }}</a>
+      </p>
+      <button class="message-btn">Poruka</button>
     </div>
-  </div>
-  <div class="services">
-    <h2>Usluge</h2>
-    @for(service of services; track service.id) {
-    <div class="service">
-      <div class="service-info">
-        <h3>{{ service.name }}</h3>
-        <p>{{ service.description }}</p>
-        <p>{{ service.price }}</p>
-      </div>
-      <div class="service-picture">
-        <img src="{{ service.image }}" alt="Service Picture" />
-      </div>
+
+    <div class="about-section section">
+      <h4>O Meni</h4>
+      <p>{{ user?.description }}</p>
     </div>
-    }
   </div>
 
-  <div class="reviews">
-    <h2>Osvrti korisnika</h2>
-    @for(review of reviews; track review.id) {
-    <div class="review">
-      <div class="review-info">
-        <h4>{{ review.reviewerName }}</h4>
-        <p>{{ review.comment }}</p>
-        <div class="rating">
-          @for(star of getStars(review.rating); track star) {
-            @if(star === 'filled') {
-              <span>&#9733;</span>
-            } @else {
-                <span>&#9734;</span>
-            }
-          }
+  <div class="right-section">
+    <div class="skills-section section">
+      <h4>Vještine</h4>
+      <div class="skills-list">
+        @for(service of services; track service) {
+        <div class="skill-tag" (click)="openService(service.id)">
+          <img
+            [src]="service?.image"
+            alt="{{ service.name }}"
+            class="skill-img"
+          />
+          <div class="skill-info">
+            <p class="skill-name">{{ service?.name }}</p>
+            <p class="skill-description">{{ service?.description }}</p>
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+
+    <div class="stats-section section">
+      <h4>Statistika</h4>
+      <div class="stats">
+        <div class="stat">
+          <span class="stat-icon">
+            <i class="pi pi-folder"></i>
+          </span>
+          <div class="stat-info">
+            <p class="stat-label">Projekti</p>
+            <p class="stat-number">48</p>
+          </div>
+        </div>
+        <div class="stat">
+          <span class="stat-icon">
+            <i class="pi pi-cog"></i>
+          </span>
+          <div class="stat-info">
+            <p class="stat-label">Broj Vještina</p>
+            <p class="stat-number">{{ services?.length }}</p>
+          </div>
+        </div>
+        <div class="stat">
+          <span class="stat-icon">
+            <i class="pi pi-star"></i>
+          </span>
+          <div class="stat-info">
+            <p class="stat-label">Prosječna Ocjena</p>
+            <p class="stat-number">
+              {{ getAverageRating() | number : "1.1-1" }} / 5
+            </p>
+          </div>
         </div>
       </div>
     </div>
-    }
+
+    <div class="reviews-section section">
+      <h4>Recenzije</h4>
+      @for(review of reviews; track review) {
+      <div class="review">
+        <div class="review-info">
+          <h5>{{ review.reviewerName }}</h5>
+          <p>{{ review.comment }}</p>
+          <div class="rating">
+            @for(star of getStars(review.rating); track star) {
+            <span
+              [ngClass]="{ filled: star === 'filled', empty: star === 'empty' }"
+              >&#9733;</span
+            >
+            }
+          </div>
+        </div>
+      </div>
+      }
+    </div>
   </div>
 </div>
