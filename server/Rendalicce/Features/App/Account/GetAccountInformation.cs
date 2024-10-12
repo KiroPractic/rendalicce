@@ -9,6 +9,7 @@ public sealed class GetAccountInformation
         string FirstName,
         string LastName,
         string Email,
+        string? Description,
         string? ProfilePhotoBase64);
 
     public sealed class GetAccountInformationEndpoint : EndpointWithoutRequest<GetAccountInformationResult>
@@ -25,7 +26,7 @@ public sealed class GetAccountInformation
                     FirstName: user.FirstName,
                     LastName: user.LastName,
                     Email: user.Email,
-                    ProfilePhotoBase64:
+                    Description: user.Description,
                     user.ProfilePhotoBase64), cancellation:
                 ct);
         }

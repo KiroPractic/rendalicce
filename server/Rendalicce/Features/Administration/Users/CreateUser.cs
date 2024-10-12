@@ -8,7 +8,7 @@ namespace Rendalicce.Features.Administration.Users;
 
 public sealed class CreateUser
 {
-    public sealed record CreateUserRequest(string FirstName, string LastName, string Email, string Password);
+    public sealed record CreateUserRequest(string FirstName, string LastName, string Email, string? Description, string Password);
 
     public sealed class CreateUserEndpoint : Endpoint<CreateUserRequest, CreateOrUpdateEntityResult>
     {
@@ -26,7 +26,7 @@ public sealed class CreateUser
 
         public override async Task HandleAsync(CreateUserRequest req, CancellationToken ct)
         {
-            var user = Domain.Users.User.Initialize(req.FirstName, req.LastName, req.Email, req.Password);
+            var user = Domain.Users.User.Initialize(req.FirstName, req.LastName, req.Email, req.Description, req.Password);
 
             _dbContext.Users.Add(user);
             await _dbContext.SaveChangesAsync(ct);
