@@ -17,5 +17,6 @@ export const routes: Routes = [
   {path: '', component: HomeComponent},
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
+  {path: 'service-provider/:state', component: CreateOrUpdateServiceProviderComponent},
   {path: 'service-provider/:state/:id', component: CreateOrUpdateServiceProviderComponent}
 ];

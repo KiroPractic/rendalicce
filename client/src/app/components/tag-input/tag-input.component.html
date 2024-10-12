@@ -1,0 +1,17 @@
+<div class="tags-input">
+  <div class="flex flex-wrap gap-2">
+    @for(tag of tags; track $index) {
+      <span [ngClass]="getTagColor($index)" class="inline-flex items-center gap-2 bg-gray-200 p-2 rounded-lg mt-1">
+      {{ tag }}
+        <i (click)="removeTag($index)" class="pi pi-times"></i>
+    </span>
+    }
+  </div>
+
+  <div class="mt-2 flex gap-2">
+    <input [(ngModel)]="newTag" class="p-2 border rounded-md" (keyup.enter)="addTag()"/>
+    <button (click)="addTag()" type="button" class="p-2 bg-blue-500 text-white rounded-md">
+      Dodaj oznaku
+    </button>
+  </div>
+</div>

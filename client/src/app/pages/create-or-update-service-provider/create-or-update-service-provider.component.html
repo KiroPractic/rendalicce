@@ -2,8 +2,8 @@
   <form [formGroup]="createOrUpdateServiceProviderForm" (ngSubmit)="createOrUpdate()">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <p-floatlabel>
-        <input pInputText id="firstName" class="w-full"/>
-        <label for="firstName">Ime</label>
+        <input pInputText formControlName="name" id="firstName" class="w-full"/>
+        <label for="firstName">Naziv</label>
       </p-floatlabel>
 
       <p-floatlabel>
@@ -22,7 +22,7 @@
       </p-floatlabel>
 
       <p-floatlabel>
-        <p-dropdown
+        <p-select
           [filter]="true"
           filterBy="name"
           showClear="true"
@@ -30,9 +30,27 @@
           formControlName="category"
           optionLabel="name"
           inputId="category"
-          class="w-full"></p-dropdown>
+          class="w-full"></p-select>
         <label for="category">Kategorija usluge</label>
       </p-floatlabel>
+      <p-floatlabel>
+        <p-select
+          [options]="paymentTypes"
+          formControlName="paymentType"
+          optionLabel="name"
+          inputId="paymentType"
+          class="w-full"></
+        p-select>
+        <label for="paymentType">Vrsta plaćanja</label>
+      </p-floatlabel>
+
+      @if (createOrUpdateServiceProviderForm.controls['paymentType']?.value?.value === 'Plaćanje po satu' || createOrUpdateServiceProviderForm.controls['paymentType']?.value?.value === 'Određena cijena') {
+        <p-floatlabel>
+          <p-inputnumber mode="currency" currency="EUR" locale="de-DE" styleClass="w-full" formControlName="price"
+                         [useGrouping]="false" inputId="price" class="w-full"></p-inputnumber>
+          <label for="price">Cijena</label>
+        </p-floatlabel>
+      }
 
       <p-floatlabel class="w-full md:col-span-2">
         <textarea
@@ -44,8 +62,41 @@
         </textarea>
         <label for="description">Opis usluge</label>
       </p-floatlabel>
-    </div>
 
+      <div class="md:col-span-2">
+        <label for="tags">Oznake</label>
+        <app-tag-input
+          [tags]="createOrUpdateServiceProviderForm.get('tags')?.value"
+          (tagsChange)="createOrUpdateServiceProviderForm.get('tags')?.setValue($event)">
+        </app-tag-input>
+      </div>
+
+      <div class="w-full md:col-span-2">
+        <label for="image">Učitaj sliku</label>
+        @if (imagePreview) {
+          <div class="relative mt-4">
+            <img [src]="imagePreview" alt="Uploaded Image"
+                 class="w-96 h-auto object-cover rounded-lg border border-gray-300">
+            <button (click)="removeImage()" class="absolute top-0 right-96 text-red-600">
+              <i class="pi pi-times"></i>
+            </button>
+          </div>
+        } @else {
+          <div
+            class="mt-4 w-full p-4 border-2 border-dotted border-gray-300 rounded-lg text-center cursor-pointer"
+            (click)="fileInput.click()"
+            (dragover)="onDragOver($event)"
+            (dragleave)="onDragLeave($event)"
+            (drop)="onDrop($event)"
+            [ngClass]="{'bg-gray-100': isDragOver}">
+            <i class="pi pi-upload text-4xl text-gray-500 mb-2"></i>
+            <p class="text-gray-500">Kliknite ili prevucite sliku ovdje za učitavanje</p>
+            <input #fileInput type="file" (change)="onFileSelected($event)" accept="image/*" style="display: none;">
+          </div>
+        }
+      </div>
+
+    </div>
     <div class="mt-6">
       <app-map-input [formControl]="$any(createOrUpdateServiceProviderForm.get('geoLocation'))"></app-map-input>
     </div>

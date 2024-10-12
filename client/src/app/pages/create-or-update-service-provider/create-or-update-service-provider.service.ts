@@ -1,5 +1,7 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
+import {environment} from "../../../environments/environment";
+import {ApiRoutes} from "../../enums/api-routes.enum";
 
 @Injectable({
   providedIn: 'root'
@@ -8,14 +10,14 @@ export class CreateOrUpdateServiceProviderService {
   #httpClient: HttpClient = inject(HttpClient);
 
   getById(id: string) {
-    return this.#httpClient.get(`https://api.example.com/service-provider/${id}`);
+    return this.#httpClient.get(`${environment.baseUrl}${ApiRoutes.apiRoute}${ApiRoutes.serviceProvidersRoute}/${id}`);
   }
 
   create(payload: any) {
-    return this.#httpClient.post('https://api.example.com/service-provider', payload);
+    return this.#httpClient.post(`${environment.baseUrl}${ApiRoutes.apiRoute}${ApiRoutes.serviceProvidersRoute}`, payload);
   }
 
   update(id: string, payload: any) {
-    return this.#httpClient.put(`https://api.example.com/service-provider/${id}`, payload);
+    return this.#httpClient.put(`${environment.baseUrl}${ApiRoutes.apiRoute}${ApiRoutes.serviceProvidersRoute}/${id}`, payload);
   }
 }
