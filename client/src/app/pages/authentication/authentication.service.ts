@@ -26,7 +26,7 @@ export class AuthenticationService {
   logout() {
     this.#jwtService.remove();
     this.#router.navigateByUrl("/").then(() => {
-      this.#globalMessageService.showInformationMessage({title: '', content: 'Logout successful'});
+      this.#globalMessageService.showInformationMessage({title: '', content: 'Uspješna odjava'});
     });
   }
 }

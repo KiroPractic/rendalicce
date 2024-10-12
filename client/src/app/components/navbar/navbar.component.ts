@@ -1,14 +1,21 @@
-import { Component } from '@angular/core';
+import {Component, inject} from '@angular/core';
+import {RouterLink} from "@angular/router";
+import {AuthenticationService} from "../../pages/authentication/authentication.service";
+import {JwtService} from "../../services/jwt.service";
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [],
+  imports: [
+    RouterLink
+  ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss',
 })
 export class NavbarComponent {
   isNavbarOpen = false;
+  jwtService: JwtService = inject(JwtService);
+  authService: AuthenticationService = inject(AuthenticationService);
 
   toggleNavbar() {
     this.isNavbarOpen = !this.isNavbarOpen;

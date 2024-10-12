@@ -14,7 +14,7 @@
         <span class="pi pi-phone"></span>
         <a [href]="'tel:' + user?.phone">{{ user?.phone }}</a>
       </p>
-      <button class="message-btn">Poruka</button>
+      <button class="message-btn" (click)="openChat(user?.id)">Poruka</button>
     </div>
 
     <div class="about-section section">
@@ -27,7 +27,7 @@
     <div class="skills-section section">
       <h4>Usluge</h4>
       <div class="skills-list">
-        @for(service of services; track service) {
+        @for(service of services; track $index) {
         <div class="skill-tag">
           <img
             [src]="service?.image"
@@ -99,7 +99,7 @@
 
     <div class="reviews-section section">
       <h4>Recenzije</h4>
-      @for(review of reviews; track review) {
+      @for(review of reviews; track $index) {
       <div class="review">
         <div class="review-info">
           <h5>{{ review.reviewerName }}</h5>

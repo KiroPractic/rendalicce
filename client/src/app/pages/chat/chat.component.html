@@ -1,0 +1,60 @@
+<div class="chat-container">
+  <div class="user-list">
+    <h3>Razgovori</h3>
+    <ul>
+      @for(user of users; track $index) {
+      <li
+        (click)="getSelectedUser(user.id)"
+        [class.active]="selectedUser?.id === user.id"
+      >
+        <img [src]="user.image" alt="{{ user.firstName }}" class="user-icon" />
+        <span>{{ user.firstName }}</span>
+      </li>
+      }
+    </ul>
+  </div>
+
+  @if(selectedUser) {
+  <div class="chat-view">
+    <div class="chat-header">
+      <img
+        [src]="selectedUser.image"
+        alt="{{ selectedUser.firstName }}"
+        (click)="openProfile(selectedUser.id)"
+        class="user-icon"
+      />
+      <span class="user-name" (click)="openProfile(selectedUser.id)">{{
+        selectedUser.firstName
+      }}</span>
+    </div>
+
+    <div class="message-list">
+      @for(message of messages; track $index) {
+      <div
+        class="message"
+        [class.sent]="message.senderId === currentUser.id"
+        [class.received]="message.senderId !== currentUser.id"
+      >
+        <img
+          [src]="getUserById(message.senderId)?.image"
+          alt="{{ getUserById(message.senderId)?.firstName }}"
+          class="message-icon"
+        />
+        <div class="message-content">
+          <p>{{ message.text }}</p>
+        </div>
+      </div>
+      }
+    </div>
+
+    <div class="message-input">
+      <input
+        type="text"
+        [(ngModel)]="newMessage"
+        placeholder="Upišite poruku..."
+      />
+      <button (click)="sendMessage()">Pošalji</button>
+    </div>
+  </div>
+  }
+</div>

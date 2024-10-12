@@ -10,7 +10,7 @@ export class JwtService {
   #token: WritableSignal<Token> = signal<Token>(null);
 
   readonly rawToken: Signal<string> = this.#rawToken.asReadonly();
-  readonly token: Signal<Token> = this.#token.asReadonly();
+  readonly token: Signal<any> = this.#token.asReadonly();
 
   constructor() {
     this.#token.set(this.get());
