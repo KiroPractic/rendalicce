@@ -3,7 +3,7 @@ import {User} from '../../model/user.model';
 import {Review} from '../../model/review.model';
 import {ReviewsService} from '../../services/reviews.service';
 import {CommonModule} from '@angular/common';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {FormsModule} from '@angular/forms';
 import {EditProfileModalComponent} from '../../components/edit-profile-modal/edit-profile-modal.component';
 import {
@@ -20,7 +20,7 @@ import {ConfirmationService} from "primeng/api";
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, FormsModule, EditProfileModalComponent, ToastModule, ConfirmPopupModule, ButtonModule],
+  imports: [CommonModule, FormsModule, EditProfileModalComponent, ToastModule, ConfirmPopupModule, ButtonModule, RouterLink],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
   providers: [ConfirmationService]
@@ -46,7 +46,6 @@ export class ProfileComponent {
 
       this.service.getAccountInformation(userId).subscribe((user: User) => {
         this.user = user;
-        console.log(user);
       });
     });
   }

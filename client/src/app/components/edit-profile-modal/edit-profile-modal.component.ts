@@ -17,7 +17,7 @@ export class EditProfileModalComponent implements OnInit {
     firstName: '',
     lastName: '',
     email: '',
-    phone: '',
+    phoneNumber: '',
     description: '',
     image: '',
   };
@@ -28,13 +28,16 @@ export class EditProfileModalComponent implements OnInit {
       firstName: this.user().user.firstName,
       lastName: this.user().user.lastName,
       email: this.user().user.email,
-      phone: this.user().user.phone,
+      phoneNumber: this.user().user.phoneNumber,
       description: this.user().user.description,
       image: this.user().user.image,
     };
   }
 
   saveChanges() {
+    const payload = {
+
+    };
     this.closeModal.emit();
   }
 
