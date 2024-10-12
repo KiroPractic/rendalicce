@@ -20,4 +20,12 @@ export class CreateOrUpdateServiceProviderService {
   update(id: string, payload: any) {
     return this.#httpClient.put(`${environment.baseUrl}${ApiRoutes.apiRoute}${ApiRoutes.serviceProvidersRoute}/${id}`, payload);
   }
+
+  delete(id: string) {
+    return this.#httpClient.delete(`${environment.baseUrl}${ApiRoutes.apiRoute}${ApiRoutes.serviceProvidersRoute}/${id}`);
+  }
+
+  get() {
+    return this.#httpClient.get(`${environment.baseUrl}${ApiRoutes.apiRoute}${ApiRoutes.serviceProvidersRoute}`);
+  }
 }

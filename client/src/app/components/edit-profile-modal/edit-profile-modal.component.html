@@ -1,0 +1,69 @@
+<div class="modal-overlay" (click)="closeEditModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <h2>Uredi Profil</h2>
+
+    <div class="image-upload">
+      <img
+        [src]="updateUser.image || user()?.image"
+        alt="Profilna Slika"
+        class="profile-img-edit"
+      />
+      <label for="profileImage" class="upload-btn">Promijeni Sliku</label>
+      <input
+        type="file"
+        id="profileImage"
+        (change)="onImageSelected($event)"
+        accept="image/*"
+      />
+    </div>
+
+    <form (ngSubmit)="saveChanges()">
+      <div class="form-group">
+        <label for="firstName">Ime:</label>
+        <input
+          type="text"
+          id="firstName"
+          [(ngModel)]="updateUser.firstName"
+          name="firstName"
+        />
+      </div>
+      <div class="form-group">
+        <label for="lastName">Prezime:</label>
+        <input
+          type="text"
+          id="lastName"
+          [(ngModel)]="updateUser.lastName"
+          name="lastName"
+        />
+      </div>
+      <div class="form-group">
+        <label for="email">E-mail:</label>
+        <input
+          type="email"
+          id="email"
+          [(ngModel)]="updateUser.email"
+          name="email"
+        />
+      </div>
+      <div class="form-group">
+        <label for="phone">Telefon:</label>
+        <input
+          type="tel"
+          id="phone"
+          [(ngModel)]="updateUser.phone"
+          name="phone"
+        />
+      </div>
+      <div class="form-group">
+        <label for="description">Opis:</label>
+        <textarea
+          id="description"
+          [(ngModel)]="updateUser.description"
+          name="description"
+        ></textarea>
+      </div>
+      <app-save-button (click)="saveChanges()"></app-save-button>
+      <app-close-button (click)="closeEditModal()"></app-close-button>
+    </form>
+  </div>
+</div>
