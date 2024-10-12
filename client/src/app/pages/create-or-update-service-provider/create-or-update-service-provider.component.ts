@@ -92,11 +92,14 @@ export class CreateOrUpdateServiceProviderComponent implements OnInit {
           price: serviceProvider.price
         });
 
-        this.imagePreview = serviceProvider.headerPhotoBase64;
+        if (serviceProvider.headerPhotoBase64) {
+          this.imagePreview = `data:image/jpeg;base64,${serviceProvider.headerPhotoBase64}`;
+        } else {
+          this.imagePreview = null;
+        }
       });
     }
   }
-
 
   onFileSelected(event: any): void {
     const file: File = event.target.files[0];
@@ -151,18 +154,18 @@ export class CreateOrUpdateServiceProviderComponent implements OnInit {
       let value = this.createOrUpdateServiceProviderForm.value[key];
 
       if (key === 'category' && value && value.value) {
-        formData.append(key, value.value);
+        formData.append('Category', value.value);
       } else if (key === 'paymentType' && value && value.value) {
-        formData.append(key, value.value);
-      } else if (Array.isArray(value)) {
-        formData.append(key, value.join(','));
+        formData.append('PaymentType', value.value);
+      } else if (key === 'tags' && Array.isArray(value)) {
+        formData.append('Tags', value.join(','));
       } else {
-        formData.append(key, value);
+        formData.append(this.capitalizeFirstLetter(key), value);
       }
     });
 
     if (this.selectedFile) {
-      formData.append('image', this.selectedFile);
+      formData.append('HeaderPhoto', this.selectedFile);
     }
 
     if (this.state === 'create') {
@@ -179,5 +182,9 @@ export class CreateOrUpdateServiceProviderComponent implements OnInit {
         });
       });
     }
+  }
+
+  capitalizeFirstLetter(string: string): string {
+    return string.charAt(0).toUpperCase() + string.slice(1);
   }
 }
