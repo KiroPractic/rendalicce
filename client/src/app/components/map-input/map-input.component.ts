@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, forwardRef, OnInit} from '@angular/core';
+import {AfterViewInit, Component, forwardRef, OnDestroy, OnInit} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 import * as L from 'leaflet';
 
@@ -14,7 +14,7 @@ import * as L from 'leaflet';
     }
   ]
 })
-export class MapInputComponent implements OnInit, AfterViewInit, ControlValueAccessor {
+export class MapInputComponent implements OnInit, AfterViewInit, ControlValueAccessor, OnDestroy {
   private map: L.Map;
   private marker: L.Marker;
   private value: [number, number] | null = null;
@@ -38,11 +38,20 @@ export class MapInputComponent implements OnInit, AfterViewInit, ControlValueAcc
   }
 
   ngAfterViewInit() {
-    this.initMap();
+    if (this.map) {
+      this.map.invalidateSize();
+    } else {
+      this.initMap();
+    }
   }
 
   private initMap(): void {
+    if (this.map) {
+      return;
+    }
+
     this.map = L.map('map').setView([45.815, 15.9819], 13);
+
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© OpenStreetMap contributors'
     }).addTo(this.map);
@@ -69,9 +78,11 @@ export class MapInputComponent implements OnInit, AfterViewInit, ControlValueAcc
 
   // ControlValueAccessor methods
   writeValue(value: [number, number] | null): void {
-    this.value = value;
-    if (this.map && value) {
-      this.setMarker(L.latLng(value[0], value[1]));
+    if (value) {
+      this.value = value;
+      if (this.map) {
+        this.setMarker(L.latLng(value[0], value[1]));
+      }
     }
   }
 
@@ -83,4 +94,9 @@ export class MapInputComponent implements OnInit, AfterViewInit, ControlValueAcc
     this.onTouched = fn;
   }
 
+  ngOnDestroy(): void {
+    if (this.map) {
+      this.map.remove();
+    }
+  }
 }

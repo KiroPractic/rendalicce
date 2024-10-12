@@ -50,7 +50,6 @@ export class CreateOrUpdateServiceProviderComponent implements OnInit {
   imagePreview: string | ArrayBuffer | null = null;
   isDragOver: boolean = false;
 
-
   constructor() {
     this.createOrUpdateServiceProviderForm = this.fb.group({
       name: ['', Validators.required],
@@ -72,14 +71,32 @@ export class CreateOrUpdateServiceProviderComponent implements OnInit {
   ngOnInit(): void {
     this.state = this.route.snapshot.paramMap.get('state');
 
-    if (this.state === 'update') {
+    if (this.state === 'edit') {
       const id = this.route.snapshot.paramMap.get('id');
       this.service.getById(id).subscribe((response: any) => {
-        this.createOrUpdateServiceProviderForm.patchValue(response.serviceProvider);
-        this.imagePreview = response.serviceProvider.image;
+        const serviceProvider = response.serviceProvider;
+
+        const tagsArray = serviceProvider.tags ? serviceProvider.tags.split(',') : [];
+        const [latitude, longitude] = serviceProvider.geolocation.split(',').map(Number);
+
+        this.createOrUpdateServiceProviderForm.patchValue({
+          name: serviceProvider.name,
+          description: serviceProvider.description,
+          category: this.serviceCategories.find((category) => category.value === serviceProvider.category),
+          paymentType: this.paymentTypes.find((paymentType) => paymentType.value === serviceProvider.paymentType),
+          tags: tagsArray,
+          email: serviceProvider.email,
+          phoneNumber: serviceProvider.phoneNumber,
+          companyName: serviceProvider.companyName,
+          geoLocation: [latitude, longitude],
+          price: serviceProvider.price
+        });
+
+        this.imagePreview = serviceProvider.headerPhotoBase64;
       });
     }
   }
+
 
   onFileSelected(event: any): void {
     const file: File = event.target.files[0];
@@ -150,14 +167,14 @@ export class CreateOrUpdateServiceProviderComponent implements OnInit {
 
     if (this.state === 'create') {
       this.service.create(formData).subscribe((response: any) => {
-        this.router.navigateByUrl('/service-providers/edit/' + response.id).then(() => {
+        this.router.navigateByUrl('/service-provider/edit/' + response.id).then(() => {
           this.globalMessageService.showSuccessMessage({title: '', content: 'Uspješno ste kreirali uslugu'});
         });
       });
     } else {
       const id = this.route.snapshot.paramMap.get('id');
       this.service.update(id, formData).subscribe((response: any) => {
-        this.router.navigateByUrl('/service-providers/edit/' + response.id).then(() => {
+        this.router.navigateByUrl('/service-provider/edit/' + response.id).then(() => {
           this.globalMessageService.showSuccessMessage({title: '', content: 'Uspješno ste ažurirali uslugu'});
         });
       });
