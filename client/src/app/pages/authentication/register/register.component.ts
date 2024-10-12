@@ -8,6 +8,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { StyleClassModule } from "primeng/styleclass";
 import { PasswordModule } from "primeng/password";
 import { ButtonModule } from 'primeng/button';
+import {JwtService} from "../../../services/jwt.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-register',
@@ -18,6 +20,8 @@ import { ButtonModule } from 'primeng/button';
 })
 export class RegisterComponent {
   #fb: FormBuilder = inject(FormBuilder);
+  #jwtService: JwtService = inject(JwtService);
+  #router: Router = inject(Router);
   #authenticationService: AuthenticationService = inject(AuthenticationService);
   registerForm: FormGroup;
   error: string = '';
@@ -41,14 +45,16 @@ export class RegisterComponent {
     this.registerForm.markAllAsTouched();
     if (this.registerForm.invalid) return;
     const payload = {
+      firstName: this.registerForm.get('firstName')?.value,
+      lastName: this.registerForm.get('lastName')?.value,
       email: this.registerForm.get('email')?.value,
       password: this.registerForm.get('password')?.value,
     };
 
     this.#authenticationService.register(payload).subscribe(
-      (response) => {
-        console.log(response);
-      }
+      (response: any) => {
+        this.#jwtService.set(response.token);
+        this.#router.navigate(['/']);      }
     );
   }
 }
