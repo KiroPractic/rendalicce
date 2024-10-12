@@ -34,6 +34,9 @@ public sealed class JwtProvider
                         new(nameof(user.Email), user.Email)
                     }
                 );
+                
+                if(user.ProfilePhotoBase64 is not null)
+                    o.User.Claims.Add(new(nameof(user.ProfilePhotoBase64), user.ProfilePhotoBase64));
             }
         );
     }

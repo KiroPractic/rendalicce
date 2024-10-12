@@ -2,13 +2,14 @@
 using Microsoft.EntityFrameworkCore;
 using Rendalicce.Features.Shared;
 using Rendalicce.Infrastructure.Authentication;
+using Rendalicce.Infrastructure.Extensions;
 using Rendalicce.Persistency;
 
 namespace Rendalicce.Features.App.ServiceProviders;
 
 public sealed class UpdateServiceProvider
 {
-    public sealed record UpdateServiceProviderRequest(Guid Id, string Name, string Description, string Category, string Tags, string Email, string? PhoneNumber, string? CompanyName, string Geolocation);
+    public sealed record UpdateServiceProviderRequest(Guid Id, string Name, string Description, string Category, string Tags, string Email, string? PhoneNumber, string? CompanyName, decimal Price, string PaymentType, string Geolocation, IFormFile? HeaderPhoto);
 
     public sealed class UpdateServiceProviderEndpoint : Endpoint<UpdateServiceProviderRequest, CreateOrUpdateEntityResult>
     {
@@ -16,6 +17,7 @@ public sealed class UpdateServiceProvider
 
         public override void Configure()
         {
+            AllowFileUploads();
             Put("service-providers/{id}");
         }
 
@@ -26,8 +28,9 @@ public sealed class UpdateServiceProvider
 
             if(serviceProvider is null)
                 ThrowError("Entitet ne postoji.");
-            
-            serviceProvider.Update(req.Name, req.Description, req.Category, req.Geolocation, req.Email, req.PhoneNumber, req.CompanyName, req.Tags);
+
+            var headerPhotoBase64 = req.HeaderPhoto is null ? null : await req.HeaderPhoto.ToBase64(ct);
+            serviceProvider.Update(req.Name, req.Description, req.Category, req.Geolocation, req.Email, req.PhoneNumber, req.CompanyName, req.Price, req.PaymentType, req.Tags, headerPhotoBase64);
             DbContext.ServiceProviders.Update(serviceProvider);
             await DbContext.SaveChangesAsync(ct);
 

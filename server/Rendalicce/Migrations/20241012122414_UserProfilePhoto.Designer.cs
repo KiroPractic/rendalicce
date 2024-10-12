@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Rendalicce.Persistency;
@@ -11,9 +12,11 @@ using Rendalicce.Persistency;
 namespace Rendalicce.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20241012122414_UserProfilePhoto")]
+    partial class UserProfilePhoto
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -68,9 +71,6 @@ namespace Rendalicce.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("HeaderPhotoBase64")
-                        .HasColumnType("text");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
@@ -78,15 +78,8 @@ namespace Rendalicce.Migrations
                     b.Property<Guid>("OwnerId")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("PaymentType")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("text");
-
-                    b.Property<decimal?>("Price")
-                        .HasColumnType("numeric");
 
                     b.Property<string>("Tags")
                         .IsRequired()

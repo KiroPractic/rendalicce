@@ -1,10 +1,10 @@
 ﻿using Rendalicce.Domain.Users;
 
-namespace Rendalicce.Domain.ServiceProviders;
+namespace Rendalicce.Domain.ServiceSeekers;
 
-public sealed class ServiceProvider : Entity
+public sealed class ServiceSeeker : Entity
 {
-    private ServiceProvider() { }
+    private ServiceSeeker() { }
     
     public string Name { get; private set; } = null!;
     public string Description { get; private set; } = null!;
@@ -14,15 +14,12 @@ public sealed class ServiceProvider : Entity
     public string Email { get; set; } = null!;
     public string? PhoneNumber { get; set; }
     public string? CompanyName { get; set; }
-    public decimal? Price { get; set; }
-    public string PaymentType { get; set; } = null!;
-    public string? HeaderPhotoBase64 { get; private set; }
     public User Owner { get; init; } = null!;
     
     
-    public static ServiceProvider Initialize(string name, string description, string category, string tags, string geolocation, string email, string? phoneNumber, string? companyName, decimal? price, string paymentType, string? headerPhotoBase64, User owner)
+    public static ServiceSeeker Initialize(string name, string description, string category, string tags, string geolocation, string email, string phoneNumber, string companyName, User owner)
     {
-        return new ServiceProvider
+        return new ServiceSeeker
         {
             Name = name,
             Description = description,
@@ -32,14 +29,11 @@ public sealed class ServiceProvider : Entity
             Email = email,
             PhoneNumber = phoneNumber,
             CompanyName = companyName,
-            Price = price,
-            PaymentType = paymentType,
-            HeaderPhotoBase64 = headerPhotoBase64,
             Owner = owner
         };
     }
 
-    public void Update(string name, string description, string category, string geolocation, string email, string? phoneNumber, string? companyName, decimal? price, string paymentType, string tags, string? headerPhotoBase64)
+    public void Update(string name, string description, string category, string geolocation, string email, string? phoneNumber, string? companyName, string tags)
     {
         Name = name;
         Description = description;
@@ -48,9 +42,6 @@ public sealed class ServiceProvider : Entity
         Email = email;
         PhoneNumber = phoneNumber;
         CompanyName = companyName;
-        Price = price;
-        PaymentType = paymentType;
         Tags = tags;
-        HeaderPhotoBase64 = headerPhotoBase64;
     }
 }

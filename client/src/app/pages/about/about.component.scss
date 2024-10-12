@@ -1,0 +1,105 @@
+.about-us-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+}
+
+.about-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.about-header h1 {
+  font-size: 2.5rem;
+  color: #333;
+}
+
+.about-header p {
+  font-size: 1.2rem;
+  color: #666;
+  margin-top: 1rem;
+}
+
+.our-mission {
+  margin-bottom: 3rem;
+}
+
+.our-mission h2 {
+  font-size: 2rem;
+  color: #333;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.our-mission p {
+  font-size: 1.2rem;
+  color: #666;
+  text-align: center;
+}
+
+.team-section {
+  margin-bottom: 3rem;
+}
+
+.team-section h2 {
+  font-size: 2rem;
+  color: #333;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.team-members {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.team-member {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.team-member img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #007bff;
+  margin-bottom: 1rem;
+}
+
+.team-member h3 {
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.team-member p {
+  font-size: 1.2rem;
+  color: #666;
+}
+
+.contact-section {
+  text-align: center;
+  padding: 2rem 0;
+  background-color: #007bff;
+  color: white;
+  border-radius: 10px;
+}
+
+.contact-section h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.contact-section p {
+  font-size: 1.2rem;
+}
+
+.contact-section a {
+  color: #f9f9f9;
+  text-decoration: underline;
+}
