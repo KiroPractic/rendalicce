@@ -1,0 +1,53 @@
+<div class="profile-wrapper">
+  <div class="profile-description">
+    <div class="profile-picture">
+      <img src="{{ user.image }}" alt="Profile Picture" />
+    </div>
+    <div class="profile-info">
+      <h1>{{ user.firstName }} {{ user.lastName }}</h1>
+      <p>{{ user.description }}</p>
+      <p>
+        <a [href]="'tel:' + user?.phone">
+          <span class="pi pi-phone"></span> {{ user?.phone }}
+        </a>
+      </p>
+      <button class="edit-button"><span class="pi pi-pencil"></span></button>
+    </div>
+  </div>
+  <div class="services">
+    <h2>Usluge</h2>
+    @for(service of services; track service.id) {
+    <div class="service">
+      <div class="service-info">
+        <h3>{{ service.name }}</h3>
+        <p>{{ service.description }}</p>
+        <p>{{ service.price }}</p>
+      </div>
+      <div class="service-picture">
+        <img src="{{ service.image }}" alt="Service Picture" />
+      </div>
+    </div>
+    }
+  </div>
+
+  <div class="reviews">
+    <h2>Osvrti korisnika</h2>
+    @for(review of reviews; track review.id) {
+    <div class="review">
+      <div class="review-info">
+        <h4>{{ review.reviewerName }}</h4>
+        <p>{{ review.comment }}</p>
+        <div class="rating">
+          @for(star of getStars(review.rating); track star) {
+            @if(star === 'filled') {
+              <span>&#9733;</span>
+            } @else {
+                <span>&#9734;</span>
+            }
+          }
+        </div>
+      </div>
+    </div>
+    }
+  </div>
+</div>
