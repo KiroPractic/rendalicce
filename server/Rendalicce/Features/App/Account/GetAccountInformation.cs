@@ -6,6 +6,7 @@ namespace Rendalicce.Features.App.Account;
 public sealed class GetAccountInformation
 {
     public sealed record GetAccountInformationResult(
+        Guid Id,
         string FirstName,
         string LastName,
         string Email,
@@ -24,6 +25,7 @@ public sealed class GetAccountInformation
         {
             var user = HttpContext.GetAuthenticatedUserOrNull()!;
             await SendAsync(new GetAccountInformationResult(
+                    Id: user.Id,
                     FirstName: user.FirstName,
                     LastName: user.LastName,
                     Email: user.Email,
