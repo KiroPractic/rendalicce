@@ -18,6 +18,7 @@ import { CreateOrUpdateServiceProviderService } from '../create-or-update-servic
 })
 export class ProfileComponent {
   user: User = {
+    id: '1',
     firstName: 'John',
     lastName: 'Doe',
     image: 'https://via.placeholder.com/120',
@@ -61,6 +62,7 @@ export class ProfileComponent {
   );
   reviews: Review[] = this.reviewService.getRandomReviews();
   isEditModalOpen = false;
+  isEmailModalOpen = false;
 
   openEditModal() {
     this.isEditModalOpen = true;
@@ -68,6 +70,10 @@ export class ProfileComponent {
 
   closeEditModal() {
     this.isEditModalOpen = false;
+  }
+
+  openChat(userId: string) {
+    this.routerService.navigate(['/chat', userId]);
   }
 
   getStars(rating: number): string[] {
