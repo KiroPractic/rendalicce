@@ -6,6 +6,7 @@ import { definePreset } from 'primeng/themes';
 import { filter } from 'rxjs';
 import { ToastModule } from "primeng/toast";
 import { ScreenSizeService } from './services/screen-size.service';
+import {NavbarComponent} from "./components/navbar/navbar.component";
 
 const CustomPreset = definePreset(Aura, {
   semantic: {
@@ -28,7 +29,7 @@ const CustomPreset = definePreset(Aura, {
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, ToastModule],
+  imports: [RouterOutlet, ToastModule, NavbarComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
