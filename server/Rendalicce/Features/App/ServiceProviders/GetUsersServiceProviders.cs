@@ -9,9 +9,10 @@ namespace Rendalicce.Features.App.ServiceProviders;
 
 public sealed class GetUsersServiceProviders
 {
+    public sealed record GetUsersServiceProvidersRequest(Guid UserId);
     public sealed record GetUsersServiceProvidersResult(IEnumerable<ServiceProvider> ServiceProviders);
 
-    public sealed class GetUsersServiceProvidersEndpoint : EndpointWithoutRequest<GetUsersServiceProvidersResult>
+    public sealed class GetUsersServiceProvidersEndpoint : Endpoint<GetUsersServiceProvidersRequest, GetUsersServiceProvidersResult>
     {
         private readonly DatabaseContext _dbContext;
 
@@ -19,13 +20,12 @@ public sealed class GetUsersServiceProviders
 
         public override void Configure()
         {
-            Get("service-providers/user");
+            Get("service-providers/users/{userId}");
         }
 
-        public override async Task HandleAsync(CancellationToken ct)
+        public override async Task HandleAsync(GetUsersServiceProvidersRequest req, CancellationToken ct)
         {
-            var authenticatedUser = HttpContext.GetAuthenticatedUser()!;
-            await SendAsync(new GetUsersServiceProvidersResult(await _dbContext.ServiceProviders.Where(sp => sp.Owner.Id == authenticatedUser.Id).ToListAsync(ct)), cancellation: ct);
+            await SendAsync(new GetUsersServiceProvidersResult(await _dbContext.ServiceProviders.Where(sp => sp.Owner.Id == req.UserId).ToListAsync(ct)), cancellation: ct);
         }
     }
 }
