@@ -11,11 +11,12 @@ public sealed class User : Entity
     public string LastName { get; private set; } = null!;
     public string Email { get; private set; } = null!;
     public string? Description { get; private set; }
+    public string? PhoneNumber { get; private set; }
     public string? ProfilePhotoBase64 { get; private set; }
     private string PasswordHash { get; set; } = null!;
 
     
-    public static User Initialize(string firstName, string lastName, string email, string? description, string password)
+    public static User Initialize(string firstName, string lastName, string email, string? description, string? phoneNumber, string password)
     {
         return new User
         {
@@ -23,16 +24,18 @@ public sealed class User : Entity
             LastName = lastName,
             Email = email,
             Description = description,
+            PhoneNumber = phoneNumber,
             PasswordHash = HashPassword(password)
         };
     }
 
-    public void Update(string firstName, string lastName, string email, string? description, string? profilePhotoBase64)
+    public void Update(string firstName, string lastName, string email, string? description, string? phoneNumber, string? profilePhotoBase64)
     {
         FirstName = firstName;
         LastName = lastName;
         Email = email;
         Description = description;
+        PhoneNumber = phoneNumber;
         ProfilePhotoBase64 = profilePhotoBase64;
     }
     

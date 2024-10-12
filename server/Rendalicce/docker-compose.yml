@@ -24,6 +24,7 @@ services:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_HTTP_PORTS: 5000
       ConnectionStrings__Database: ${ConnectionStrings_Database}
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
 #    depends_on:
 #      - database
     ports:

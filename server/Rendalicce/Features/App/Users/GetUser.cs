@@ -12,7 +12,7 @@ public sealed class GetUser
     public sealed record GetUserRequest(Guid Id);
 
     public sealed record GetUserResponse(User User, IEnumerable<ServiceProvider> ServiceProviders, IEnumerable<ServiceSeeker> ServiceSeekers);
-
+    
     public sealed class GetUserEndpoint : Endpoint<GetUserRequest, GetUserResponse>
     {
         public required DatabaseContext DbContext { get; init; }
@@ -29,7 +29,9 @@ public sealed class GetUser
             if(user is null)
                 ThrowError("Entitet ne postoji.");
             
-            var serviceProviders = await DbContext.ServiceProviders.Where(sp => sp.Owner.Id == req.Id).ToListAsync(ct);
+            var serviceProviders = await DbContext.ServiceProviders.Where(sp => sp.Owner.Id == req.Id)
+                .Include(sp => sp.Reviews)
+                .ToListAsync(ct);
             var serviceSeekers = await DbContext.ServiceSeekers.Where(sp => sp.Owner.Id == req.Id).ToListAsync(ct);
             await SendAsync(new(user, serviceProviders, serviceSeekers), cancellation: ct);
         }
