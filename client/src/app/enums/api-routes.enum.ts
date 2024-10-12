@@ -3,5 +3,6 @@ export enum ApiRoutes {
   authRoute = '/auth',
   loginRoute = '/login',
   registerRoute = '/register',
-  serviceProvidersRoute = '/service-providers'
+  serviceProvidersRoute = '/service-providers',
+  headerPhotoPropositionRoute = '/header-photo-proposition',
 }

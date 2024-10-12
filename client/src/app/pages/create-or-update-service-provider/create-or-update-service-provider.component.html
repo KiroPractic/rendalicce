@@ -77,7 +77,7 @@
           <div class="relative mt-4">
             <img [src]="imagePreview" alt="Uploaded Image"
                  class="w-96 h-auto object-cover rounded-lg border border-gray-300">
-            <button (click)="removeImage()" class="absolute top-0 right-96 text-red-600">
+            <button type="button" (click)="removeImage()" class="absolute top-0 right-96 text-red-600">
               <i class="pi pi-times"></i>
             </button>
           </div>
@@ -93,6 +93,14 @@
             <p class="text-gray-500">Kliknite ili prevucite sliku ovdje za učitavanje</p>
             <input #fileInput type="file" (change)="onFileSelected($event)" accept="image/*" style="display: none;">
           </div>
+
+          <div class="mt-4 text-center">
+            <p class="text-gray-500">Ili generirajte sliku pomoću umjetne inteligencije</p>
+            <button type="button" class="p-2 bg-blue-500 text-white rounded-md mt-2" (click)="requestHeaderPhotoProposition()">
+              Generiraj sliku
+            </button>
+          </div>
+
         }
       </div>
 
