@@ -8,7 +8,7 @@ namespace Rendalicce.Features.App.ServiceProviders;
 
 public sealed class UpdateServiceProvider
 {
-    public sealed record UpdateServiceProviderRequest(Guid Id, string Name, string Description, string Category, string Tags, string Email, string? PhoneNumber, string? CompanyName, string Geolocation);
+    public sealed record UpdateServiceProviderRequest(Guid Id, string Name, string Description, string Category, string Tags, string Email, string? PhoneNumber, string? CompanyName, decimal Price, string PaymentType, string Geolocation);
 
     public sealed class UpdateServiceProviderEndpoint : Endpoint<UpdateServiceProviderRequest, CreateOrUpdateEntityResult>
     {
@@ -27,7 +27,7 @@ public sealed class UpdateServiceProvider
             if(serviceProvider is null)
                 ThrowError("Entitet ne postoji.");
             
-            serviceProvider.Update(req.Name, req.Description, req.Category, req.Geolocation, req.Email, req.PhoneNumber, req.CompanyName, req.Tags);
+            serviceProvider.Update(req.Name, req.Description, req.Category, req.Geolocation, req.Email, req.PhoneNumber, req.CompanyName, req.Price, req.PaymentType, req.Tags);
             DbContext.ServiceProviders.Update(serviceProvider);
             await DbContext.SaveChangesAsync(ct);
 

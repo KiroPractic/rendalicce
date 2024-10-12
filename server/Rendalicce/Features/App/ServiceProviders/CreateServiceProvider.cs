@@ -8,11 +8,11 @@ namespace Rendalicce.Features.App.ServiceProviders;
 
 public sealed class CreateServiceProvider
 {
-    public sealed record CreateServiceProviderRequest(string Name, string Description, string Category, string Tags, string Email, string? PhoneNumber, string? CompanyName, string Geolocation);
+    public sealed record CreateServiceProviderRequest(string Name, string Description, string Category, string Tags, string Email, string? PhoneNumber, string? CompanyName, decimal? Price, string PaymentType, string Geolocation);
 
     public sealed class CreateServiceProviderEndpoint : Endpoint<CreateServiceProviderRequest, CreateOrUpdateEntityResult>
     {
-        public DatabaseContext DbContext { get; init; }
+        public required DatabaseContext DbContext { get; init; }
 
         public override void Configure()
         {
@@ -21,7 +21,7 @@ public sealed class CreateServiceProvider
 
         public override async Task HandleAsync(CreateServiceProviderRequest req, CancellationToken ct)
         {
-            var serviceProvider = ServiceProvider.Initialize(req.Name, req.Description, req.Category, req.Tags, req.Geolocation, req.Email, req.PhoneNumber, req.CompanyName, HttpContext.GetAuthenticatedUser()!);
+            var serviceProvider = ServiceProvider.Initialize(req.Name, req.Description, req.Category, req.Tags, req.Geolocation, req.Email, req.PhoneNumber, req.CompanyName,  req.Price, req.PaymentType, HttpContext.GetAuthenticatedUser());
 
             DbContext.ServiceProviders.Add(serviceProvider);
             await DbContext.SaveChangesAsync(ct);

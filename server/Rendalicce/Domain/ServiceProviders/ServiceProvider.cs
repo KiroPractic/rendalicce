@@ -14,10 +14,12 @@ public sealed class ServiceProvider : Entity
     public string Email { get; set; } = null!;
     public string? PhoneNumber { get; set; }
     public string? CompanyName { get; set; }
+    public decimal? Price { get; set; }
+    public string PaymentType { get; set; } = null!;
     public User Owner { get; init; } = null!;
     
     
-    public static ServiceProvider Initialize(string name, string description, string category, string tags, string geolocation, string email, string phoneNumber, string companyName, User owner)
+    public static ServiceProvider Initialize(string name, string description, string category, string tags, string geolocation, string email, string? phoneNumber, string? companyName, decimal? price, string paymentType, User owner)
     {
         return new ServiceProvider
         {
@@ -29,11 +31,13 @@ public sealed class ServiceProvider : Entity
             Email = email,
             PhoneNumber = phoneNumber,
             CompanyName = companyName,
+            Price = price,
+            PaymentType = paymentType,
             Owner = owner
         };
     }
 
-    public void Update(string name, string description, string category, string geolocation, string email, string? phoneNumber, string? companyName, string tags)
+    public void Update(string name, string description, string category, string geolocation, string email, string? phoneNumber, string? companyName, decimal? price, string paymentType, string tags)
     {
         Name = name;
         Description = description;
@@ -42,6 +46,8 @@ public sealed class ServiceProvider : Entity
         Email = email;
         PhoneNumber = phoneNumber;
         CompanyName = companyName;
+        Price = price;
+        PaymentType = paymentType;
         Tags = tags;
     }
 }
