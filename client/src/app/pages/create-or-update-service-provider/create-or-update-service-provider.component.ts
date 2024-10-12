@@ -15,6 +15,7 @@ import {NgClass} from "@angular/common";
 import {TagInputComponent} from "../../components/tag-input/tag-input.component";
 import {paymentTypes} from '../../utils/payment-types';
 import {GlobalMessageService} from "../../services/global-message.service";
+import {ProgressSpinnerModule} from "primeng/progressspinner";
 
 @Component({
   selector: 'app-create-or-update-service-provider',
@@ -30,7 +31,8 @@ import {GlobalMessageService} from "../../services/global-message.service";
     ButtonModule,
     Select,
     NgClass,
-    TagInputComponent
+    TagInputComponent,
+    ProgressSpinnerModule
   ],
   templateUrl: './create-or-update-service-provider.component.html',
   styleUrls: ['./create-or-update-service-provider.component.scss']
@@ -41,6 +43,7 @@ export class CreateOrUpdateServiceProviderComponent implements OnInit {
   private service: CreateOrUpdateServiceProviderService = inject(CreateOrUpdateServiceProviderService);
   private router: Router = inject(Router);
   private globalMessageService: GlobalMessageService = inject(GlobalMessageService);
+  isLoading: boolean = false;
 
   state: string;
   createOrUpdateServiceProviderForm: FormGroup;
@@ -185,6 +188,8 @@ export class CreateOrUpdateServiceProviderComponent implements OnInit {
   }
 
   requestHeaderPhotoProposition() {
+    this.isLoading = true;
+
     const payload = {
       name: this.createOrUpdateServiceProviderForm.get('name').value,
       description: this.createOrUpdateServiceProviderForm.get('description').value,
@@ -192,16 +197,50 @@ export class CreateOrUpdateServiceProviderComponent implements OnInit {
       tags: this.createOrUpdateServiceProviderForm.get('tags').value.join(','),
     };
 
-    this.service.headerPhotoProposition(payload).subscribe((response: any) => {
-      if (response.headerPhotoProposition) {
-        this.imagePreview = `data:image/jpeg;base64,${response.headerPhotoProposition}`;
-      } else {
-        this.imagePreview = null;
+    this.service.headerPhotoProposition(payload).subscribe(
+      (response: any) => {
+        this.isLoading = false;
+
+        if (response.headerPhotoProposition) {
+          const base64Data = response.headerPhotoProposition;
+          this.imagePreview = `data:image/jpeg;base64,${base64Data}`;
+
+          this.selectedFile = this.base64ToFile(base64Data, 'headerPhoto.jpg');
+        } else {
+          this.imagePreview = null;
+          this.selectedFile = null;
+        }
+      },
+      (error) => {
+        this.isLoading = false;
+        this.globalMessageService.showErrorMessage({ title: 'Error', content: 'Došlo je do greške prilikom generiranja slike.' });
       }
-    });
+    );
   }
 
   capitalizeFirstLetter(string: string): string {
     return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
+  private base64ToFile(base64Data: string, filename: string): File {
+    const contentType = 'image/jpeg';
+    const byteCharacters = atob(base64Data);
+    const byteArrays = [];
+
+    for (let offset = 0; offset < byteCharacters.length; offset += 512) {
+      const slice = byteCharacters.slice(offset, offset + 512);
+
+      const byteNumbers = new Array(slice.length);
+      for (let i = 0; i < slice.length; i++) {
+        byteNumbers[i] = slice.charCodeAt(i);
+      }
+
+      const byteArray = new Uint8Array(byteNumbers);
+
+      byteArrays.push(byteArray);
+    }
+
+    const blob = new Blob(byteArrays, { type: contentType });
+    return new File([blob], filename, { type: contentType });
   }
 }

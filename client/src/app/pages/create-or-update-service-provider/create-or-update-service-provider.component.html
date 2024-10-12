@@ -95,12 +95,16 @@
           </div>
 
           <div class="mt-4 text-center">
-            <p class="text-gray-500">Ili generirajte sliku pomoću umjetne inteligencije</p>
-            <button type="button" class="p-2 bg-blue-500 text-white rounded-md mt-2" (click)="requestHeaderPhotoProposition()">
-              Generiraj sliku
-            </button>
+            @if (!isLoading) {
+              <p class="text-gray-500">Ili generirajte sliku pomoću umjetne inteligencije</p>
+              <button type="button" class="p-2 bg-blue-500 text-white rounded-md mt-2" (click)="requestHeaderPhotoProposition()">
+                Generiraj sliku
+              </button>
+            }
+            @else {
+              <p-progress-spinner ariaLabel="loading" />
+            }
           </div>
-
         }
       </div>
 

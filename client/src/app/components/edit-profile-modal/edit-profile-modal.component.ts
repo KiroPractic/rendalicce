@@ -78,7 +78,6 @@ export class EditProfileModalComponent implements OnInit {
   getImageSrc(): SafeUrl {
     const imageData = this.updateUser.profilePhotoBase64 || this.user()?.user.profilePhotoBase64;
     if (imageData) {
-      // Check if the string already starts with 'data:'
       if (imageData.startsWith('data:')) {
         return this.#sanitizer.bypassSecurityTrustUrl(imageData);
       } else {
