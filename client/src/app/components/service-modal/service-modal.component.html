@@ -1,0 +1,40 @@
+<div class="service-details-container">
+  <div class="service-card">
+    <button class="close-button" (click)="closeModal()">
+      <i class="pi pi-times"></i>
+    </button>
+
+    <div class="service-header">
+      <img
+        [src]="service().image"
+        alt="{{ service().name }}"
+        class="service-image"
+      />
+      <div class="service-header-info">
+        <h4 class="category">{{ service().category | uppercase }}</h4>
+        <h1>{{ service().name }}</h1>
+        <p class="service-description">{{ service().description }}</p>
+
+        <div class="price-section">
+          <span class="price">{{ service().price | currency }}</span>
+        </div>
+
+        <div class="service-meta">
+          <span class="meta-item">{{ service().category }}</span>
+          <span class="meta-item">{{ service().type }}</span>
+          <span class="meta-item">{{ service().payment }}</span>
+        </div>
+
+        <button class="cta-button">Rezerviraj sada</button>
+      </div>
+    </div>
+
+    <div class="additional-info">
+      <h2>Dodatne informacije</h2>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua.
+      </p>
+    </div>
+  </div>
+</div>

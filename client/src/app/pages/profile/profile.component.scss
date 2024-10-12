@@ -22,7 +22,7 @@
   position: absolute;
   top: 10px;
   right: 10px;
-  background-color: #8b1d2a;
+  background-color: #ff5722;
   color: white;
   border: none;
   padding: 8px 12px;
@@ -32,7 +32,7 @@
 }
 
 .edit-btn:hover {
-  background-color: #a12430;
+  background-color: #ff8a50;
   box-shadow: 0 8px 15px rgba(139, 29, 42, 0.2);
 }
 
@@ -62,7 +62,7 @@
 }
 
 .message-btn {
-  background-color: #8b1d2a;
+  background-color: #ff5722;
   color: white;
   border: none;
   padding: 12px 24px;
@@ -74,8 +74,8 @@
 }
 
 .message-btn:hover {
-  background-color: #a12430;
-  box-shadow: 0 8px 15px rgba(139, 29, 42, 0.2);
+  background-color: rgb(255, 138, 80);
+  box-shadow: 0 8px 15px rgba(255, 138, 80, 0.2);
 }
 
 .section {
@@ -152,7 +152,7 @@
 
 .stat-icon {
   font-size: 40px;
-  color: #8b1d2a;
+  color: #ff5722;
   margin-right: 15px;
 }
 

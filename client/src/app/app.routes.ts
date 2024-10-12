@@ -7,6 +7,7 @@ import { AboutComponent } from './pages/about/about.component';
 import { ContactComponent } from './pages/contact/contact.component';
 import { CreateOrUpdateServiceProviderComponent } from './pages/create-or-update-service-provider/create-or-update-service-provider.component';
 import { ChatComponent } from './pages/chat/chat.component';
+import { ServicesListingComponent } from './pages/services-listing/services-listing.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -17,7 +18,6 @@ export const routes: Routes = [
   { path: 'chat/:userId', component: ChatComponent },
   { path: 'about', component: AboutComponent },
   { path: 'contact', component: ContactComponent },
-  { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   {
@@ -28,4 +28,6 @@ export const routes: Routes = [
     path: 'service-provider/:state/:id',
     component: CreateOrUpdateServiceProviderComponent,
   },
+  { path: 'services', component: ServicesListingComponent },
+  { path: '**', redirectTo: '' },
 ];
