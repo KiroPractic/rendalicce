@@ -89,6 +89,55 @@ namespace Rendalicce.Migrations
                     b.ToTable("ServiceProviders");
                 });
 
+            modelBuilder.Entity("Rendalicce.Domain.ServiceSeekers.ServiceSeeker", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("CompanyName")
+                        .HasColumnType("text");
+
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Geolocation")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("OwnerId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Tags")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OwnerId");
+
+                    b.ToTable("ServiceSeekers");
+                });
+
             modelBuilder.Entity("Rendalicce.Domain.Users.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -124,6 +173,17 @@ namespace Rendalicce.Migrations
                 });
 
             modelBuilder.Entity("Rendalicce.Domain.ServiceProviders.ServiceProvider", b =>
+                {
+                    b.HasOne("Rendalicce.Domain.Users.User", "Owner")
+                        .WithMany()
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Owner");
+                });
+
+            modelBuilder.Entity("Rendalicce.Domain.ServiceSeekers.ServiceSeeker", b =>
                 {
                     b.HasOne("Rendalicce.Domain.Users.User", "Owner")
                         .WithMany()

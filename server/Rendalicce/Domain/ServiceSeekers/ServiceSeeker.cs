@@ -1,10 +1,10 @@
 ﻿using Rendalicce.Domain.Users;
 
-namespace Rendalicce.Domain.ServiceProviders;
+namespace Rendalicce.Domain.ServiceSeekers;
 
-public sealed class ServiceProvider : Entity
+public sealed class ServiceSeeker : Entity
 {
-    private ServiceProvider() { }
+    private ServiceSeeker() { }
     
     public string Name { get; private set; } = null!;
     public string Description { get; private set; } = null!;
@@ -17,9 +17,9 @@ public sealed class ServiceProvider : Entity
     public User Owner { get; init; } = null!;
     
     
-    public static ServiceProvider Initialize(string name, string description, string category, string tags, string geolocation, string email, string phoneNumber, string companyName, User owner)
+    public static ServiceSeeker Initialize(string name, string description, string category, string tags, string geolocation, string email, string phoneNumber, string companyName, User owner)
     {
-        return new ServiceProvider
+        return new ServiceSeeker
         {
             Name = name,
             Description = description,
