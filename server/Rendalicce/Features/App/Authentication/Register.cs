@@ -42,18 +42,18 @@ public sealed class Register
         {
             RuleFor(r => r.FirstName)
                 .Cascade(CascadeMode.Stop)
-                .NotEmpty().WithMessage("First name cannot be empty.")
-                .MaximumLength(63).WithMessage("First name must have length less than 63 characters.");
+                .NotEmpty().WithMessage("Ime je obavezno.")
+                .MaximumLength(63).WithMessage("Ime ne smije biti dulje od 63 znako.");
             
             RuleFor(r => r.LastName)
                 .Cascade(CascadeMode.Stop)
-                .NotEmpty().WithMessage("Last name cannot be empty.")
-                .MaximumLength(63).WithMessage("Last name must have length less than 63 characters.");
+                .NotEmpty().WithMessage("Prezime je obavezno.")
+                .MaximumLength(63).WithMessage("Prezime ne smije biti dulje od 63 znako.");
 
             RuleFor(r => r.Email)
                 .Cascade(CascadeMode.Stop)
-                .NotEmpty().WithMessage("Email cannot be empty.")
-                .EmailAddress().WithMessage("Invalid email address.");
+                .NotEmpty().WithMessage("E-mail je obavezan.")
+                .EmailAddress().WithMessage("E-mail nije valjan.");
             
             RuleFor(r => r.Password).SetValidator(new PasswordValidator());
         }
