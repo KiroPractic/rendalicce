@@ -1,13 +1,13 @@
-import { Component, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { passwordValidator } from './password-validator';
-import { AuthenticationService } from "../authentication.service";
-import { matchPasswordValidator } from './match-password-validator';
-import { FloatLabelModule } from 'primeng/floatlabel';
-import { InputTextModule } from 'primeng/inputtext';
-import { StyleClassModule } from "primeng/styleclass";
-import { PasswordModule } from "primeng/password";
-import { ButtonModule } from 'primeng/button';
+import {Component, inject} from '@angular/core';
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {passwordValidator} from './password-validator';
+import {AuthenticationService} from "../authentication.service";
+import {matchPasswordValidator} from './match-password-validator';
+import {FloatLabelModule} from 'primeng/floatlabel';
+import {InputTextModule} from 'primeng/inputtext';
+import {StyleClassModule} from "primeng/styleclass";
+import {PasswordModule} from "primeng/password";
+import {ButtonModule} from 'primeng/button';
 import {JwtService} from "../../../services/jwt.service";
 import {Router} from "@angular/router";
 
@@ -29,11 +29,11 @@ export class RegisterComponent {
   constructor() {
     this.registerForm = this.#fb.group(
       {
-        firstName: [null, [Validators.required]],
-        lastName: [null, [Validators.required]],
-        email: [null, [Validators.required, Validators.email]],
-        password: [null, [Validators.required, passwordValidator()]],
-        confirmPassword: [null, Validators.required],
+        firstName: ['', [Validators.required]],
+        lastName: ['', [Validators.required]],
+        email: ['', [Validators.required, Validators.email]],
+        password: ['', [Validators.required, passwordValidator()]],
+        confirmPassword: ['', Validators.required],
       },
       {
         validator: matchPasswordValidator('password', 'confirmPassword')

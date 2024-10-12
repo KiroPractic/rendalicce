@@ -1,0 +1,57 @@
+<div class="max-w-4xl mx-auto p-6">
+  <form [formGroup]="createOrUpdateServiceProviderForm" (ngSubmit)="createOrUpdate()">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <p-floatlabel>
+        <input pInputText id="firstName" class="w-full"/>
+        <label for="firstName">Ime</label>
+      </p-floatlabel>
+
+      <p-floatlabel>
+        <input formControlName="email" pInputText id="email" class="w-full"/>
+        <label for="email">Email</label>
+      </p-floatlabel>
+
+        <p-floatlabel class="md:col-span-2">
+        <input formControlName="companyName" pInputText id="companyName" class="w-full"/>
+        <label for="companyName">Ime kompanije</label>
+      </p-floatlabel>
+
+      <p-floatlabel>
+        <p-inputnumber styleClass="w-full" formControlName="phoneNumber" [useGrouping]="false" inputId="integeronly" class="w-full"></p-inputnumber>
+        <label for="integeronly">Broj mobitela</label>
+      </p-floatlabel>
+
+      <p-floatlabel>
+        <p-dropdown
+          [filter]="true"
+          filterBy="name"
+          showClear="true"
+          [options]="serviceCategories"
+          formControlName="category"
+          optionLabel="name"
+          inputId="category"
+          class="w-full"></p-dropdown>
+        <label for="category">Kategorija usluge</label>
+      </p-floatlabel>
+
+      <p-floatlabel class="w-full md:col-span-2">
+        <textarea
+          formControlName="description"
+          id="description"
+          rows="5"
+          pTextarea
+          class="w-full">
+        </textarea>
+        <label for="description">Opis usluge</label>
+      </p-floatlabel>
+    </div>
+
+    <div class="mt-6">
+      <app-map-input [formControl]="$any(createOrUpdateServiceProviderForm.get('geoLocation'))"></app-map-input>
+    </div>
+
+    <div class="flex items-center justify-between mt-6">
+      <p-button icon="pi pi-plus" [disabled]="createOrUpdateServiceProviderForm.invalid" type="submit" class="w-full" styleClass="w-full" label="Objavi uslugu" />
+    </div>
+  </form>
+</div>
