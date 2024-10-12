@@ -1,0 +1,88 @@
+<nav class="navbar">
+  <div class="navbar-container">
+    <a href="#" class="navbar-logo">MyLogo</a>
+    <div class="navbar-items">
+      <button class="navbar-toggle" id="navbar-toggle" (click)="toggleNavbar()">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
+
+      <ul class="navbar-menu">
+        <li class="navbar-item dropdown">
+          <a
+            href="#"
+            class="navbar-link dropdown-toggle"
+            (click)="toggleDropdown($event)"
+          >
+            Usluge
+            <span class="dropdown-icon pi pi-angle-down"></span>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a href="#trazim" class="dropdown-link">Tražim Uslugu</a></li>
+            <li><a href="#nudim" class="dropdown-link">Nudim Uslugu</a></li>
+          </ul>
+        </li>
+        <li class="navbar-item">
+          <a href="#about" class="navbar-link">O nama</a>
+        </li>
+        <li class="navbar-item">
+          <a href="#contact" class="navbar-link">Kontakt</a>
+        </li>
+        <li class="navbar-item">
+          <a href="#login" class="navbar-link">Prijava</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="full-screen-navbar" [class.active]="isNavbarOpen">
+    <button class="close-navbar" (click)="toggleNavbar()">✕</button>
+    <ul class="full-screen-navbar-menu">
+      <li class="full-screen-navbar-item dropdown">
+        <a
+          href="#"
+          class="full-screen-navbar-link dropdown-toggle"
+          (click)="toggleDropdown($event)"
+        >
+          Usluge
+          <span class="dropdown-icon pi pi-angle-down"></span>
+        </a>
+        <ul class="dropdown-menu">
+          <li>
+            <a href="#trazim" class="full-screen-dropdown-link"
+              >Tražim Uslugu</a
+            >
+          </li>
+          <li>
+            <a href="#nudim" class="full-screen-dropdown-link">Nudim Uslugu</a>
+          </li>
+        </ul>
+      </li>
+      <li class="full-screen-navbar-item">
+        <a
+          href="#about"
+          class="full-screen-navbar-link"
+          (click)="toggleNavbar()"
+          >O nama</a
+        >
+      </li>
+      <li class="full-screen-navbar-item">
+        <a
+          href="#contact"
+          class="full-screen-navbar-link"
+          (click)="toggleNavbar()"
+          >Kontakt</a
+        >
+      </li>
+      <li class="full-screen-navbar-item">
+        <a
+          href="#login"
+          class="full-screen-navbar-link"
+          (click)="toggleNavbar()"
+          >Prijava</a
+        >
+      </li>
+    </ul>
+  </div>
+</nav>
