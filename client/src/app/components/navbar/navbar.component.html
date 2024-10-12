@@ -1,88 +1,30 @@
-<nav class="navbar">
-  <div class="navbar-container">
-    <a href="/" class="navbar-logo">MyLogo</a>
-    <div class="navbar-items">
-      <button class="navbar-toggle" id="navbar-toggle" (click)="toggleNavbar()">
-        <span class="bar"></span>
-        <span class="bar"></span>
-        <span class="bar"></span>
-      </button>
-
-      <ul class="navbar-menu">
-        <li class="navbar-item dropdown">
-          <a
-            href="#"
-            class="navbar-link dropdown-toggle"
-            (click)="toggleDropdown($event)"
-          >
-            Usluge
-            <span class="dropdown-icon pi pi-angle-down"></span>
-          </a>
-          <ul class="dropdown-menu">
-            <li><a href="#trazim" class="dropdown-link">Tražim Uslugu</a></li>
-            <li><a href="#nudim" class="dropdown-link">Nudim Uslugu</a></li>
-          </ul>
-        </li>
-        <li class="navbar-item">
-          <a href="/about" class="navbar-link">O nama</a>
-        </li>
-        <li class="navbar-item">
-          <a href="/contact" class="navbar-link">Kontakt</a>
-        </li>
-        <li class="navbar-item">
-          <a href="/login" class="navbar-link">Prijava</a>
-        </li>
-      </ul>
+<header class="border-b h-[8vh] flex items-center">
+  <div class="container mx-auto grid grid-cols-3 text-[#333]">
+    <h1>Logo</h1>
+    <nav class="flex items-center gap-6">
+      <a href="#" class="hover:text-[#FF5722] transition-colors">Započni</a>
+      <a href="#" class="hover:text-[#FF5722] transition-colors">Pridruži nam se</a>
+      <div class="dropdown">
+        <div tabindex="0" role="button" class="hover:text-[#FF5722] transition-colors flex items-center gap-2">
+          <span>Usluge</span>
+          <i class="pi pi-chevron-down"></i>
+        </div>
+        <ul tabindex="0" class="dropdown-content flex flex-col gap-2 menu bg-base-100 rounded-lg border z-[1] w-[250px] p-2 shadow">
+          <li class="border rounded-md hover:rounded-md"><a class="flex flex-col items-start gap-2">
+            <h2>Tražim uslugu</h2>
+            <p>Treba mi profesionalna usluga za željeni problem</p>
+          </a></li>
+          <li class="border rounded-md hover:rounded-md"><a class="flex flex-col items-start gap-2">
+            <h2>Nudim uslugu</h2>
+            <p>Treba mi profesionalna usluga za željeni problem</p>
+          </a></li>
+        </ul>
+      </div>
+      <a href="#" class="hover:text-[#FF5722] transition-colors">O nama</a>
+      <a href="/chat" class="hover:text-[#FF5722] transition-colors">Poruke</a>
+    </nav>
+    <div class="flex justify-end">
+      <a href="/login" class="btn bg-[#FF5722] hover:bg-[#ff8a50] text-white px-8">Prijava</a>
     </div>
   </div>
-
-  <div class="full-screen-navbar" [class.active]="isNavbarOpen">
-    <button class="close-navbar" (click)="toggleNavbar()">✕</button>
-    <ul class="full-screen-navbar-menu">
-      <li class="full-screen-navbar-item dropdown">
-        <a
-          href="#"
-          class="full-screen-navbar-link dropdown-toggle"
-          (click)="toggleDropdown($event)"
-        >
-          Usluge
-          <span class="dropdown-icon pi pi-angle-down"></span>
-        </a>
-        <ul class="dropdown-menu">
-          <li>
-            <a href="#trazim" class="full-screen-dropdown-link"
-              >Tražim Uslugu</a
-            >
-          </li>
-          <li>
-            <a href="#nudim" class="full-screen-dropdown-link">Nudim Uslugu</a>
-          </li>
-        </ul>
-      </li>
-      <li class="full-screen-navbar-item">
-        <a
-          href="#about"
-          class="full-screen-navbar-link"
-          (click)="toggleNavbar()"
-          >O nama</a
-        >
-      </li>
-      <li class="full-screen-navbar-item">
-        <a
-          href="#contact"
-          class="full-screen-navbar-link"
-          (click)="toggleNavbar()"
-          >Kontakt</a
-        >
-      </li>
-      <li class="full-screen-navbar-item">
-        <a
-          href="#login"
-          class="full-screen-navbar-link"
-          (click)="toggleNavbar()"
-          >Prijava</a
-        >
-      </li>
-    </ul>
-  </div>
-</nav>
+</header>

@@ -7,6 +7,7 @@ import { filter } from 'rxjs';
 import { ToastModule } from "primeng/toast";
 import { ScreenSizeService } from './services/screen-size.service';
 import {NavbarComponent} from "./components/navbar/navbar.component";
+import {FooterComponent} from "./components/footer/footer.component";
 
 const CustomPreset = definePreset(Aura, {
   semantic: {
@@ -29,7 +30,7 @@ const CustomPreset = definePreset(Aura, {
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, ToastModule, NavbarComponent],
+  imports: [RouterOutlet, ToastModule, NavbarComponent, FooterComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
