@@ -1,7 +1,9 @@
-import {Component, inject} from '@angular/core';
+import {Component, effect, inject, OnInit} from '@angular/core';
 import {RouterLink} from "@angular/router";
 import {AuthenticationService} from "../../pages/authentication/authentication.service";
 import {JwtService} from "../../services/jwt.service";
+import {ProfileService} from "../../pages/profile/profile.service";
+import {User} from "../../model/user.model";
 
 @Component({
   selector: 'app-navbar',
@@ -13,19 +15,20 @@ import {JwtService} from "../../services/jwt.service";
   styleUrl: './navbar.component.scss',
 })
 export class NavbarComponent {
-  isNavbarOpen = false;
   jwtService: JwtService = inject(JwtService);
+  profileService: ProfileService = inject(ProfileService);
   authService: AuthenticationService = inject(AuthenticationService);
 
-  toggleNavbar() {
-    this.isNavbarOpen = !this.isNavbarOpen;
-  }
+  user: User | null = null;
 
-  toggleDropdown(event: Event) {
-    const target = event.currentTarget as HTMLElement;
-    const dropdown = target.closest('.dropdown');
-    dropdown?.classList.toggle('open');
-
-    event.preventDefault();
+  constructor() {
+    effect(() => {
+      if (!this.jwtService.token()) {
+        return;
+      }
+      if (this.jwtService.token()) {
+        this.profileService.getUser().subscribe(user => this.user = user);
+      }
+    })
   }
 }

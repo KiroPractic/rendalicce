@@ -15,6 +15,7 @@ import {ToastModule} from "primeng/toast";
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import {ButtonModule} from "primeng/button";
 import {ConfirmationService} from "primeng/api";
+import {JwtService} from "../../services/jwt.service";
 
 @Component({
   selector: 'app-profile',
@@ -35,6 +36,7 @@ export class ProfileComponent {
     CreateOrUpdateServiceProviderService
   );
   private confirmationService = inject(ConfirmationService);
+  protected jwtService = inject(JwtService);
   reviews: Review[] = this.reviewService.getRandomReviews();
   isEditModalOpen = false;
   isEmailModalOpen = false;

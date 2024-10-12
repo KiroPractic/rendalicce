@@ -4,7 +4,12 @@
       <button class="edit-btn" (click)="openEditModal()">
         <span class="pi pi-pencil"></span>
       </button>
-      <img  [src]="'data:image/jpeg;base64,' + (user.user.profilePhotoBase64)" alt="Profile Picture" class="profile-img" />
+      @if (user?.user.profilePhotoBase64) {
+        <img [src]="'data:image/png;base64,' + user.user.profilePhotoBase64" alt="Profile Picture" class="profile-img" />
+      } @else {
+        <div class="profile-img bg-gray-700">
+        </div>
+      }
       <h2>{{ user?.user.firstName }} {{ user?.user.lastName }}</h2>
       <p>
         <span class="pi pi-envelope"></span>
@@ -14,7 +19,9 @@
         <span class="pi pi-phone"></span>
         <a [href]="'tel:' + user?.user.phone">{{ user?.user.phoneNumber }}</a>
       </p>
-      <button class="message-btn" (click)="openChat(user?.user.id)">Poruka</button>
+      @if (jwtService.token().Id !== user?.user.id) {
+        <button class="message-btn" (click)="openChat(user?.user.id)">Poruka</button>
+      }
     </div>
 
     <div class="about-section section">

@@ -1,29 +1,30 @@
 <header class="border-b h-[8vh] flex items-center">
-  <div class="container mx-auto grid grid-cols-3 text-[#333]">
-    <h1>Logo</h1>
-    <nav class="flex items-center gap-6">
-      <a href="#" class="hover:text-[#FF5722] transition-colors">Započni</a>
-      <a href="#" class="hover:text-[#FF5722] transition-colors">Pridruži nam se</a>
+  <div class="container mx-auto grid grid-cols-custom text-[#333]">
+    <div class="flex items-center">
+      <h1>Logo</h1>
+    </div>
+    <nav class="flex justify-center items-center gap-6 flex-1">
+      <a href="#" class="hover:text-[#FF5722] transition-colors whitespace-nowrap">Započni</a>
+      <a href="#" class="hover:text-[#FF5722] transition-colors whitespace-nowrap">Pridruži nam se</a>
       <div class="dropdown">
         <div tabindex="0" role="button" class="hover:text-[#FF5722] transition-colors flex items-center gap-2">
           <span>Usluge</span>
           <i class="pi pi-chevron-down"></i>
         </div>
         <ul tabindex="0" class="dropdown-content flex flex-col gap-2 menu bg-base-100 rounded-lg border z-[1] w-[250px] p-2 shadow">
-          <li class="border rounded-md hover:rounded-md"><a class="flex flex-col items-start gap-2">
+          <li class="border rounded-md hover:rounded-md"><a href="/services" class="flex flex-col items-start gap-2">
             <h2>Tražim uslugu</h2>
             <p>Treba mi profesionalna usluga za željeni problem</p>
           </a></li>
-          <li class="border rounded-md hover:rounded-md"><a class="flex flex-col items-start gap-2">
+          <li class="border rounded-md hover:rounded-md"><a href="/service-provider/create" class="flex flex-col items-start gap-2">
             <h2>Nudim uslugu</h2>
             <p>Treba mi profesionalna usluga za željeni problem</p>
           </a></li>
         </ul>
       </div>
-      <a href="#" class="hover:text-[#FF5722] transition-colors">O nama</a>
-      <a href="/chat" class="hover:text-[#FF5722] transition-colors">Poruke</a>
-      @if(jwtService.token()) {
-        <a [routerLink]="'/profile/' + jwtService.token().Id" class="hover:text-[#FF5722] transition-colors">Profil</a>
+      <a href="#" class="hover:text-[#FF5722] transition-colors whitespace-nowrap">O nama</a>
+      @if (jwtService.token()) {
+        <a href="/chat" class="hover:text-[#FF5722] transition-colors whitespace-nowrap">Poruke</a>
       }
     </nav>
     @if (!jwtService.token()) {
@@ -32,7 +33,29 @@
       </div>
     } @else {
       <div class="flex justify-end">
-        <a (click)="authService.logout()" class="btn bg-[#FF5722] hover:bg-[#ff8a50] text-white px-8">Odjava</a>
+        <div class="dropdown dropdown-end">
+          <div tabindex="0" role="button" class="rounded-full">
+            @if (user?.profilePhotoBase64) {
+              <img [src]="'data:image/png;base64,' + user.profilePhotoBase64" alt="User profile image" CLASS="w-12 h-12 rounded-full">
+            } @else {
+              <div class="w-12 h-12 rounded-full bg-[#FF5722] hover:bg-[#ff8a50] transition-colors grid place-items-center">
+                <i class="pi pi-user text-white"></i>
+              </div>
+            }
+          </div>
+          <div tabindex="0" class="dropdown-content flex flex-col gap-2 menu bg-base-100 rounded-lg border z-[1] min-w-[200px] p-2 shadow">
+            <ul>
+              <li><a [href]="'/profile/' + jwtService.token().Id" class="">
+                <i class="pi pi-user"></i>
+                <span>{{user?.firstName}}  {{user?.lastName}}</span>
+              </a></li>
+              <li><a (click)="authService.logout()" class="">
+                <i class="pi pi-sign-out"></i>
+                <span>Odjava</span>
+              </a></li>
+            </ul>
+          </div>
+        </div>
       </div>
     }
   </div>

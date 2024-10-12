@@ -4,6 +4,6 @@ export interface User {
   lastName: string;
   email?: string;
   phone?: string;
-  image?: string;
+  profilePhotoBase64?: string;
   description?: string;
 }

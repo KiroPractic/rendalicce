@@ -1,6 +1,6 @@
 .chat-container {
   display: flex;
-  height: 100vh;
+  height: 90vh;
   background-color: #f9f9f9;
 }
 
@@ -76,6 +76,12 @@
   display: flex;
   align-items: flex-end;
   margin-bottom: 15px;
+
+  img {
+    &:hover {
+      cursor: pointer;
+    }
+  }
 }
 
 .message.sent {
@@ -119,6 +125,10 @@
   border-radius: 20px;
   border: 1px solid #ddd;
   margin-right: 10px;
+
+  &:focus {
+    outline: none;
+  }
 }
 
 .message-input button {
@@ -137,4 +147,30 @@
 .user-icon,
 .user-name {
   cursor: pointer;
+}
+
+.message-content {
+  max-width: 60%;
+  padding: 10px 15px;
+  border-radius: 20px;
+  background-color: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.message-date {
+  display: block;
+  font-size: 0.8rem;
+  color: #888;
+  margin-top: 5px;
+  text-align: right;
+}
+
+.message.sent .message-content {
+  background-color: #ff5722;
+  color: white;
+}
+
+.message.sent .message-date {
+  color: rgba(255, 255, 255, 0.8);
 }

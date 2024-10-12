@@ -9,6 +9,9 @@ import {ApiRoutes} from "../../enums/api-routes.enum";
 export class ProfileService {
   #httpClient: HttpClient = inject(HttpClient);
 s
+  getUser() {
+    return this.#httpClient.get<any>(`${environment.baseUrl}${ApiRoutes.apiRoute}${ApiRoutes.accountRoute}`);
+  }
   getAccountInformation(id: string) {
     return this.#httpClient.get(`${environment.baseUrl}${ApiRoutes.apiRoute}${ApiRoutes.usersRoute}/${id}`);
   }
