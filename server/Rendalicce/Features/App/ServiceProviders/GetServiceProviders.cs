@@ -24,7 +24,9 @@ public sealed class GetServiceProviders
 
         public override async Task HandleAsync(CancellationToken ct)
         {
-            await SendAsync(new GetServiceProvidersResult(await _dbContext.ServiceProviders.ToListAsync(ct)), cancellation: ct);
+            await SendAsync(new GetServiceProvidersResult(await _dbContext.ServiceProviders
+                .Include(sp => sp.Owner)
+                .ToListAsync(ct)), cancellation: ct);
         }
     }
 }
