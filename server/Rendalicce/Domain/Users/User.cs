@@ -10,6 +10,7 @@ public sealed class User : Entity
     public string FirstName { get; private set; } = null!;
     public string LastName { get; private set; } = null!;
     public string Email { get; private set; } = null!;
+    public string? ProfilePhotoBase64 { get; private set; }
     private string PasswordHash { get; set; } = null!;
 
     public static User Initialize(string firstName, string lastName, string email, string password)
@@ -23,11 +24,12 @@ public sealed class User : Entity
         };
     }
 
-    public void Update(string firstName, string lastName, string email)
+    public void Update(string firstName, string lastName, string email, string? profilePhotoBase64)
     {
         FirstName = firstName;
         LastName = lastName;
         Email = email;
+        ProfilePhotoBase64 = profilePhotoBase64;
     }
     
     public void SetPassword(string password) => PasswordHash = HashPassword(password);
