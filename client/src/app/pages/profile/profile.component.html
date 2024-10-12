@@ -37,7 +37,7 @@
         @for (service of user?.serviceProviders; track $index) {
           <div class="skill-tag">
             <img
-              [src]="service?.image"
+              [src]="'data:image/png;base64,' + service?.headerPhotoBase64"
               alt="{{ service.name }}"
               class="skill-img"
               (click)="openService(service.id)"
@@ -108,21 +108,22 @@
 
     <div class="reviews-section section">
       <h4>Recenzije</h4>
-      @for(review of reviews; track $index) {
-      <div class="review">
-        <div class="review-info">
-          <h5>{{ review.reviewerName }}</h5>
-          <p>{{ review.comment }}</p>
-          <div class="rating">
-            @for(star of getStars(review.rating); track $index) {
-            <span
-              [ngClass]="{ filled: star === 'filled', empty: star === 'empty' }"
-              >&#9733;</span
-            >
-            }
-          </div>
+      @for (serviceProvider of user?.serviceProviders; track serviceProvider.id) {
+        <div class="service-provider">
+          @for (review of serviceProvider.reviews; track review.id) {
+            <div class="review">
+              <div class="review-info">
+                <h6>{{ review.reviewer.firstName }} {{ review.reviewer.lastName }}</h6>
+                <p>{{ review.content }}</p>
+                <div class="rating">
+                  @for (star of getStars(review.rating); track $index) {
+                    <span [ngClass]="{ filled: star === 'filled', empty: star === 'empty' }">&#9733;</span>
+                  }
+                </div>
+              </div>
+            </div>
+          }
         </div>
-      </div>
       }
     </div>
   </div>

@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, effect, inject} from '@angular/core';
 import {User} from '../../model/user.model';
 import {Review} from '../../model/review.model';
 import {ReviewsService} from '../../services/reviews.service';
@@ -76,16 +76,8 @@ export class ProfileComponent {
     return totalRatings / this.reviews.length;
   }
 
-  editProfile() {
-    console.log('Editing profile...');
-  }
-
   openService(serviceId) {
     this.routerService.navigate(['/service', serviceId]);
-  }
-
-  editService(serviceId) {
-    this.routerService.navigate(['/service-provider/edit', serviceId]);
   }
 
   deleteService(serviceId) {
