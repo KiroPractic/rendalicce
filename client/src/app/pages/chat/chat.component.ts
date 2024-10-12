@@ -62,8 +62,8 @@ export class ChatComponent {
 
   loadMessagesForUser(userId: string) {
     this.messages = [
-      { senderId: 1, text: 'Hello!' },
-      { senderId: userId, text: 'Hi there!' },
+      { senderId: 1, text: 'Kupujem kauč', date: new Date() },
+      { senderId: userId, text: 'Dobro', date: new Date() },
     ];
   }
 

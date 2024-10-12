@@ -5,33 +5,6 @@
   margin: 0 auto;
 }
 
-.filter-section {
-  width: 25%;
-  background-color: #f9f9f9;
-  border-right: 1px solid #ddd;
-  padding: 20px;
-}
-
-.filter-section h3,
-.filter-section h4 {
-  margin-bottom: 15px;
-}
-
-.filter-group ul {
-  list-style: none;
-  padding-left: 0;
-}
-
-.filter-group li {
-  margin-bottom: 10px;
-}
-
-.sort-group select {
-  width: 100%;
-  padding: 8px;
-  margin-top: 10px;
-}
-
 .services-list {
   flex: 1;
   padding: 20px;
@@ -67,4 +40,74 @@
   height: 100px;
   border-radius: 10px;
   object-fit: cover;
+}
+
+.filter-section {
+  width: 25%;
+  background-color: #f5f5f5;
+  border-right: 1px solid #ddd;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+
+  h3 {
+    text-align: center;
+  }
+}
+
+.filter-section h3,
+.filter-section h4 {
+  color: #ff5722;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.filter-group ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.filter-group li {
+  margin-bottom: 10px;
+}
+
+.filter-group input[type="checkbox"] {
+  margin-right: 10px;
+  accent-color: #ff5722;
+}
+
+.filter-group label {
+  font-size: 1rem;
+  color: #333;
+  cursor: pointer;
+}
+
+.sort-group select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border: 2px solid #ff5722;
+  border-radius: 8px;
+  background-color: #fff;
+  color: #333;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.sort-group select:focus {
+  outline: none;
+  border-color: #ff5722;
+  box-shadow: 0 0 5px rgba(255, 87, 34, 0.3);
+}
+
+.filter-section ul li label:hover {
+  color: #ff5722;
+}
+
+.filter-section ul li input[type="checkbox"]:hover {
+  cursor: pointer;
+}
+
+.filter-section ul li label {
+  transition: color 0.3s ease;
 }
