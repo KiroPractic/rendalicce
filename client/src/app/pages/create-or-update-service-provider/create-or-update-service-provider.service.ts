@@ -25,6 +25,10 @@ export class CreateOrUpdateServiceProviderService {
     return this.#httpClient.delete(`${environment.baseUrl}${ApiRoutes.apiRoute}${ApiRoutes.serviceProvidersRoute}/${id}`);
   }
 
+  headerPhotoProposition(payload: any) {
+    return this.#httpClient.post(`${environment.baseUrl}${ApiRoutes.apiRoute}${ApiRoutes.serviceProvidersRoute}${ApiRoutes.headerPhotoPropositionRoute}`, payload);
+  }
+
   get() {
     return this.#httpClient.get(`${environment.baseUrl}${ApiRoutes.apiRoute}${ApiRoutes.serviceProvidersRoute}`);
   }

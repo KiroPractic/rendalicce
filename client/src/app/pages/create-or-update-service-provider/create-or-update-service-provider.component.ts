@@ -184,6 +184,23 @@ export class CreateOrUpdateServiceProviderComponent implements OnInit {
     }
   }
 
+  requestHeaderPhotoProposition() {
+    const payload = {
+      name: this.createOrUpdateServiceProviderForm.get('name').value,
+      description: this.createOrUpdateServiceProviderForm.get('description').value,
+      category: this.createOrUpdateServiceProviderForm.get('category').value.value,
+      tags: this.createOrUpdateServiceProviderForm.get('tags').value.join(','),
+    };
+
+    this.service.headerPhotoProposition(payload).subscribe((response: any) => {
+      if (response.headerPhotoProposition) {
+        this.imagePreview = `data:image/jpeg;base64,${response.headerPhotoProposition}`;
+      } else {
+        this.imagePreview = null;
+      }
+    });
+  }
+
   capitalizeFirstLetter(string: string): string {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
