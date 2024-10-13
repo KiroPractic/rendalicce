@@ -21,7 +21,7 @@ public sealed class SendMessage
 
         public override void Configure()
         {
-            Post("chats/{id}/message");
+            Post("chats/{id}/messages");
         }
 
         public override async Task HandleAsync(SendMessageRequest req, CancellationToken ct)
