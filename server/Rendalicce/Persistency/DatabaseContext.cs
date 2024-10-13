@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Rendalicce.Domain.ApplicationSettings;
+using Rendalicce.Domain.Chats;
 using Rendalicce.Domain.Reviews;
 using Rendalicce.Domain.ServiceSeekers;
 using Rendalicce.Domain.Users;
@@ -15,6 +16,8 @@ public sealed class DatabaseContext : DbContext
     
     public required DbSet<ApplicationSettings> ApplicationSettings { get; init; }
     
+    public required DbSet<Chat> Chats { get; init; }
+    public required DbSet<ChatMessage> ChatMessages { get; init; }
     public required DbSet<Review> Reviews { get; init; }
     public required DbSet<ServiceProvider> ServiceProviders { get; init; }
     public required DbSet<ServiceSeeker> ServiceSeekers { get; init; }

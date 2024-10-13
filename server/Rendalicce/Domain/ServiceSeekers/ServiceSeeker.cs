@@ -17,7 +17,7 @@ public sealed class ServiceSeeker : Entity
     public User Owner { get; init; } = null!;
     
     
-    public static ServiceSeeker Initialize(string name, string description, string category, string tags, string geolocation, string email, string phoneNumber, string companyName, User owner)
+    public static ServiceSeeker Initialize(string name, string description, string category, string tags, string geolocation, string email, string? phoneNumber, string? companyName, User owner)
     {
         return new ServiceSeeker
         {

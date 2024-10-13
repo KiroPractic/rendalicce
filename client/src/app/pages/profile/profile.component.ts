@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, effect, inject} from '@angular/core';
 import {User} from '../../model/user.model';
 import {Review} from '../../model/review.model';
 import {ReviewsService} from '../../services/reviews.service';
@@ -16,7 +16,6 @@ import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import {ButtonModule} from "primeng/button";
 import {ConfirmationService} from "primeng/api";
 import {JwtService} from "../../services/jwt.service";
-
 
 @Component({
   selector: 'app-profile',
@@ -77,16 +76,8 @@ export class ProfileComponent {
     return totalRatings / this.reviews.length;
   }
 
-  editProfile() {
-    console.log('Editing profile...');
-  }
-
   openService(serviceId) {
     this.routerService.navigate(['/service', serviceId]);
-  }
-
-  editService(serviceId) {
-    this.routerService.navigate(['/service-provider/edit', serviceId]);
   }
 
   deleteService(serviceId) {
@@ -120,5 +111,16 @@ export class ProfileComponent {
         this.deleteService(serviceId);
       }
     });
+  }
+
+  updateUser(event: any) {
+    this.service.updateAccountInformation(event).subscribe((user: User) => {
+      this.service.getAccountInformation(this.user.user.id).subscribe(
+        (user: User) => {
+          this.user = user;
+        }
+      );
+    });
+    this.closeEditModal();
   }
 }
