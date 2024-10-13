@@ -44,7 +44,7 @@
       </div>
 
       @if (createOrUpdateServiceProviderForm.controls['paymentType']?.value?.value === 'Plaćanje po satu' || createOrUpdateServiceProviderForm.controls['paymentType']?.value?.value === 'Određena cijena') {
-        <div class="flex flex-column gap-2">
+        <div class="space-y-2">
           <label for="price">Cijena</label>
           <p-inputNumber mode="currency" currency="EUR" locale="de-DE" styleClass="w-full" formControlName="price"
                          [useGrouping]="false" id="price" class="w-full"></p-inputNumber>
