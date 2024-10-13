@@ -12,5 +12,8 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property<string>("PasswordHash")
             .HasColumnName("PasswordHash")
             .IsRequired();
+        builder.Property<int>("CreditsBalance")
+            .HasColumnName("CreditsBalance")
+            .IsRequired();
     }
 }

@@ -12,7 +12,8 @@ public sealed class GetAccountInformation
         string Email,
         string? Description,
         string? PhoneNumber,
-        string? ProfilePhotoBase64);
+        string? ProfilePhotoBase64,
+        int CreditsBalance);
 
     public sealed class GetAccountInformationEndpoint : EndpointWithoutRequest<GetAccountInformationResult>
     {
@@ -31,7 +32,8 @@ public sealed class GetAccountInformation
                     Email: user.Email,
                     Description: user.Description,
                     PhoneNumber: user.PhoneNumber,
-                    user.ProfilePhotoBase64), cancellation:
+                    user.ProfilePhotoBase64,
+                    user.GetCreditsValance()), cancellation:
                 ct);
         }
     }

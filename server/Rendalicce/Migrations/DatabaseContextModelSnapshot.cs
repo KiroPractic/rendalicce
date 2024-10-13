@@ -276,6 +276,10 @@ namespace Rendalicce.Migrations
                     b.Property<DateTimeOffset>("CreatedOn")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<int>("CreditsBalance")
+                        .HasColumnType("integer")
+                        .HasColumnName("CreditsBalance");
+
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
