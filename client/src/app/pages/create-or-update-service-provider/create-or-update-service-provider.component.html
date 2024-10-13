@@ -1,27 +1,28 @@
-<div class="max-w-4xl mx-auto p-6">
+<div class="container max-w-4xl mx-auto p-6 py-20">
   <form [formGroup]="createOrUpdateServiceProviderForm" (ngSubmit)="createOrUpdate()">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <p-floatlabel>
-        <input pInputText formControlName="name" id="firstName" class="w-full"/>
+      <div class="space-y-2">
         <label for="firstName">Naziv</label>
-      </p-floatlabel>
+        <input pInputText formControlName="name" id="firstName" class="w-full"/>
+      </div>
 
-      <p-floatlabel>
-        <input formControlName="email" pInputText id="email" class="w-full"/>
+      <div class="space-y-2">
         <label for="email">Email</label>
-      </p-floatlabel>
+        <input formControlName="email" pInputText id="email" class="w-full"/>
+      </div>
 
-        <p-floatlabel class="md:col-span-2">
+        <div class="space-y-2">
+          <label for="companyName">Ime kompanije</label>
         <input formControlName="companyName" pInputText id="companyName" class="w-full"/>
-        <label for="companyName">Ime kompanije</label>
-      </p-floatlabel>
+      </div>
 
-      <p-floatlabel>
-        <p-inputnumber styleClass="w-full" formControlName="phoneNumber" [useGrouping]="false" inputId="integeronly" class="w-full"></p-inputnumber>
+      <div class="space-y-2 translate-y-2">
         <label for="integeronly">Broj mobitela</label>
-      </p-floatlabel>
+        <p-inputNumber styleClass="w-full" formControlName="phoneNumber" [useGrouping]="false" id="integeronly" class="w-full mt-2"></p-inputNumber>
+      </div>
 
-      <p-floatlabel>
+      <div class="space-y-2">
+        <label for="category">Kategorija usluge</label>
         <p-select
           [filter]="true"
           filterBy="name"
@@ -29,30 +30,29 @@
           [options]="serviceCategories"
           formControlName="category"
           optionLabel="name"
-          inputId="category"
+          id="category"
           class="w-full"></p-select>
-        <label for="category">Kategorija usluge</label>
-      </p-floatlabel>
-      <p-floatlabel>
+      </div>
+      <div class="space-y-2">
+        <label for="paymentType">Vrsta plaćanja</label>
         <p-select
           [options]="paymentTypes"
           formControlName="paymentType"
           optionLabel="name"
-          inputId="paymentType"
-          class="w-full"></
-        p-select>
-        <label for="paymentType">Vrsta plaćanja</label>
-      </p-floatlabel>
+          id="paymentType"
+          class="w-full"></p-select>
+      </div>
 
       @if (createOrUpdateServiceProviderForm.controls['paymentType']?.value?.value === 'Plaćanje po satu' || createOrUpdateServiceProviderForm.controls['paymentType']?.value?.value === 'Određena cijena') {
-        <p-floatlabel>
-          <p-inputnumber mode="currency" currency="EUR" locale="de-DE" styleClass="w-full" formControlName="price"
-                         [useGrouping]="false" inputId="price" class="w-full"></p-inputnumber>
+        <div class="space-y-2">
           <label for="price">Cijena</label>
-        </p-floatlabel>
+          <p-inputNumber mode="currency" currency="EUR" locale="de-DE" styleClass="w-full" formControlName="price"
+                         [useGrouping]="false" id="price" class="w-full"></p-inputNumber>
+        </div>
       }
 
-      <p-floatlabel class="w-full md:col-span-2">
+      <div class="space-y-2 col-span-2">
+        <label for="description">Opis usluge</label>
         <textarea
           formControlName="description"
           id="description"
@@ -60,19 +60,19 @@
           pTextarea
           class="w-full">
         </textarea>
-        <label for="description">Opis usluge</label>
-      </p-floatlabel>
+      </div>
 
       <div class="md:col-span-2">
         <label for="tags">Oznake</label>
         <app-tag-input
+          id="tags"
           [tags]="createOrUpdateServiceProviderForm.get('tags')?.value"
           (tagsChange)="createOrUpdateServiceProviderForm.get('tags')?.setValue($event)">
         </app-tag-input>
       </div>
 
       <div class="w-full md:col-span-2">
-        <label for="image">Učitaj sliku</label>
+        <label>Učitaj sliku</label>
         @if (imagePreview) {
           <div class="relative mt-4">
             <img [src]="imagePreview" alt="Uploaded Image"
@@ -96,8 +96,8 @@
 
           <div class="mt-4 text-center">
             @if (!isLoading) {
-              <p class="text-gray-500">Ili generirajte sliku pomoću umjetne inteligencije</p>
-              <button type="button" class="p-2 bg-blue-500 text-white rounded-md mt-2" (click)="requestHeaderPhotoProposition()">
+              <p class="text-gray-500 mb-4">Ili generirajte sliku pomoću umjetne inteligencije</p>
+              <button type="button" class="btn bg-[#FF5722] hover:bg-[#ff8a50] text-white" (click)="requestHeaderPhotoProposition()">
                 Generiraj sliku
               </button>
             }
@@ -114,7 +114,10 @@
       </div>
 
     <div class="flex items-center justify-between mt-6">
-      <p-button [icon]="state === 'create' ? 'pi pi-plus': 'pi pi-pencil'" [disabled]="createOrUpdateServiceProviderForm.invalid" type="submit" class="w-full" styleClass="w-full" [label]="state === 'create' ? 'Objavi uslugu': 'Ažuriraj objavu'" />
+      <button [disabled]="createOrUpdateServiceProviderForm.invalid" type="submit" class="w-full flex items-center gap-2 justify-center bg-[#FF5722] hover:bg-[#ff8a50] rounded-md py-2 disabled:bg-opacity-40 disabled:hover:bg-opacity-50 disabled:cursor-not-allowed text-white">
+        <i class="pi" [ngClass]="state === 'create' ? 'pi-plus' : 'pi-pencil'"></i>
+        <span>{{ state === 'create' ? 'Objavi uslugu': 'Ažuriraj objavu' }}</span>
+      </button>
     </div>
   </form>
 </div>

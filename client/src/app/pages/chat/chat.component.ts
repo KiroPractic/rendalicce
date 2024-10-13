@@ -41,6 +41,10 @@ export class ChatComponent implements OnInit, OnDestroy {
   isInitialLoad = true;
   @ViewChild('messageList') messageList!: ElementRef | null;
   private shouldScrollToBottom = false;
+  isRequestingCoins = false;
+  requestedCoins = 0;
+  coinRequestDescription = '';
+  serviceCompleted = false;
 
   async ngOnInit() {
     this.messages = [];
@@ -56,6 +60,42 @@ export class ChatComponent implements OnInit, OnDestroy {
       } catch (err) {
         console.error('Scroll error', err);
       }
+    }
+  }
+
+  toggleCoinRequest() {
+    this.isRequestingCoins = !this.isRequestingCoins;
+  }
+
+  sendCoinRequest() {
+    if (this.requestedCoins > 0 && this.coinRequestDescription) {
+      const coinMessage = `${this.user?.firstName} je zatražio ${this.requestedCoins} novčić(a): ${this.coinRequestDescription}`;
+      const serviceTransaction = {
+        participants: [
+          {
+            credits: this.requestedCoins,
+            serviceProviderId: null,
+            userId: this.selectedUser.id,
+          },
+          {
+            credits: null,
+            serviceProviderId: null,
+            userId: this.user.id,
+          },
+        ],
+      };
+
+      this.sendCoinMessageRequest(
+        this.selectedUser.chatId,
+        coinMessage,
+        serviceTransaction
+      );
+
+      this.requestedCoins = 0;
+      this.coinRequestDescription = '';
+      this.isRequestingCoins = false;
+    } else {
+      console.error('Invalid coin request');
     }
   }
 
@@ -175,6 +215,13 @@ export class ChatComponent implements OnInit, OnDestroy {
           (a, b) =>
             new Date(a.createdOn).getTime() - new Date(b.createdOn).getTime()
         );
+        this.messages.forEach((message) => {
+          if(message.serviceTransaction && message.serviceTransaction.completed)  {
+            this.serviceCompleted = true;
+            message.serviceCompleted = true;
+          }
+        });
+        console.log(this.messages);
         this.shouldScrollToBottom = true;
       },
       error: (error) => {
@@ -197,11 +244,35 @@ export class ChatComponent implements OnInit, OnDestroy {
             new Date(a.createdOn).getTime() - new Date(b.createdOn).getTime()
         );
         this.shouldScrollToBottom = true;
+        this.isLoading = false;
       },
       error: (error) => {
         console.error(error);
       },
     });
+  }
+
+  sendCoinMessageRequest(
+    chatId: string,
+    message: string,
+    serviceTransaction: any
+  ) {
+    console.log(chatId);
+    this.isLoading = true;
+    this.chatService
+      .sendCoinMessageRequest(message, chatId, serviceTransaction)
+      .subscribe({
+        next: (data: any) => {
+          this.newMessage = '';
+          this.getMessages(chatId);
+          this.shouldScrollToBottom = true;
+          console.log(data);
+          this.isLoading = false;
+        },
+        error: (error) => {
+          console.error(error);
+        },
+      });
   }
 
   createChat(userId: string) {

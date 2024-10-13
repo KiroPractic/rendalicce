@@ -52,7 +52,7 @@ export class ServiceSeekersListingComponent {
     this.route.queryParams.subscribe((params) => {
       this.searchText = params['searchText'] || '';
       this.service.getAll().subscribe((services: any) => {
-        this.services = services.serviceProviders?.map((service) => {
+        this.services = services.serviceSeekers?.map((service) => {
           service.searchableText = (`
           ${service.name}
           ${service.description}

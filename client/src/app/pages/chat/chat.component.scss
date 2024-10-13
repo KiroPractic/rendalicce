@@ -186,3 +186,25 @@
 .message.sent .message-date {
   color: rgba(255, 255, 255, 0.8);
 }
+
+.coins-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 1rem;
+}
+
+.coins-icon {
+  display: flex;
+  align-items: center;
+}
+
+.service-completed-message {
+  background-color: #d4edda;
+  border-color: #c3e6cb;
+  color: #155724;
+  padding: 1rem;
+  border-radius: 0.25rem;
+  margin-top: 1rem;
+}

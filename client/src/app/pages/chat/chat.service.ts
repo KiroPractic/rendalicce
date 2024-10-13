@@ -39,4 +39,11 @@ export class ChatService {
       { content: message }
     );
   }
+
+  sendCoinMessageRequest(message: string, chatId: string, serviceTransaction: any) {
+    return this.#httpClient.post(
+      `${environment.baseUrl}${ApiRoutes.apiRoute}${ApiRoutes.chatsRoute}/${chatId}/messages`,
+      { content: message, serviceTransaction }
+    );
+  }
 }

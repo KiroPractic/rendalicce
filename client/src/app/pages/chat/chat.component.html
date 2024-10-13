@@ -95,13 +95,42 @@
         </div>
         <div
           class="chat-bubble"
-          [ngClass]="message.senderId !== user.id ? 'bg-white text-[#333]' : ''"
+          [ngClass]="{
+            'bg-white text-[#333]':
+              message.senderId !== user.id && !message.serviceCompleted,
+            'bg-green-500 border-green-400 text-green-700':
+              message.serviceCompleted
+          }"
         >
           {{ message.content }}
         </div>
       </div>
       }
     </div>
+
+    @if(isRequestingCoins) {
+    <div class="flex items-center coins-wrapper">
+      <input
+        type="number"
+        class="rounded-md w-1/4 p-2 border border-gray-300"
+        [(ngModel)]="requestedCoins"
+        placeholder="Broj novčića"
+        min="1"
+      />
+      <input
+        type="text"
+        class="rounded-md w-2/4 ml-2 p-2 border border-gray-300"
+        [(ngModel)]="coinRequestDescription"
+        placeholder="Opis zahtjeva"
+      />
+      <button
+        class="bg-[#ff5722] hover:bg-[#ff8a50] transition-colors text-white py-2 px-4 rounded-md ml-2"
+        (click)="sendCoinRequest()"
+      >
+        Zatraži novčiće
+      </button>
+    </div>
+    }
 
     <div class="message-input">
       <input
@@ -110,6 +139,12 @@
         [(ngModel)]="newMessage"
         placeholder="Upišite poruku..."
       />
+
+      <i
+        class="pi pi-dollar cursor-pointer text-xl mx-3 text-[#FF5722] coins-icon"
+        (click)="toggleCoinRequest()"
+      ></i>
+
       <button
         class="bg-[#ff5722] hover:bg-[#ff8a50] transition-colors cursor-pointer disabled:cursor-not-allowed text-white py-3 px-6 rounded-md disabled:bg-opacity-30 disabled:hover:bg-opacity-35"
         (click)="sendMessage(selectedUser.chatId, newMessage)"

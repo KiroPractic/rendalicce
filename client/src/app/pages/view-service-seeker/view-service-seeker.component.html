@@ -36,28 +36,4 @@
       </span>
     </ng-container>
   </div>
-
-  <!-- Owner Info -->
-  <div class="mt-6 border-t pt-4">
-    <h2 class="text-xl font-bold">Informacije o vlasniku oglasa</h2>
-    <div class="flex items-center mt-2">
-      <div class="w-12 h-12 bg-gray-200 rounded-full overflow-hidden">
-        <!-- Owner Photo -->
-        <img
-          *ngIf="serviceProvider?.owner.profilePhotoBase64"
-          [src]="'data:image/png;base64,' + serviceProvider?.owner.profilePhotoBase64"
-          alt="Owner Photo"
-          class="w-full h-full object-cover"
-        />
-      </div>
-      <div class="ml-4">
-        <p class="font-semibold">
-          {{ serviceProvider?.owner.firstName }} {{ serviceProvider?.owner.lastName }}
-        </p>
-        <p class="text-gray-500">{{ serviceProvider?.owner.email }}</p>
-        <p class="text-gray-500">{{ serviceProvider?.owner.phoneNumber }}</p>
-      </div>
-    </div>
-    <p class="mt-2">{{ serviceProvider?.owner.description }}</p>
-  </div>
 </div>

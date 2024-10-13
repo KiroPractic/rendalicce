@@ -12,4 +12,8 @@ export class ViewServiceProviderService {
   getById(id: any) {
     return this.httpClient.get(`${environment.baseUrl}${ApiRoutes.apiRoute}/service-providers/${id}`);
   }
+
+  postReview(id: any, formData: FormData) {
+    return this.httpClient.post(`${environment.baseUrl}${ApiRoutes.apiRoute}/service-providers/${id}/reviews`, formData);
+  }
 }

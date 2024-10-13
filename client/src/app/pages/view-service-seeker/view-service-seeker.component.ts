@@ -28,7 +28,7 @@ export class ViewServiceSeekerComponent {
     this.activatedRoute.params.subscribe((params) => {
       this.isLoading = true;
       this.service.getById(params['id']).subscribe((service: any) => {
-        this.serviceProvider = service.serviceProvider;
+        this.serviceProvider = service.serviceSeeker;
         this.isLoading = false;
       }, () => {
         this.isLoading = false;
