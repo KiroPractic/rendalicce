@@ -1,105 +1,101 @@
-<div class="services-container">
+<div class="container py-20 mx-auto flex gap-6">
   <!-- Left Side: Filters -->
-  <div class="filter-section">
-    <h3>Filtriraj Usluge</h3>
-
-    <!-- Filter by Kategorija usluge -->
-    <div class="filter-group">
-      <h4>Kategorija Usluge</h4>
-      <ul>
-        <li>
-          <input
-            type="checkbox"
-            id="cat1"
-            (change)="filterByCategory('category1')"
-          />
-          <label for="cat1">Kategorija 1</label>
-        </li>
-        <li>
-          <input
-            type="checkbox"
-            id="cat2"
-            (change)="filterByCategory('category2')"
-          />
-          <label for="cat2">Kategorija 2</label>
-        </li>
-      </ul>
+  <div class="w-1/4 space-y-6">
+    <h3 class="font-bold text-2xl">Filtri</h3>
+    <div>
+      <h4>Kategorija usluge</h4>
+      <p-dropdown
+        [options]="categories"
+        (onChange)="filterByCategory($event.value)"
+        showClear
+        placeholder="Sve kategorije"
+        class="w-[200px]" />
     </div>
-
-    <!-- Filter by Tip usluge -->
-    <div class="filter-group">
-      <h4>Tip Usluge</h4>
-      <ul>
-        <li>
-          <input
-            type="checkbox"
-            id="tip1"
-            (change)="filterByServiceType('type1')"
-          />
-          <label for="tip1">Tip 1</label>
-        </li>
-        <li>
-          <input
-            type="checkbox"
-            id="tip2"
-            (change)="filterByServiceType('type2')"
-          />
-          <label for="tip2">Tip 2</label>
-        </li>
-      </ul>
+    <div>
+      <h4>Tip usluge</h4>
+      <p-dropdown
+        [options]="serviceTypes"
+        (onChange)="filterByServiceType($event.value)"
+        showClear
+        placeholder="Svi tipovi usluge"
+        class="w-[200px]" />
     </div>
-
-    <!-- Filter by Vrsta plaćanja -->
-    <div class="filter-group">
-      <h4>Vrsta Plaćanja</h4>
-      <ul>
-        <li>
-          <input
-            type="checkbox"
-            id="payment1"
-            (change)="filterByPaymentType('paymentType1')"
-          />
-          <label for="payment1">Gotovina</label>
-        </li>
-        <li>
-          <input
-            type="checkbox"
-            id="payment2"
-            (change)="filterByPaymentType('paymentType2')"
-          />
-          <label for="payment2">Kartica</label>
-        </li>
-      </ul>
+    <div>
+      <h4>Vrsta plaćanja</h4>
+      <p-dropdown
+        [options]="paymentTypes"
+        (onChange)="filterByPaymentType($event.value.value)"
+        showClear
+        placeholder="Sve vrste plaćanja"
+        optionLabel="label"
+        class="w-[200px]" />
     </div>
-
-    <!-- Sort by Price -->
-    <div class="sort-group">
-      <h4>Sortiraj po Cijeni</h4>
-      <select (change)="sortByPrice($event)">
-        <option value="asc">Rastući</option>
-        <option value="desc">Padajući</option>
-      </select>
+    <div>
+      <h4>Sortiraj po cijeni</h4>
+      <p-dropdown
+        [options]="sortOptions"
+        (onChange)="sortByPrice($event.value.value)"
+        [(ngModel)]="selectedSortOrder"
+        optionLabel="label"
+        class="w-[200px]" />
     </div>
   </div>
 
   <!-- Right Side: Services Listing -->
-  <div class="services-list">
-    <h3>Popis Usluga</h3>
-    @for(service of filteredServices; track $index) {
-    <div class="service-item" (click)="openServiceModal(service)">
-      <div class="service-info">
-        <img
-          [src]="service.image"
-          alt="{{ service.name }}"
-          class="service-img"
-        />
-        <div>
-          <h4>{{ service.name }}</h4>
-          <p>{{ service.description }}</p>
-          <p>Cijena: {{ service.price | currency }}</p>
-        </div>
-      </div>
+  <div class="w-3/4 space-y-6">
+    <h3 class="text-4xl font-bold">Popis usluga</h3>
+    <div class="flex items-center gap-4">
+      <input type="text" class="w-full" pInputText placeholder="Pretraži usluge" />
+      <button class="flex h-[42px] rounded-md bg-[#FF5722] hover:bg-[#ff8a50] transition-colors text-white px-8 items-center gap-2">
+        <i class="pi pi-search"></i>
+        <span>Pretraži</span>
+      </button>
     </div>
+    @for(service of filteredServices; track $index) {
+      <div class="border p-6 rounded-md space-y-12">
+        <div class="flex justify-between">
+          <div>
+            <h4 class="text-2xl font-bold">{{ service.name }}</h4>
+            <div class="rounded-full p-1 bg-[#03a9f4] text-xs text-white">
+              <span class="grid place-items-center">{{ service.category }}</span>
+            </div>
+          </div>
+          <p class="font-bold text-xl">{{ service.price }} €</p>
+        </div>
+        <div class="grid grid-cols-3 gap-6 py-6">
+          <img
+            [src]="service.image"
+            alt="Slika za {{ service.name }} uslugu"
+            class="w-full h-auto rounded-md"
+          />
+          <div class="flex flex-col justify-between h-[200px]">
+            <p>{{ service.description }}</p>
+            <div class="flex items-center gap-1 flex-wrap">
+              @for (tag of service.tags; track tag) {
+                <div class="rounded-full py-1 px-2 bg-[#ebebeb] text-xs font-bold">
+                  <span class="grid place-items-center">{{ tag }}</span>
+                </div>
+              }
+            </div>
+            <div class="flex items-center gap-2">
+              <i class="pi pi-map-marker"></i>
+              <span>{{ service.city }}</span>
+            </div>
+            <div class="flex items-center gap-3 flex-wrap">
+              <div class="rounded-full py-1 px-3 bg-[#ebebeb]">
+                <span class="grid place-items-center">{{ service.payment }}</span>
+              </div>
+            </div>
+          </div>
+          <div class="w-full h-auto rounded-md overflow-hidden">
+            <app-map-input></app-map-input>
+          </div>
+        </div>
+        <button class="flex justify-center w-full h-[42px] rounded-md bg-[#FF5722] hover:bg-[#ff8a50] transition-colors text-white px-8 items-center gap-2">
+          <i class="pi pi-eye"></i>
+          <span>Detalji</span>
+        </button>
+      </div>
     }
   </div>
 </div>
