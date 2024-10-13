@@ -1,18 +1,21 @@
-import { Component, inject } from '@angular/core';
-import { User } from '../../model/user.model';
-import { CommonModule } from '@angular/common';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { FormsModule } from '@angular/forms';
-import { EditProfileModalComponent } from '../../components/edit-profile-modal/edit-profile-modal.component';
-import { CreateOrUpdateServiceProviderService } from '../create-or-update-service-provider/create-or-update-service-provider.service';
-import { ProfileService } from "./profile.service";
-import { GlobalMessageService } from "../../services/global-message.service";
-import { ToastModule } from "primeng/toast";
-import { ConfirmPopupModule } from 'primeng/confirmpopup';
-import { ButtonModule } from "primeng/button";
-import { ConfirmationService } from "primeng/api";
-import { JwtService } from "../../services/jwt.service";
+import {Component, inject} from '@angular/core';
+import {User} from '../../model/user.model';
+import {CommonModule} from '@angular/common';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
+import {FormsModule} from '@angular/forms';
+import {EditProfileModalComponent} from '../../components/edit-profile-modal/edit-profile-modal.component';
+import {
+  CreateOrUpdateServiceProviderService
+} from '../create-or-update-service-provider/create-or-update-service-provider.service';
+import {ProfileService} from "./profile.service";
+import {GlobalMessageService} from "../../services/global-message.service";
+import {ToastModule} from "primeng/toast";
+import {ConfirmPopupModule} from 'primeng/confirmpopup';
+import {ButtonModule} from "primeng/button";
+import {ConfirmationService} from "primeng/api";
+import {JwtService} from "../../services/jwt.service";
 import {ProgressSpinnerModule} from "primeng/progressspinner";
+import {forkJoin, tap} from "rxjs";
 
 @Component({
   selector: 'app-profile',
@@ -24,7 +27,9 @@ import {ProgressSpinnerModule} from "primeng/progressspinner";
 })
 export class ProfileComponent {
   user: any;
-  isLoading = false; // Add loading state
+  transactionCounts: { [id: string]: number } = {};
+  totalTransactionCount: number = 0;
+  isLoading = false;
   private routerService = inject(Router);
   private activateRoute = inject(ActivatedRoute);
   private service: ProfileService = inject(ProfileService);
@@ -43,6 +48,7 @@ export class ProfileComponent {
         (user: User) => {
           this.user = user;
           this.isLoading = false;
+          this.calculateNumberOfTransactions();
         },
         () => {
           this.isLoading = false;
@@ -128,5 +134,21 @@ export class ProfileComponent {
     this.closeEditModal();
   }
 
-  calculateNumberOfTransactions() {}
+  calculateNumberOfTransactions() {
+    this.totalTransactionCount = 0;
+    if (this.user && this.user.serviceProviders) {
+      const countObservables = this.user.serviceProviders.map((provider: any) => {
+        return this.service.getTransactionCount(provider.id).pipe(
+          tap((count: number) => {
+            this.transactionCounts[provider.id] = count; // Store individual counts
+          })
+        );
+      });
+
+      forkJoin(countObservables).subscribe((counts: number[]) => {
+        this.totalTransactionCount = counts.reduce((sum, count) => sum + count, 0);
+      });
+    }
+  }
+
 }

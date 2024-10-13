@@ -100,7 +100,7 @@
           </span>
             <div class="stat-info">
               <p class="stat-label">Broj transakcija</p>
-              <p class="stat-number">{{ calculateNumberOfTransactions() }}</p>
+              <p class="stat-number">{{ totalTransactionCount || 0 }}</p>
             </div>
           </div>
           <div class="stat">
@@ -146,8 +146,7 @@
                   filled: star === 'filled',
                   empty: star === 'empty'
                 }"
-                      >&#9733;</span
-                      >
+                      >&#9733;</span>
                     }
                   </div>
                 </div>
