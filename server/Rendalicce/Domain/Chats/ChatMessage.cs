@@ -11,7 +11,7 @@ public class ChatMessage : Entity
     public string OriginalContent { get; private set; } = null!;
     public bool Updated { get; private set; }
     public List<User> SeenByParticipants { get; private set; } = new();
-    
+    public Guid ChatId { get; private set; }
     
     public static ChatMessage Initialize(string content, User sender)
     {

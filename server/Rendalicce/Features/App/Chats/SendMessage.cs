@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Rendalicce.Domain.Chats;
+using Rendalicce.Features.Shared;
 using Rendalicce.Infrastructure.Authentication;
 using Rendalicce.Persistency;
 
@@ -11,9 +12,7 @@ public sealed class SendMessage
 {
     public sealed record SendMessageRequest(Guid Id, string Content);
 
-    public sealed record SendMessageResponse(Chat Chat);
-
-    public sealed class SendMessageEndpoint : Endpoint<SendMessageRequest, SendMessageResponse>
+    public sealed class SendMessageEndpoint : Endpoint<SendMessageRequest, CreateOrUpdateEntityResult>
     {
         public required DatabaseContext DbContext { get; init; }
 
@@ -45,7 +44,7 @@ public sealed class SendMessage
             await HubContext.Clients.Group($"{chat.Id}").SendAsync("NewMessage", message, cancellationToken: ct);
             await HubContext.Clients.All.SendAsync("NewMessage", message, cancellationToken: ct);
             
-            await SendAsync(new(chat), cancellation: ct);
+            await SendAsync(new(chat.Id), cancellation: ct);
         }
     }
 }
