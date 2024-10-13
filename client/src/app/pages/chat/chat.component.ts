@@ -80,6 +80,7 @@ export class ChatComponent implements OnInit, OnDestroy {
       next: (data: any) => {
         this.getMessages(this.selectedUser.chatId);
         this.showCompleteServiceButton = false;
+        this.isLoading = false;
       }
     });
   }
@@ -100,7 +101,7 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   sendCoinRequest() {
     if (this.requestedCoins > 0 && this.coinRequestDescription) {
-      const coinMessage = `${this.user?.firstName} je zatražio ${this.requestedCoins} novčić(a): ${this.coinRequestDescription}`;
+      const coinMessage = `${this.user?.firstName} je zatražio ${this.requestedCoins} token(a): ${this.coinRequestDescription}`;
       const serviceTransaction = {
         participants: [
           {
