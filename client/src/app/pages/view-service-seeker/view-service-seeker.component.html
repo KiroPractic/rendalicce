@@ -1,4 +1,8 @@
 <div class="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md">
+  <!-- Loading Spinner -->
+  <div class="flex justify-center ">
+    <p-progress-spinner *ngIf="isLoading" ariaLabel="loading"></p-progress-spinner>
+  </div>
   <!-- Header Section -->
   <div class="flex items-center">
     <div class="w-16 h-16 bg-gray-200 rounded-full overflow-hidden">

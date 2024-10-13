@@ -1,5 +1,5 @@
 import {Component, inject} from '@angular/core';
-import {DecimalPipe} from "@angular/common";
+import {DecimalPipe, NgIf} from "@angular/common";
 import {InputTextModule} from "primeng/inputtext";
 import {MapViewComponent} from "../../components/map-view/map-view.component";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
@@ -8,6 +8,7 @@ import {ServiceModalComponent} from "../../components/service-modal/service-moda
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {serviceCategories} from "../../utils/service-categories";
 import {ServiceSeekersListingService} from "./service-seekers-listing.service";
+import {ProgressSpinnerModule} from "primeng/progressspinner";
 
 @Component({
   selector: 'app-service-seekers-listing',
@@ -20,7 +21,9 @@ import {ServiceSeekersListingService} from "./service-seekers-listing.service";
     Select,
     ServiceModalComponent,
     FormsModule,
-    RouterLink
+    RouterLink,
+    NgIf,
+    ProgressSpinnerModule
   ],
   templateUrl: './service-seekers-listing.component.html',
   styleUrl: './service-seekers-listing.component.scss'
@@ -37,6 +40,7 @@ export class ServiceSeekersListingComponent {
   public serviceModalOpen = false;
   public selectedService = null;
   searchText: string = '';
+  isLoading = false;
 
   public sortOptions = [
     {label: 'Rastući', value: 'asc'},
@@ -60,8 +64,13 @@ export class ServiceSeekersListingComponent {
         `).toLowerCase();
           return service;
         });
-        this.applyFilters();
-      });
+          this.applyFilters();
+          this.isLoading = false;
+        },
+        () => {
+          this.isLoading = false;
+        }
+      );
     });
   }
 

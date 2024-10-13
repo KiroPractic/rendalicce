@@ -33,6 +33,10 @@
         <span>Pretraži</span>
       </button>
     </div>
+    <!-- Loading Spinner -->
+    <div class="flex justify-center ">
+      <p-progress-spinner *ngIf="isLoading" ariaLabel="loading"></p-progress-spinner>
+    </div>
     @for(service of filteredServices; track $index) {
       <div class="border p-6 rounded-md space-y-1">
         <div class="flex justify-between">

@@ -1,4 +1,4 @@
-import {CurrencyPipe, DecimalPipe, UpperCasePipe} from '@angular/common';
+import {CurrencyPipe, DecimalPipe, NgIf, UpperCasePipe} from '@angular/common';
 import {Component, inject} from '@angular/core';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {ServiceModalComponent} from '../../components/service-modal/service-modal.component';
@@ -11,11 +11,12 @@ import {MapInputComponent} from "../../components/map-input/map-input.component"
 import {MapViewComponent} from "../../components/map-view/map-view.component";
 import {serviceCategories} from "../../utils/service-categories";
 import {paymentTypes} from '../../utils/payment-types';
+import {ProgressSpinnerModule} from "primeng/progressspinner";
 
 @Component({
   selector: 'app-services-listing',
   standalone: true,
-  imports: [CurrencyPipe, ServiceModalComponent, UpperCasePipe, FormsModule, InputTextModule, ButtonModule, Select, DecimalPipe, MapInputComponent, MapViewComponent, RouterLink],
+  imports: [CurrencyPipe, ServiceModalComponent, UpperCasePipe, FormsModule, InputTextModule, ButtonModule, Select, DecimalPipe, MapInputComponent, MapViewComponent, RouterLink, NgIf, ProgressSpinnerModule],
   templateUrl: './service-providers-listing.component.html',
   styleUrl: './service-providers-listing.component.scss',
 })
@@ -32,6 +33,7 @@ export class ServiceProvidersListingComponent {
   public selectedService = null;
   searchText: string = '';
   paymentTypes = paymentTypes;
+  isLoading = false;
 
   public sortOptions = [
     {label: 'Rastući', value: 'asc'},
@@ -40,26 +42,32 @@ export class ServiceProvidersListingComponent {
   public selectedSortOrder = this.sortOptions[0];
 
   ngOnInit() {
+    this.isLoading = true; // Set loading to true when fetching data
     this.route.queryParams.subscribe((params) => {
       this.searchText = params['searchText'] || '';
-      this.service.getAll().subscribe((services: any) => {
-        this.services = services.serviceProviders.map((service) => {
-          service.searchableText = (`
-          ${service.name}
-          ${service.description}
-          ${service.category}
-          ${service.type}
-          ${service.paymentType}
-          ${service.price}
-          ${Array.isArray(service.tags) ? service.tags.join(' ') : service.tags}
-        `).toLowerCase();
-          return service;
-        });
-        this.applyFilters();
-      });
+      this.service.getAll().subscribe(
+        (services: any) => {
+          this.services = services.serviceProviders.map((service) => {
+            service.searchableText = (`
+            ${service.name}
+            ${service.description}
+            ${service.category}
+            ${service.type}
+            ${service.paymentType}
+            ${service.price}
+            ${Array.isArray(service.tags) ? service.tags.join(' ') : service.tags}
+          `).toLowerCase();
+            return service;
+          });
+          this.applyFilters();
+          this.isLoading = false;
+        },
+        () => {
+          this.isLoading = false;
+        }
+      );
     });
   }
-
 
   // Filter by category
   filterByCategory(category: string) {
