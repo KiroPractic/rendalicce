@@ -13,22 +13,24 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {GlobalMessageService} from "../../services/global-message.service";
 import { serviceCategories } from '../../utils/service-categories';
 import {CreateOrUpdateServiceSeekerService} from "./create-or-update-service-seeker.service";
+import {NgClass} from "@angular/common";
 
 @Component({
   selector: 'app-create-or-update-service-seeker',
   standalone: true,
-    imports: [
-        ButtonModule,
-        FloatLabelModule,
-        InputNumberModule,
-        InputTextModule,
-        MapInputComponent,
-        ProgressSpinnerModule,
-        ReactiveFormsModule,
-        Select,
-        TagInputComponent,
-        TextareaModule
-    ],
+  imports: [
+    ButtonModule,
+    FloatLabelModule,
+    InputNumberModule,
+    InputTextModule,
+    MapInputComponent,
+    ProgressSpinnerModule,
+    ReactiveFormsModule,
+    Select,
+    TagInputComponent,
+    TextareaModule,
+    NgClass
+  ],
   templateUrl: './create-or-update-service-seeker.component.html',
   styleUrl: './create-or-update-service-seeker.component.scss'
 })
