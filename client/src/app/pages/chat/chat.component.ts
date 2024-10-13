@@ -111,7 +111,6 @@ export class ChatComponent implements OnInit {
           (a, b) =>
             new Date(a.createdOn).getTime() - new Date(b.createdOn).getTime()
         );
-        console.log(this.messages);
       },
       error: (error) => {
         console.error(error);
