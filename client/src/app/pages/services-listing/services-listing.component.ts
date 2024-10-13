@@ -2,11 +2,16 @@ import { CurrencyPipe, UpperCasePipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { ServiceModalComponent } from '../../components/service-modal/service-modal.component';
+import {DropdownModule} from "primeng/dropdown";
+import {FormsModule} from "@angular/forms";
+import {InputTextModule} from "primeng/inputtext";
+import {ButtonModule} from "primeng/button";
+import {MapInputComponent} from "../../components/map-input/map-input.component";
 
 @Component({
   selector: 'app-services-listing',
   standalone: true,
-  imports: [CurrencyPipe, ServiceModalComponent, UpperCasePipe],
+  imports: [CurrencyPipe, ServiceModalComponent, UpperCasePipe, DropdownModule, FormsModule, InputTextModule, ButtonModule, MapInputComponent],
   templateUrl: './services-listing.component.html',
   styleUrl: './services-listing.component.scss',
 })
@@ -17,16 +22,20 @@ export class ServicesListingComponent {
       name: 'Service 1',
       description: 'Description 1',
       price: 100,
+      tags: ['tag1', 'tag2'],
       category: 'category1',
       type: 'type1',
       payment: 'paymentType1',
+      city: 'New York',
       image: 'https://via.placeholder.com/100',
     },
     {
       id: '2',
       name: 'Service 2',
+      tags: ['tag1', 'tag2'],
       description: 'Description 2',
       price: 150,
+      city: 'New York',
       category: 'category2',
       type: 'type2',
       payment: 'paymentType2',
@@ -40,6 +49,21 @@ export class ServicesListingComponent {
   private router = inject(Router);
   public serviceModalOpen = false;
   public selectedService = null;
+  public categories = [
+    'category1', 'category2'
+  ];
+  public serviceTypes = [
+    'type1', 'type2'
+  ];
+  public paymentTypes = [
+    { label: 'Gotovina', value: 'paymentType1' },
+    { label: 'Kartica', value: 'paymentType2' },
+  ];
+  public sortOptions = [
+    { label: 'Rastući', value: 'asc' },
+    { label: 'Padajući', value: 'desc' },
+  ];
+  public selectedSortOrder = this.sortOptions[0];
 
   // Filter by category
   filterByCategory(category: string) {
@@ -55,6 +79,7 @@ export class ServicesListingComponent {
 
   // Filter by service type
   filterByServiceType(type: string) {
+    console.log(type);
     if (this.selectedServiceTypes.includes(type)) {
       this.selectedServiceTypes = this.selectedServiceTypes.filter(
         (t) => t !== type
@@ -67,6 +92,7 @@ export class ServicesListingComponent {
 
   // Filter by payment type
   filterByPaymentType(paymentType: string) {
+    console.log(typeof paymentType);
     if (this.selectedPaymentTypes.includes(paymentType)) {
       this.selectedPaymentTypes = this.selectedPaymentTypes.filter(
         (pt) => pt !== paymentType
@@ -94,8 +120,7 @@ export class ServicesListingComponent {
   }
 
   // Sort by price
-  sortByPrice(event: any) {
-    const sortOrder = event.target.value;
+  sortByPrice(sortOrder: string) {
     this.filteredServices.sort((a, b) =>
       sortOrder === 'asc' ? a.price - b.price : b.price - a.price
     );
