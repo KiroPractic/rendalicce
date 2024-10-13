@@ -81,7 +81,7 @@ export class ChatComponent implements OnInit, OnDestroy {
         this.getMessages(this.selectedUser.chatId);
         this.showCompleteServiceButton = false;
         this.isLoading = false;
-      }
+      },
     });
   }
 
@@ -290,7 +290,10 @@ export class ChatComponent implements OnInit, OnDestroy {
             message.serviceCompleted = true;
           }
 
-          if(message.serviceTransaction && !message.serviceTransaction.completed) {
+          if (
+            message.serviceTransaction &&
+            !message.serviceTransaction.completed
+          ) {
             this.serviceCompleted = false;
             message.serviceCompleted = false;
             this.showCompleteServiceButton = true;
@@ -324,6 +327,8 @@ export class ChatComponent implements OnInit, OnDestroy {
         console.error(error);
       },
     });
+    this.newMessage = '';
+    this.isLoading = false;
   }
 
   sendCoinMessageRequest(
