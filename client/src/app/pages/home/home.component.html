@@ -7,9 +7,14 @@
       <div
         class="w-full bg-white rounded-full flex items-center gap-12 justify-between p-2 h-[60px]"
       >
-        <input type="text" class="ml-6 w-full bg-white focus:outline-none" />
+        <input
+          type="text"
+          class="ml-6 w-full bg-white focus:outline-none"
+          [(ngModel)]="searchText"
+        />
         <button
           class="h-full px-6 flex items-center gap-2 transition-colors bg-[#FF5722] hover:bg-[#ff8a50] text-white rounded-full"
+          (click)="search()"
         >
           <span>Pretraži</span>
           <i class="pi pi-search"></i>

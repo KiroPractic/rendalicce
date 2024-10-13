@@ -1,14 +1,18 @@
-import { Component } from '@angular/core';
+import {Component, inject} from '@angular/core';
 import { NgClass } from '@angular/common';
+import {Router} from "@angular/router";
+import {FormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [NgClass],
+  imports: [NgClass, FormsModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
 export class HomeComponent {
+  router = inject(Router);
+  searchText: string = '';
   categories = [
     { name: 'Građevinarstvo', icon: 'pi-building' },
     { name: 'Informatika', icon: 'pi-desktop' },
@@ -42,4 +46,8 @@ export class HomeComponent {
       description: 'Pronađite idealnog pružatelja usluge u nekoliko klikova.',
     },
   ];
+
+  search() {
+    this.router.navigate(['/services'], { queryParams: { searchText: this.searchText } });
+  }
 }
