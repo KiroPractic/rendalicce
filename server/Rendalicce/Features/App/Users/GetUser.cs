@@ -32,6 +32,7 @@ public sealed class GetUser
             var serviceProviders = await DbContext.ServiceProviders.Where(sp => sp.Owner.Id == req.Id)
                 .Include(sp => sp.Reviews)
                 .ToListAsync(ct);
+            
             var serviceSeekers = await DbContext.ServiceSeekers.Where(sp => sp.Owner.Id == req.Id).ToListAsync(ct);
             await SendAsync(new(user, serviceProviders, serviceSeekers), cancellation: ct);
         }

@@ -5,6 +5,7 @@ using Rendalicce.Domain.Chats;
 using Rendalicce.Domain.ServiceTransactions;
 using Rendalicce.Features.Shared;
 using Rendalicce.Infrastructure.Authentication;
+using Rendalicce.Infrastructure.Emails;
 using Rendalicce.Persistency;
 
 namespace Rendalicce.Features.App.Chats;
@@ -20,8 +21,9 @@ public sealed class SendMessage
     public sealed class SendMessageEndpoint : Endpoint<SendMessageRequest, CreateOrUpdateEntityResult>
     {
         public required DatabaseContext DbContext { get; init; }
+        public required EmailSendingService EmailSendingService { get; init; }
 
-        public required IHubContext<ChatHub> HubContext { get; init; }
+        // public required IHubContext<ChatHub> HubContext { get; init; }
 
         public override void Configure()
         {
@@ -66,8 +68,13 @@ public sealed class SendMessage
             DbContext.Chats.Update(chat);
             await DbContext.SaveChangesAsync(ct);
             
-            await HubContext.Clients.Group($"{chat.Id}").SendAsync("NewMessage", message, cancellationToken: ct);
-            await HubContext.Clients.All.SendAsync("NewMessage", message, cancellationToken: ct);
+            // await HubContext.Clients.Group($"{chat.Id}").SendAsync("NewMessage", message, cancellationToken: ct);
+            // await HubContext.Clients.All.SendAsync("NewMessage", message, cancellationToken: ct);
+
+            foreach (var notificationReceiver in chat.Participants.Where(p => p.Id != HttpContext.GetAuthenticatedUser().Id))
+            {
+                EmailSendingService.SendPasswordResetRequested(notificationReceiver.Email, notificationReceiver.FirstName, notificationReceiver.LastName);
+            }
             
             await SendAsync(new(chat.Id), cancellation: ct);
         }

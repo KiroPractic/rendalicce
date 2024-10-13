@@ -25,6 +25,7 @@ public sealed class GetAccountInformation
         public override async Task HandleAsync(CancellationToken ct)
         {
             var user = HttpContext.GetAuthenticatedUserOrNull()!;
+            
             await SendAsync(new GetAccountInformationResult(
                     Id: user.Id,
                     FirstName: user.FirstName,

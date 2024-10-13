@@ -1,5 +1,6 @@
 ﻿using FluentEmail.Core;
 using Rendalicce.Configurations;
+using Rendalicce.Domain.Chats;
 using Rendalicce.Infrastructure.Emails.Templates;
 
 namespace Rendalicce.Infrastructure.Emails;
@@ -30,6 +31,17 @@ public class EmailSendingService
                 )
                 .SendAsync();
 
+    public Task SendNewChatMessageReceived(string recipientEmail, string recipientFirstName, string chatLink, string senderFullName, string messageContent)
+        =>
+            _fluentEmail
+                .To(recipientEmail)
+                .Subject("Obavijest o novoj poruci")
+                .UsingTemplateFromFile(
+                    GetTemplateFilePath<NewChatMessageReceivedTemplateModel>(),
+                    new NewChatMessageReceivedTemplateModel(recipientFirstName, chatLink, senderFullName, messageContent)
+                )
+                .SendAsync();
+    
     public Task SendHangfireFailureNotification(string jobId, string jobName,
         IReadOnlyDictionary<string, string> jobParametersSnapshot, Exception exception)
     {
