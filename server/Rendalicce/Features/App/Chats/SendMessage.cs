@@ -27,6 +27,9 @@ public sealed class SendMessage
         public override async Task HandleAsync(SendMessageRequest req, CancellationToken ct)
         {
             var chat = await DbContext.Chats
+                .Include(c => c.Participants)
+                .Include(c => c.Messages)
+                .ThenInclude(m => m.SeenByParticipants)
                 .FirstOrDefaultAsync(
                     c => c.Id == req.Id && c.Participants.Any(u => u.Id == HttpContext.GetAuthenticatedUser().Id), ct);
 
