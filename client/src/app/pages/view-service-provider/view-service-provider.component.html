@@ -46,15 +46,21 @@
     <h2 class="text-xl font-bold">Informacije o vlasniku oglasa</h2>
     <div class="flex items-center mt-2">
       <div class="w-12 h-12 bg-gray-200 rounded-full overflow-hidden">
-        <!-- Owner Photo -->
+        @if (serviceProvider?.owner.profilePhotoBase64) {
         <img
-          *ngIf="serviceProvider?.owner.profilePhotoBase64"
           [src]="
             'data:image/png;base64,' + serviceProvider?.owner.profilePhotoBase64
           "
           alt="Owner Photo"
           class="w-full h-full object-cover"
         />
+        } @else {
+        <div
+          class="w-12 h-12 rounded-full bg-[#FF5722] grid place-items-center w-full h-full object-cover"
+        >
+          <i class="pi pi-user text-white"></i>
+        </div>
+        }
       </div>
       <div class="ml-4">
         <p
@@ -86,14 +92,21 @@
         <div class="flex items-center">
           <div class="w-10 h-10 bg-gray-200 rounded-full overflow-hidden">
             <!-- Reviewer Photo -->
+            @if (review.reviewer?.profilePhotoBase64) {
             <img
-              *ngIf="review.reviewer?.profilePhotoBase64"
               [src]="
                 'data:image/png;base64,' + review.reviewer?.profilePhotoBase64
               "
               alt="Reviewer Photo"
               class="w-full h-full object-cover"
             />
+            } @else {
+            <div
+              class="w-12 h-12 rounded-full bg-[#FF5722] grid place-items-center w-full h-full object-cover"
+            >
+              <i class="pi pi-user text-white"></i>
+            </div>
+            }
           </div>
           <div class="ml-3">
             <p
@@ -183,7 +196,8 @@
           type="file"
           (change)="onFileChange($event)"
           class="mt-4"
-          accept="image/*">
+          accept="image/*"
+        />
 
         <button
           class="mt-6 bg-[#FF5722] hover:bg-[#ff8a50] transition-colors text-white px-6 py-2 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#FF5722]"
