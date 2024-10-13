@@ -8,6 +8,9 @@ import { ContactComponent } from './pages/contact/contact.component';
 import { CreateOrUpdateServiceProviderComponent } from './pages/create-or-update-service-provider/create-or-update-service-provider.component';
 import { ChatComponent } from './pages/chat/chat.component';
 import { ServicesListingComponent } from './pages/services-listing/services-listing.component';
+import {
+  CreateOrUpdateServiceSeekerComponent
+} from "./pages/create-or-update-service-seeker/create-or-update-service-seeker.component";
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -27,6 +30,14 @@ export const routes: Routes = [
   {
     path: 'service-provider/:state/:id',
     component: CreateOrUpdateServiceProviderComponent,
+  },
+  {
+    path: 'service-seeker/:state',
+    component: CreateOrUpdateServiceSeekerComponent,
+  },
+  {
+    path: 'service-seeker/:state/:id',
+    component: CreateOrUpdateServiceSeekerComponent,
   },
   { path: 'services', component: ServicesListingComponent },
   { path: '**', redirectTo: '' },

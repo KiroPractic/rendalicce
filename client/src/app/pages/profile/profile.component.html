@@ -99,7 +99,7 @@
           <div class="stat-info">
             <p class="stat-label">Prosječna Ocjena</p>
             <p class="stat-number">
-              {{ getAverageRating() | number : "1.1-1" }} / 5
+              {{ calculateAverageRating(user) | number : "1.1-1" }} / 5
             </p>
           </div>
         </div>
