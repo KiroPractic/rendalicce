@@ -1,10 +1,11 @@
 <div class="profile-container">
   <div class="left-section">
     <div class="profile-card">
+      @if (jwtService.token().Id === user?.user.id) {
       <button class="edit-btn" (click)="openEditModal()">
         <span class="pi pi-pencil"></span>
       </button>
-      @if (user?.user.profilePhotoBase64) {
+      } @if (user?.user.profilePhotoBase64) {
       <img
         [src]="'data:image/png;base64,' + user.user.profilePhotoBase64"
         alt="Profile Picture"
@@ -52,6 +53,7 @@
             (click)="openService(service.id)"
           />
           <div class="skill-info">
+            @if (jwtService.token().Id === user?.user.id) {
             <div class="skill-buttons">
               <button
                 [routerLink]="['/service-provider/edit', service.id]"
@@ -70,6 +72,7 @@
                 <p-confirmpopup />
               </div>
             </div>
+            }
             <p class="skill-name" (click)="openService(service.id)">
               {{ service?.name }}
             </p>
@@ -128,7 +131,7 @@
             <h6>
               {{ review.reviewer.firstName }} {{ review.reviewer.lastName }}
             </h6>
-            <h5> {{ serviceProvider.name }}</h5>
+            <h5>{{ serviceProvider.name }}</h5>
             <p>{{ review.content }}</p>
             <div class="rating">
               @for (star of getStars(review.rating); track $index) {

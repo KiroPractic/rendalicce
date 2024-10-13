@@ -65,6 +65,10 @@
   margin-right: 10px;
 }
 
+.chat-image {
+  cursor: pointer;
+}
+
 .message-list {
   flex: 1;
   padding: 20px;
@@ -99,7 +103,8 @@
   gap: 10px;
   justify-content: flex-start;
 
-  img, .message-icon {
+  img,
+  .message-icon {
     &:hover {
       cursor: pointer;
     }
