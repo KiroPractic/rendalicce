@@ -1,10 +1,16 @@
-<section class="container mx-auto py-20 flex flex-col gap-12">
+<section class="container mx-auto py-20 flex flex-col gap-12 w-[1200px]">
   <div class="bg-[#FF5722] w-full h-[600px] rounded-xl grid place-items-center">
     <div class="flex flex-col gap-6 max-w-2xl">
-      <h1 class="text-5xl text-white text-center">Povežite se s pružateljima usluga diljem Hrvatske</h1>
-      <div class="w-full bg-white rounded-full flex items-center gap-12 justify-between p-2 h-[60px]">
+      <h1 class="text-5xl text-white text-center">
+        Povežite se s pružateljima usluga diljem Hrvatske
+      </h1>
+      <div
+        class="w-full bg-white rounded-full flex items-center gap-12 justify-between p-2 h-[60px]"
+      >
         <input type="text" class="ml-6 w-full bg-white focus:outline-none" />
-        <button class="h-full px-6 flex items-center gap-2 transition-colors bg-[#FF5722] hover:bg-[#ff8a50] text-white rounded-full">
+        <button
+          class="h-full px-6 flex items-center gap-2 transition-colors bg-[#FF5722] hover:bg-[#ff8a50] text-white rounded-full"
+        >
           <span>Pretraži</span>
           <i class="pi pi-search"></i>
         </button>
@@ -14,33 +20,45 @@
   <div class="flex flex-col gap-6">
     <div class="grid grid-cols-5 gap-6">
       @for (category of categories; track category) {
-        <button class="btn h-auto grid place-items-center p-6 rounded-xl">
-          <div class="flex flex-col gap-6 items-center">
-            <div class="aspect-square grid place-items-center rounded-lg bg-[#004f90]">
-              <i class="pi text-4xl text-[#03a9f4]" [ngClass]="category.icon"></i>
-            </div>
-            <h2 class="text-xl">{{ category.name}}</h2>
+      <button class="btn h-auto grid place-items-center p-6 rounded-xl">
+        <div class="flex flex-col gap-6 items-center">
+          <div
+            class="aspect-square grid place-items-center rounded-lg bg-[#004f90]"
+          >
+            <i class="pi text-4xl text-[#03a9f4]" [ngClass]="category.icon"></i>
           </div>
-        </button>
+          <h2 class="text-xl">{{ category.name }}</h2>
+        </div>
+      </button>
       }
     </div>
     <div class="flex justify-center">
-      <a href="" class="text-center text-[#03a9f4] hover:text-[#004f90] text-2xl transition-colors">Istraži sve kategorije servisa</a>
+      <a
+        href="/services"
+        class="text-center text-[#03a9f4] hover:text-[#004f90] text-2xl transition-colors"
+        >Istraži sve kategorije usluga</a
+      >
     </div>
   </div>
   <section class="py-16">
-    <h2 class="text-3xl font-bold text-center mb-12">Zašto odabrati našu platformu</h2>
+    <h2 class="text-3xl font-bold text-center mb-12">
+      Zašto odabrati našu platformu
+    </h2>
     <div class="grid grid-cols-4 gap-6">
       @for (benefit of benefits; track benefit) {
-        <div class="h-auto grid place-items-center p-6 rounded-xl hover:shadow-xl transition-shadow cursor-default">
-          <div class="flex flex-col gap-6 items-center">
-            <div class="aspect-square grid place-items-center rounded-lg bg-[#004f90]">
-              <i class="pi text-4xl text-[#03a9f4]" [ngClass]="benefit.icon"></i>
-            </div>
-            <h2 class="text-xl">{{ benefit.title}}</h2>
-            <p class="text-center">{{ benefit.description}}</p>
+      <div
+        class="h-auto grid place-items-center p-6 rounded-xl hover:shadow-xl transition-shadow cursor-default"
+      >
+        <div class="flex flex-col gap-6 items-center">
+          <div
+            class="aspect-square grid place-items-center rounded-lg bg-[#004f90]"
+          >
+            <i class="pi text-4xl text-[#03a9f4]" [ngClass]="benefit.icon"></i>
           </div>
+          <h2 class="text-xl">{{ benefit.title }}</h2>
+          <p class="text-center">{{ benefit.description }}</p>
         </div>
+      </div>
       }
     </div>
   </section>

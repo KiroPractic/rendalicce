@@ -43,6 +43,7 @@ public sealed class SendMessage
             await DbContext.SaveChangesAsync(ct);
             
             await HubContext.Clients.Group($"{chat.Id}").SendAsync("NewMessage", message, cancellationToken: ct);
+            await HubContext.Clients.All.SendAsync("NewMessage", message, cancellationToken: ct);
             
             await SendAsync(new(chat), cancellation: ct);
         }

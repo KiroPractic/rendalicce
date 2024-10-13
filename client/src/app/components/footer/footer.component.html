@@ -1,25 +1,35 @@
-<footer class="container mx-auto py-20">
+<footer class="container mx-auto py-20 w-[1200px]">
   <div class="grid grid-cols-custom mb-20">
     <h1>Logo</h1>
     <nav class="flex items-center justify-center gap-6">
-      <a href="#" class="hover:text-[#FF5722] transition-colors whitespace-nowrap">Započni</a>
-      <a href="#" class="hover:text-[#FF5722] transition-colors whitespace-nowrap">Pridruži nam se</a>
-      <a href="#" class="hover:text-[#FF5722] transition-colors whitespace-nowrap">Kontakt</a>
-      <a href="#" class="hover:text-[#FF5722] transition-colors whitespace-nowrap">FAQ</a>
-      <a href="#" class="hover:text-[#FF5722] transition-colors whitespace-nowrap">Blog</a>
+      <a
+        href="/"
+        class="hover:text-[#FF5722] transition-colors whitespace-nowrap"
+        >Početna</a
+      >
+      <a
+        href="/about"
+        class="hover:text-[#FF5722] transition-colors whitespace-nowrap"
+        >O nama</a
+      >
+      <a
+        href="/contact"
+        class="hover:text-[#FF5722] transition-colors whitespace-nowrap"
+        >Kontakt</a
+      >
     </nav>
     <div class="flex items-center justify-end gap-6">
       @for (social of socials; track social) {
-        <a class="hover:text-[#FF5722] underline transition-colors whitespace-nowrap" [href]="social.link">
-          <i class="pi" [ngClass]="social.icon"></i>
-        </a>
+      <a
+        class="hover:text-[#FF5722] underline transition-colors whitespace-nowrap"
+        [href]="social.link"
+      >
+        <i class="pi" [ngClass]="social.icon"></i>
+      </a>
       }
     </div>
   </div>
   <div class="pt-6 border-t border-black flex gap-6 justify-center">
     <p>&copy; 2024 Hackaton. All rights reserved.</p>
-    <a href="#" class="hover:text-[#FF5722] underline transition-colors whitespace-nowrap">Privacy Policy</a>
-    <a href="#" class="hover:text-[#FF5722] underline transition-colors whitespace-nowrap">Terms of Service</a>
-    <a href="#" class="hover:text-[#FF5722] underline transition-colors whitespace-nowrap">Cookies Settings</a>
   </div>
 </footer>

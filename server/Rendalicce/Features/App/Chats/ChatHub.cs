@@ -35,6 +35,7 @@ public class ChatHub(DatabaseContext dbContext) : Hub
     // Send a message to a specific chat group (chatId)
     public async Task SendMessageToChat(Guid chatId, string messageContent)
     {
+        var c = Context.GetHttpContext();
         var authenticatedUser = Context.GetHttpContext()?.GetAuthenticatedUser();
         var chat = authenticatedUser is null ? null : await dbContext.Chats.FirstOrDefaultAsync(c => c.Id == chatId 
             && c.Participants.Any(u => u.Id == authenticatedUser.Id));
