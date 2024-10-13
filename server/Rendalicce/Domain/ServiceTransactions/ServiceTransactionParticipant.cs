@@ -7,18 +7,31 @@ public sealed class ServiceTransactionParticipant : Entity
 {
     private ServiceTransactionParticipant() { }
 
+    public bool Approved { get; private set; }
     public int? Credits { get; init; }
     public ServiceProviderInformation? ProvidedService { get; init; }
     public User User { get; init; } = null!;
     
-    public static ServiceTransactionParticipant Initialize(int? credits, ServiceProvider? serviceProvider, User user)
+    public static ServiceTransactionParticipant Initialize(int? credits, ServiceProvider? serviceProvider, User user, bool approved)
     {
         return new ServiceTransactionParticipant
         {
             Credits = credits,
             ProvidedService = serviceProvider is null ? null : new ServiceProviderInformation(serviceProvider),
-            User = user
+            User = user,
+            Approved = approved
         };
+    }
+
+    public void Approve()
+    {
+        Approved = true;
+    }
+    
+    public void Complete()
+    {
+        if(Credits.HasValue)
+            User.DeductCredits(Credits.Value);
     }
 }
 
