@@ -26,6 +26,7 @@ public sealed class GetChat
             var chat = await DbContext.Chats
                 .Include(c => c.Participants)
                 .Include(c => c.Messages)
+                .ThenInclude(m => m.SeenByParticipants)
                 .FirstOrDefaultAsync(c => c.Id == req.Id
                                           && c.Participants.Any(u => u.Id == HttpContext.GetAuthenticatedUser().Id),
                     ct);
