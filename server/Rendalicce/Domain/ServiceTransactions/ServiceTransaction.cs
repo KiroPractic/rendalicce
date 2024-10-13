@@ -20,7 +20,7 @@ public sealed class ServiceTransaction : Entity
 
     public void Approve(User user)
     {
-        var participant = Participants.SingleOrDefault(p => p.Id == user.Id);
+        var participant = Participants.SingleOrDefault(p => p.User.Id == user.Id);
         participant!.Approve();
 
         if (Participants.All(p => p.Approved))
@@ -31,6 +31,6 @@ public sealed class ServiceTransaction : Entity
     {
         Completed = true;
         CompletedOn = DateTimeOffset.UtcNow;
-        Participants.ForEach(p => p.Complete());
+        Participants.ForEach(p => p.Complete(Participants));
     }
 }

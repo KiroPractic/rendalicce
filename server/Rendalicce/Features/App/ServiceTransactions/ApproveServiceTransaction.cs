@@ -7,7 +7,7 @@ namespace Rendalicce.Features.App.ServiceTransactions;
 
 public sealed class ApproveServiceTransaction
 {
-    public sealed record ApproveServiceTransactionRequest(Guid Id);
+    public sealed record ApproveServiceTransactionRequest(Guid Id, string? DummyField);
     public sealed record ApproveServiceTransactionResult(Guid Id, bool Completed);
 
 
@@ -17,7 +17,7 @@ public sealed class ApproveServiceTransaction
 
         public override void Configure()
         {
-            Post("service-transactions/{id}/approve");
+            Put("service-transactions/{id}/approve");
         }
 
         public override async Task HandleAsync(ApproveServiceTransactionRequest request, CancellationToken ct)
