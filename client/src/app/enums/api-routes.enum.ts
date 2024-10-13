@@ -10,4 +10,5 @@ export enum ApiRoutes {
   serviceSeeker = '/service-seeker',
   chatsRoute = '/chats',
   serviceSeekersRoute = '/service-seekers',
+  serviceTransaction = '/service-transactions',
 }

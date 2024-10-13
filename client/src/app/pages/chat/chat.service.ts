@@ -46,4 +46,9 @@ export class ChatService {
       { content: message, serviceTransaction }
     );
   }
+
+  completeTransaction(serviceTransactionId: any) {
+    return this.#httpClient.put(
+      `${environment.baseUrl}${ApiRoutes.apiRoute}${ApiRoutes.serviceTransaction}/${serviceTransactionId}/approve`, {});
+  }
 }
