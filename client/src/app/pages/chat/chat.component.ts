@@ -42,9 +42,17 @@ export class ChatComponent implements OnInit, OnDestroy {
   @ViewChild('messageList') messageList!: ElementRef | null;
   private shouldScrollToBottom = false;
   isRequestingCoins = false;
+  isRequestingService = false;
   requestedCoins = 0;
   coinRequestDescription = '';
   serviceCompleted = false;
+  requestedServices = [];
+  usersServices = [];
+  selectedService = '';
+  requestedServiceId = '';
+  usersServiceId = '';
+  requestServiceDescription = '';
+  showCompleteServiceButton = false;
 
   async ngOnInit() {
     this.messages = [];
@@ -65,6 +73,29 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   toggleCoinRequest() {
     this.isRequestingCoins = !this.isRequestingCoins;
+  }
+
+  completeService(transactionId) {
+    this.chatService.completeTransaction(transactionId).subscribe({
+      next: (data: any) => {
+        this.getMessages(this.selectedUser.chatId);
+        this.showCompleteServiceButton = false;
+      }
+    });
+  }
+
+  toggleServiceRequest() {
+    this.isRequestingService = !this.isRequestingService;
+    this.profileService.getAccountInformation(this.selectedUser.id).subscribe({
+      next: (data: any) => {
+        this.requestedServices = data.serviceProviders;
+      },
+    });
+    this.profileService.getAccountInformation(this.user.id).subscribe({
+      next: (data: any) => {
+        this.usersServices = data.serviceProviders;
+      },
+    });
   }
 
   sendCoinRequest() {
@@ -96,6 +127,40 @@ export class ChatComponent implements OnInit, OnDestroy {
       this.isRequestingCoins = false;
     } else {
       console.error('Invalid coin request');
+    }
+  }
+
+  sendServiceRequest() {
+    if (
+      this.requestedServiceId &&
+      this.requestServiceDescription &&
+      this.usersServiceId
+    ) {
+      const serviceMessage = `${this.user?.firstName} je zatražio uslugu: ${this.requestServiceDescription}`;
+      const serviceTransaction = {
+        participants: [
+          {
+            credits: null,
+            serviceProviderId: this.requestedServiceId,
+            userId: this.selectedUser.id,
+          },
+          {
+            credits: null,
+            serviceProviderId: this.usersServiceId,
+            userId: this.user.id,
+          },
+        ],
+      };
+
+      this.sendCoinMessageRequest(
+        this.selectedUser.chatId,
+        serviceMessage,
+        serviceTransaction
+      );
+
+      this.requestedServiceId = '';
+      this.requestServiceDescription = '';
+      this.isRequestingService = false;
     }
   }
 
@@ -216,12 +281,20 @@ export class ChatComponent implements OnInit, OnDestroy {
             new Date(a.createdOn).getTime() - new Date(b.createdOn).getTime()
         );
         this.messages.forEach((message) => {
-          if(message.serviceTransaction && message.serviceTransaction.completed)  {
+          if (
+            message.serviceTransaction &&
+            message.serviceTransaction.completed
+          ) {
             this.serviceCompleted = true;
             message.serviceCompleted = true;
           }
+
+          if(message.serviceTransaction && !message.serviceTransaction.completed) {
+            this.serviceCompleted = false;
+            message.serviceCompleted = false;
+            this.showCompleteServiceButton = true;
+          }
         });
-        console.log(this.messages);
         this.shouldScrollToBottom = true;
       },
       error: (error) => {
@@ -257,7 +330,6 @@ export class ChatComponent implements OnInit, OnDestroy {
     message: string,
     serviceTransaction: any
   ) {
-    console.log(chatId);
     this.isLoading = true;
     this.chatService
       .sendCoinMessageRequest(message, chatId, serviceTransaction)
@@ -266,7 +338,6 @@ export class ChatComponent implements OnInit, OnDestroy {
           this.newMessage = '';
           this.getMessages(chatId);
           this.shouldScrollToBottom = true;
-          console.log(data);
           this.isLoading = false;
         },
         error: (error) => {

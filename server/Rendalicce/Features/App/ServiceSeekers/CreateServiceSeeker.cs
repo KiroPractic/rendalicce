@@ -15,6 +15,7 @@ public sealed class CreateServiceSeeker
 
         public override void Configure()
         {
+            AllowFileUploads();
             Post("service-seekers");
         }
 

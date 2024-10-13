@@ -16,6 +16,8 @@ public sealed class User : Entity
     private string PasswordHash { get; set; } = null!;
     private int CreditsBalance { get; set; }
     
+    public string GetFullName() => $"{FirstName} {LastName}";
+    
     public static User Initialize(string firstName, string lastName, string email, string? description, string? phoneNumber, string password)
     {
         return new User

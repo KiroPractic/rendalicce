@@ -16,6 +16,7 @@ public sealed class UpdateServiceSeeker
 
         public override void Configure()
         {
+            AllowFileUploads();
             Put("service-seekers/{id}");
         }
 

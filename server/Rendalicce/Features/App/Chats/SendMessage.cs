@@ -71,9 +71,12 @@ public sealed class SendMessage
             // await HubContext.Clients.Group($"{chat.Id}").SendAsync("NewMessage", message, cancellationToken: ct);
             // await HubContext.Clients.All.SendAsync("NewMessage", message, cancellationToken: ct);
 
+            
+            var settings = await DbContext.ApplicationSettings.FirstAsync(ct);
+
             foreach (var notificationReceiver in chat.Participants.Where(p => p.Id != HttpContext.GetAuthenticatedUser().Id))
             {
-                EmailSendingService.SendPasswordResetRequested(notificationReceiver.Email, notificationReceiver.FirstName, notificationReceiver.LastName);
+                await EmailSendingService.SendNewChatMessageReceived(notificationReceiver.Email, notificationReceiver.FirstName, $"{settings.WebsiteRootUrl}/chat/{HttpContext.GetAuthenticatedUser().Id}", HttpContext.GetAuthenticatedUser().GetFullName(), message.Content);
             }
             
             await SendAsync(new(chat.Id), cancellation: ct);

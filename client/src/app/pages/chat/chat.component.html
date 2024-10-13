@@ -103,12 +103,21 @@
           }"
         >
           {{ message.content }}
+
+          @if(showCompleteServiceButton && message.senderId !== user.id) {
+          <button
+            class="bg-green-500 hover:bg-green-200 transition-colors text-white py-2 px-4 rounded-md ml-2"
+            (click)="completeService(message.serviceTransaction.id)"
+          >
+            <span class="pi pi-check"></span>
+          </button>
+          }
         </div>
       </div>
       }
     </div>
 
-    @if(isRequestingCoins) {
+    @if(isRequestingCoins && !isRequestingService) {
     <div class="flex items-center coins-wrapper">
       <input
         type="number"
@@ -130,6 +139,42 @@
         Zatraži novčiće
       </button>
     </div>
+    } @if(isRequestingService && !isRequestingCoins) {
+    <div class="flex items-center coins-wrapper">
+      <select
+        class="rounded-md w-1/4 p-2 border border-gray-300"
+        [(ngModel)]="requestedServiceId"
+        aria-label="Odaberite uslugu"
+      >
+        <option *ngFor="let service of requestedServices" [value]="service.id">
+          {{ service.name }}
+        </option>
+      </select>
+
+      <select
+        class="rounded-md w-1/4 p-2 border border-gray-300"
+        [(ngModel)]="usersServiceId"
+        aria-label="Odaberite svoju uslugu"
+      >
+        <option *ngFor="let service of usersServices" [value]="service.id">
+          {{ service.name }}
+        </option>
+      </select>
+
+      <input
+        type="text"
+        class="rounded-md w-2/4 ml-2 p-2 border border-gray-300 service-request-button"
+        [(ngModel)]="requestServiceDescription"
+        placeholder="Opis zahtjeva"
+      />
+
+      <button
+        class="bg-[#ff5722] hover:bg-[#ff8a50] transition-colors text-white py-2 px-4 rounded-md ml-2"
+        (click)="sendServiceRequest()"
+      >
+        Zatraži uslugu
+      </button>
+    </div>
     }
 
     <div class="message-input">
@@ -143,6 +188,11 @@
       <i
         class="pi pi-dollar cursor-pointer text-xl mx-3 text-[#FF5722] coins-icon"
         (click)="toggleCoinRequest()"
+      ></i>
+
+      <i
+        class="pi pi-hammer cursor-pointer text-xl mx-3 text-[#FF5722] coins-icon"
+        (click)="toggleServiceRequest()"
       ></i>
 
       <button
