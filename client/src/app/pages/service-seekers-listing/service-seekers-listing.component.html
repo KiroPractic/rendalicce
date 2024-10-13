@@ -18,7 +18,15 @@
 
   <!-- Right Side: Services Listing -->
   <div class="w-3/4 space-y-6">
-    <h3 class="text-4xl font-bold">Popis usluga (Nudim uslugu)</h3>
+    <div class="flex justify-between items-center">
+      <h3 class="text-4xl font-bold">Popis usluga (Nudim uslugu)</h3>
+      <!-- Add Button -->
+      <button [routerLink]="'/service-seeker/create'"
+              class="flex h-[42px] rounded-md bg-[#FF5722] hover:bg-[#ff8a50] transition-colors text-white px-6 items-center">
+        <i class="pi pi-plus"></i>
+        <span></span>
+      </button>
+    </div>
     <div class="flex items-center gap-4">
       <input
         type="text"

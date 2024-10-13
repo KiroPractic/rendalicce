@@ -48,6 +48,6 @@ export class HomeComponent {
   ];
 
   search() {
-    this.router.navigate(['/services'], { queryParams: { searchText: this.searchText } });
+    this.router.navigate(['/service-providers'], { queryParams: { searchText: this.searchText } });
   }
 }
