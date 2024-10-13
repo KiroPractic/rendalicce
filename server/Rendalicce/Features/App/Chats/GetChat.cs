@@ -27,6 +27,11 @@ public sealed class GetChat
                 .Include(c => c.Participants)
                 .Include(c => c.Messages)
                 .ThenInclude(m => m.SeenByParticipants)
+                .Include(c => c.Messages)
+                .ThenInclude(cm => cm.ServiceTransaction)
+                .ThenInclude(st => st!.Participants)
+                .ThenInclude(o => o.User)
+
                 .FirstOrDefaultAsync(c => c.Id == req.Id
                                           && c.Participants.Any(u => u.Id == HttpContext.GetAuthenticatedUser().Id),
                     ct);

@@ -3,6 +3,7 @@ using Rendalicce.Domain.ApplicationSettings;
 using Rendalicce.Domain.Chats;
 using Rendalicce.Domain.Reviews;
 using Rendalicce.Domain.ServiceSeekers;
+using Rendalicce.Domain.ServiceTransactions;
 using Rendalicce.Domain.Users;
 using Rendalicce.Persistency.EntityTypeConfigurations;
 using ServiceProvider = Rendalicce.Domain.ServiceProviders.ServiceProvider;
@@ -21,6 +22,7 @@ public sealed class DatabaseContext : DbContext
     public required DbSet<Review> Reviews { get; init; }
     public required DbSet<ServiceProvider> ServiceProviders { get; init; }
     public required DbSet<ServiceSeeker> ServiceSeekers { get; init; }
+    public required DbSet<ServiceTransaction> ServiceTransactions { get; init; }
     public required DbSet<User> Users { get; init; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

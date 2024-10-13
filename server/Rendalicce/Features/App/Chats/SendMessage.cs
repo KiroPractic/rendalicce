@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Rendalicce.Domain.Chats;
+using Rendalicce.Domain.ServiceTransactions;
 using Rendalicce.Features.Shared;
 using Rendalicce.Infrastructure.Authentication;
 using Rendalicce.Persistency;
@@ -10,7 +11,11 @@ namespace Rendalicce.Features.App.Chats;
 
 public sealed class SendMessage
 {
-    public sealed record SendMessageRequest(Guid Id, string Content);
+    public sealed record SendMessageRequest(Guid Id, string Content, ServiceTransactionInformation? ServiceTransaction);
+
+    public sealed record ServiceTransactionInformation(IEnumerable<ServiceTransactionParticipantInformation> Participants);
+    public sealed record ServiceTransactionParticipantInformation(int? Credits, Guid? ServiceProviderId, Guid? UserId);
+    
 
     public sealed class SendMessageEndpoint : Endpoint<SendMessageRequest, CreateOrUpdateEntityResult>
     {
@@ -35,7 +40,27 @@ public sealed class SendMessage
             if (chat is null)
                 ThrowError("Entitet ne postoji.");
 
-            var message = ChatMessage.Initialize(req.Content, HttpContext.GetAuthenticatedUser());
+            ServiceTransaction? serviceTransaction = null;
+            if (req.ServiceTransaction is not null)
+            {
+                var participants = new List<ServiceTransactionParticipant>();
+                foreach (var participantInformation in req.ServiceTransaction.Participants)
+                {
+                    var user = await DbContext.Users.FirstOrDefaultAsync(u => u.Id == participantInformation.UserId, ct);
+                    if(user is null)
+                        ThrowError("Entitet ne postoji.");
+                    
+                    var serviceProvider = await DbContext.ServiceProviders.FirstOrDefaultAsync(sp => sp.Id == participantInformation.ServiceProviderId, ct);
+                    if(participantInformation.ServiceProviderId is not null && serviceProvider is null)
+                        ThrowError("Entitet ne postoji.");
+                    
+                    participants.Add(ServiceTransactionParticipant.Initialize(participantInformation.Credits, serviceProvider, user, user.Id == HttpContext.GetAuthenticatedUser().Id));
+                }
+                
+                serviceTransaction = ServiceTransaction.Initialize(participants);
+            }
+            
+            var message = ChatMessage.Initialize(req.Content, serviceTransaction, HttpContext.GetAuthenticatedUser());
             chat.AddMessage(message);
             DbContext.ChatMessages.Add(message);
             DbContext.Chats.Update(chat);

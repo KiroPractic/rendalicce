@@ -33,24 +33,24 @@ public class ChatHub(DatabaseContext dbContext) : Hub
     }
 
     // Send a message to a specific chat group (chatId)
-    public async Task SendMessageToChat(Guid chatId, string messageContent)
-    {
-        var c = Context.GetHttpContext();
-        var authenticatedUser = Context.GetHttpContext()?.GetAuthenticatedUser();
-        var chat = authenticatedUser is null ? null : await dbContext.Chats.FirstOrDefaultAsync(c => c.Id == chatId 
-            && c.Participants.Any(u => u.Id == authenticatedUser.Id));
-        if (authenticatedUser is null || chat is null)
-        {
-            await Clients.Caller.SendAsync("Error", "You are not authorized to join this chat.");
-            return;
-        }
-
-        var message = ChatMessage.Initialize(messageContent, authenticatedUser);
-        chat.AddMessage(message);
-        dbContext.Chats.Update(chat);
-        await dbContext.SaveChangesAsync();
-        
-        var groupName = $"{chatId}";
-        await Clients.Group(groupName).SendAsync("ReceiveMessage", message);
-    }
+    // public async Task SendMessageToChat(Guid chatId, string messageContent)
+    // {
+    //     var c = Context.GetHttpContext();
+    //     var authenticatedUser = Context.GetHttpContext()?.GetAuthenticatedUser();
+    //     var chat = authenticatedUser is null ? null : await dbContext.Chats.FirstOrDefaultAsync(c => c.Id == chatId 
+    //         && c.Participants.Any(u => u.Id == authenticatedUser.Id));
+    //     if (authenticatedUser is null || chat is null)
+    //     {
+    //         await Clients.Caller.SendAsync("Error", "You are not authorized to join this chat.");
+    //         return;
+    //     }
+    //
+    //     var message = ChatMessage.Initialize(messageContent, authenticatedUser, null,);
+    //     chat.AddMessage(message);
+    //     dbContext.Chats.Update(chat);
+    //     await dbContext.SaveChangesAsync();
+    //     
+    //     var groupName = $"{chatId}";
+    //     await Clients.Group(groupName).SendAsync("ReceiveMessage", message);
+    // }
 }
