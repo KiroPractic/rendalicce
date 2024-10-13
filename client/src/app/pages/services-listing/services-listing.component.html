@@ -4,7 +4,7 @@
     <h3 class="font-bold text-2xl">Filtri</h3>
     <div>
       <h4>Kategorija usluge</h4>
-      <p-dropdown
+      <p-select
         [options]="categories"
         (onChange)="filterByCategory($event.value)"
         showClear
@@ -13,7 +13,7 @@
     </div>
     <div>
       <h4>Tip usluge</h4>
-      <p-dropdown
+      <p-select
         [options]="serviceTypes"
         (onChange)="filterByServiceType($event.value)"
         showClear
@@ -22,7 +22,7 @@
     </div>
     <div>
       <h4>Vrsta plaćanja</h4>
-      <p-dropdown
+      <p-select
         [options]="paymentTypes"
         (onChange)="filterByPaymentType($event.value.value)"
         showClear
@@ -32,7 +32,7 @@
     </div>
     <div>
       <h4>Sortiraj po cijeni</h4>
-      <p-dropdown
+      <p-select
         [options]="sortOptions"
         (onChange)="sortByPrice($event.value.value)"
         [(ngModel)]="selectedSortOrder"
@@ -88,7 +88,6 @@
             </div>
           </div>
           <div class="w-full h-auto rounded-md overflow-hidden">
-            <app-map-input></app-map-input>
           </div>
         </div>
         <button class="flex justify-center w-full h-[42px] rounded-md bg-[#FF5722] hover:bg-[#ff8a50] transition-colors text-white px-8 items-center gap-2">

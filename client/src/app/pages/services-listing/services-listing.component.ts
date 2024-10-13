@@ -2,16 +2,15 @@ import { CurrencyPipe, UpperCasePipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { ServiceModalComponent } from '../../components/service-modal/service-modal.component';
-import {DropdownModule} from "primeng/dropdown";
 import {FormsModule} from "@angular/forms";
 import {InputTextModule} from "primeng/inputtext";
 import {ButtonModule} from "primeng/button";
-import {MapInputComponent} from "../../components/map-input/map-input.component";
+import {Select} from "primeng/select";
 
 @Component({
   selector: 'app-services-listing',
   standalone: true,
-  imports: [CurrencyPipe, ServiceModalComponent, UpperCasePipe, DropdownModule, FormsModule, InputTextModule, ButtonModule, MapInputComponent],
+  imports: [CurrencyPipe, ServiceModalComponent, UpperCasePipe, FormsModule, InputTextModule, ButtonModule, Select],
   templateUrl: './services-listing.component.html',
   styleUrl: './services-listing.component.scss',
 })

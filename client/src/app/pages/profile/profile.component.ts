@@ -1,7 +1,5 @@
-import {Component, effect, inject} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {User} from '../../model/user.model';
-import {Review} from '../../model/review.model';
-import {ReviewsService} from '../../services/reviews.service';
 import {CommonModule} from '@angular/common';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {FormsModule} from '@angular/forms';
@@ -12,7 +10,7 @@ import {
 import {ProfileService} from "./profile.service";
 import {GlobalMessageService} from "../../services/global-message.service";
 import {ToastModule} from "primeng/toast";
-import { ConfirmPopupModule } from 'primeng/confirmpopup';
+import {ConfirmPopupModule} from 'primeng/confirmpopup';
 import {ButtonModule} from "primeng/button";
 import {ConfirmationService} from "primeng/api";
 import {JwtService} from "../../services/jwt.service";
@@ -27,7 +25,6 @@ import {JwtService} from "../../services/jwt.service";
 })
 export class ProfileComponent {
   user: any;
-  private reviewService = inject(ReviewsService);
   private routerService = inject(Router);
   private activateRoute = inject(ActivatedRoute);
   private service: ProfileService = inject(ProfileService);
@@ -37,7 +34,6 @@ export class ProfileComponent {
   );
   private confirmationService = inject(ConfirmationService);
   protected jwtService = inject(JwtService);
-  reviews: Review[] = this.reviewService.getRandomReviews();
   isEditModalOpen = false;
   isEmailModalOpen = false;
 
@@ -68,12 +64,18 @@ export class ProfileComponent {
     return [...filledStars, ...emptyStars];
   }
 
-  getAverageRating(): number {
-    const totalRatings = this.reviews.reduce(
-      (acc, review) => acc + review.rating,
-      0
-    );
-    return totalRatings / this.reviews.length;
+  calculateAverageRating(user) {
+    let totalRating = 0;
+    let totalReviews = 0;
+
+    for (let serviceProvider of user?.serviceProviders || []) {
+      for (let review of serviceProvider.reviews || []) {
+        totalRating += review.rating;
+        totalReviews++;
+      }
+    }
+
+    return totalReviews > 0 ? (totalRating / totalReviews).toFixed(1) : 0;
   }
 
   openService(serviceId) {

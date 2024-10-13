@@ -1,0 +1,60 @@
+<div class="max-w-4xl mx-auto p-6">
+  <form [formGroup]="createOrUpdateServiceSeekerForm" (ngSubmit)="createOrUpdate()">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <p-floatlabel>
+        <input pInputText formControlName="name" id="firstName" class="w-full"/>
+        <label for="firstName">Naziv</label>
+      </p-floatlabel>
+
+      <p-floatlabel>
+        <input formControlName="email" pInputText id="email" class="w-full"/>
+        <label for="email">Email</label>
+      </p-floatlabel>
+
+      <p-floatlabel>
+        <p-inputnumber styleClass="w-full" formControlName="phoneNumber" [useGrouping]="false" inputId="integeronly" class="w-full"></p-inputnumber>
+        <label for="integeronly">Broj mobitela</label>
+      </p-floatlabel>
+
+      <p-floatlabel>
+        <p-select
+          [filter]="true"
+          filterBy="name"
+          showClear="true"
+          [options]="serviceCategories"
+          formControlName="category"
+          optionLabel="name"
+          inputId="category"
+          class="w-full"></p-select>
+        <label for="category">Kategorija usluge</label>
+      </p-floatlabel>
+
+      <p-floatlabel class="w-full md:col-span-2">
+        <textarea
+          formControlName="description"
+          id="description"
+          rows="5"
+          pTextarea
+          class="w-full">
+        </textarea>
+        <label for="description">Opis usluge</label>
+      </p-floatlabel>
+
+      <div class="md:col-span-2">
+        <label for="tags">Oznake</label>
+        <app-tag-input
+          [tags]="createOrUpdateServiceSeekerForm.get('tags')?.value"
+          (tagsChange)="createOrUpdateServiceSeekerForm.get('tags')?.setValue($event)">
+        </app-tag-input>
+      </div>
+
+    </div>
+    <div class="mt-6">
+      <app-map-input [formControl]="$any(createOrUpdateServiceSeekerForm.get('geoLocation'))"></app-map-input>
+    </div>
+
+    <div class="flex items-center justify-between mt-6">
+      <p-button [icon]="state === 'create' ? 'pi pi-plus': 'pi pi-pencil'" [disabled]="createOrUpdateServiceSeekerForm.invalid" type="submit" class="w-full" styleClass="w-full" [label]="state === 'create' ? 'Objavi uslugu': 'Ažuriraj objavu'" />
+    </div>
+  </form>
+</div>
