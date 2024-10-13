@@ -14,27 +14,6 @@
         placeholder="Sve kategorije"
         class="w-[200px]" />
     </div>
-    <div>
-      <h4>Vrsta plaćanja</h4>
-      <p-select
-        [filter]="true"
-        filterBy="name"
-        [options]="paymentTypes"
-        (onChange)="filterByPaymentType($event.value.value)"
-        showClear
-        placeholder="Sve vrste plaćanja"
-        optionLabel="name"
-        class="w-[200px]" />
-    </div>
-    <div>
-      <h4>Sortiraj po cijeni</h4>
-      <p-select
-        [options]="sortOptions"
-        (onChange)="sortByPrice($event.value.value)"
-        [(ngModel)]="selectedSortOrder"
-        optionLabel="label"
-        class="w-[200px]" />
-    </div>
   </div>
 
   <!-- Right Side: Services Listing -->
@@ -92,7 +71,7 @@
             </div>
           </div>
         </div>
-        <button class="flex justify-center w-full h-[42px] rounded-md bg-[#FF5722] hover:bg-[#ff8a50] transition-colors text-white px-3  items-center gap-2">
+        <button [routerLink]="service.id" class="flex justify-center w-full h-[42px] rounded-md bg-[#FF5722] hover:bg-[#ff8a50] transition-colors text-white px-3  items-center gap-2">
           <i class="pi pi-eye"></i>
           <span>Detalji</span>
         </button>
@@ -103,13 +82,13 @@
 
 <!-- Modal backdrop -->
 @if(serviceModalOpen) {
-<div class="modal-backdrop" (click)="closeServiceModal()"></div>
+  <div class="modal-backdrop" (click)="closeServiceModal()"></div>
 }
 
 <!-- Modal container -->
 @if(serviceModalOpen) {
-<app-service-modal
-  (closeServiceModal)="closeServiceModal()"
-  [service]="selectedService"
-></app-service-modal>
+  <app-service-modal
+    (closeServiceModal)="closeServiceModal()"
+    [service]="selectedService"
+  ></app-service-modal>
 }

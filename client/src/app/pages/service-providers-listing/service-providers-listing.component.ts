@@ -1,6 +1,6 @@
 import {CurrencyPipe, DecimalPipe, UpperCasePipe} from '@angular/common';
 import {Component, inject} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {ServiceModalComponent} from '../../components/service-modal/service-modal.component';
 import {FormsModule} from "@angular/forms";
 import {InputTextModule} from "primeng/inputtext";
@@ -15,7 +15,7 @@ import {paymentTypes} from '../../utils/payment-types';
 @Component({
   selector: 'app-services-listing',
   standalone: true,
-  imports: [CurrencyPipe, ServiceModalComponent, UpperCasePipe, FormsModule, InputTextModule, ButtonModule, Select, DecimalPipe, MapInputComponent, MapViewComponent],
+  imports: [CurrencyPipe, ServiceModalComponent, UpperCasePipe, FormsModule, InputTextModule, ButtonModule, Select, DecimalPipe, MapInputComponent, MapViewComponent, RouterLink],
   templateUrl: './service-providers-listing.component.html',
   styleUrl: './service-providers-listing.component.scss',
 })

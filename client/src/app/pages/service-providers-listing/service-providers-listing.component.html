@@ -1,0 +1,115 @@
+<div class="container py-20 mx-auto flex gap-6 max-w-[1200px]">
+  <!-- Left Side: Filters -->
+  <div class="w-1/4 space-y-6">
+    <h3 class="font-bold text-2xl">Filtriranje</h3>
+    <div>
+      <h4>Kategorija usluge</h4>
+      <p-select
+        [filter]="true"
+        filterBy="name"
+        [options]="serviceCategories"
+        (onChange)="filterByCategory($event.value)"
+        showClear
+        optionLabel="name"
+        placeholder="Sve kategorije"
+        class="w-[200px]" />
+    </div>
+    <div>
+      <h4>Vrsta plaćanja</h4>
+      <p-select
+        [filter]="true"
+        filterBy="name"
+        [options]="paymentTypes"
+        (onChange)="filterByPaymentType($event.value.value)"
+        showClear
+        placeholder="Sve vrste plaćanja"
+        optionLabel="name"
+        class="w-[200px]" />
+    </div>
+    <div>
+      <h4>Sortiraj po cijeni</h4>
+      <p-select
+        [options]="sortOptions"
+        (onChange)="sortByPrice($event.value.value)"
+        [(ngModel)]="selectedSortOrder"
+        optionLabel="label"
+        class="w-[200px]" />
+    </div>
+  </div>
+
+  <!-- Right Side: Services Listing -->
+  <div class="w-3/4 space-y-6">
+    <h3 class="text-4xl font-bold">Popis usluga</h3>
+    <div class="flex items-center gap-4">
+      <input
+        type="text"
+        class="w-full"
+        pInputText
+        placeholder="Pretraži usluge"
+        [(ngModel)]="searchText"
+        (input)="applyFilters()"
+      />
+      <button class="flex h-[42px] rounded-md bg-[#FF5722] hover:bg-[#ff8a50] transition-colors text-white px-8 items-center gap-2">
+        <i class="pi pi-search"></i>
+        <span>Pretraži</span>
+      </button>
+    </div>
+    @for(service of filteredServices; track $index) {
+      <div class="border p-6 rounded-md space-y-1">
+        <div class="flex justify-between">
+          <div>
+            <h4 class="text-2xl font-bold">{{ service.name }}</h4>
+            <div class="rounded-full p-1 mt-4 bg-[#03a9f4] text-xs text-white">
+              <span class="grid place-items-center">{{ service.category }}</span>
+            </div>
+          </div>
+          <p class="font-bold text-xl">{{ service.price | number: '1.2-2' }} €</p>
+        </div>
+        <div class="grid grid-cols-3 gap-6 py-6">
+          <img
+            [src]="'data:image/png;base64,' + service.headerPhotoBase64"
+            alt="Slika za {{ service.name }} uslugu"
+            class="w-full h-auto rounded-md"
+          />
+          <div class="flex flex-col justify-between h-[200px]">
+            <p>{{ service.description }}</p>
+            <div class="flex items-center gap-1 flex-wrap">
+              @for (tag of service.tags.split(','); track $index) {
+                <div class="rounded-full py-1 px-2 bg-[#ebebeb] text-xs font-bold">
+                  <span class="grid place-items-center">{{ tag.trim() }}</span>
+                </div>
+              }
+            </div>
+            <div class="flex items-center gap-3 flex-wrap">
+              <div class="rounded-full py-1 px-3 bg-[#ebebeb]">
+                <span class="grid place-items-center">{{ service.paymentType }}</span>
+              </div>
+            </div>
+          </div>
+          <div class="w-full h-auto rounded-md overflow-hidden">
+            <div class="w-full h-auto rounded-md overflow-hidden">
+              <app-map-view [coordinates]="getCoordinates(service.geolocation)"></app-map-view>
+            </div>
+          </div>
+        </div>
+        <button [routerLink]="service.id" class="flex justify-center w-full h-[42px] rounded-md bg-[#FF5722] hover:bg-[#ff8a50] transition-colors text-white px-3  items-center gap-2">
+          <i class="pi pi-eye"></i>
+          <span>Detalji</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>
+
+<!-- Modal backdrop -->
+@if(serviceModalOpen) {
+<div class="modal-backdrop" (click)="closeServiceModal()"></div>
+}
+
+<!-- Modal container -->
+@if(serviceModalOpen) {
+<app-service-modal
+  (closeServiceModal)="closeServiceModal()"
+  [service]="selectedService"
+></app-service-modal>
+}
