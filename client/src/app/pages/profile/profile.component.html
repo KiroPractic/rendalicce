@@ -3,25 +3,27 @@
     <p-progress-spinner ariaLabel="Loading"></p-progress-spinner>
   </div>
 } @else {
+
   <div class="profile-container">
     <div class="left-section">
       <div class="profile-card">
-        <button class="edit-btn" (click)="openEditModal()">
-          <span class="pi pi-pencil"></span>
-        </button>
-        @if (user?.user.profilePhotoBase64) {
-          <img
-            [src]="'data:image/png;base64,' + user.user.profilePhotoBase64"
-            alt="Profile Picture"
-            class="profile-img"
-          />
-        } @else {
-          <div
-            class="w-12 h-12 rounded-full bg-[#FF5722] grid place-items-center user-icon profile-img"
-          >
-            <i class="pi pi-user text-white"></i>
-          </div>
-        }
+        @if (jwtService.token().Id === user?.user.id) {
+          <button class="edit-btn" (click)="openEditModal()">
+            <span class="pi pi-pencil"></span>
+          </button>
+        } @if (user?.user.profilePhotoBase64) {
+        <img
+          [src]="'data:image/png;base64,' + user.user.profilePhotoBase64"
+          alt="Profile Picture"
+          class="profile-img"
+        />
+      } @else {
+        <div
+          class="w-12 h-12 rounded-full bg-[#FF5722] grid place-items-center user-icon profile-img"
+        >
+          <i class="pi pi-user text-white"></i>
+        </div>
+      }
         <h2>{{ user?.user.firstName }} {{ user?.user.lastName }}</h2>
         <p>
           <span class="pi pi-envelope"></span>
@@ -57,24 +59,26 @@
                 (click)="openService(service.id)"
               />
               <div class="skill-info">
-                <div class="skill-buttons">
-                  <button
-                    [routerLink]="['/service-provider/edit', service.id]"
-                    class="edit-skill-button"
-                  >
-                    <span class="pi pi-pencil"></span>
-                  </button>
-                  <button
-                    class="delete-skill-button"
-                    (click)="confirm2($event, service.id)"
-                  >
-                    <span class="pi pi-trash"></span>
-                  </button>
-                  <div class="card flex justify-center gap-2">
-                    <p-toast />
-                    <p-confirmpopup />
+                @if (jwtService.token().Id === user?.user.id) {
+                  <div class="skill-buttons">
+                    <button
+                      [routerLink]="['/service-provider/edit', service.id]"
+                      class="edit-skill-button"
+                    >
+                      <span class="pi pi-pencil"></span>
+                    </button>
+                    <button
+                      class="delete-skill-button"
+                      (click)="confirm2($event, service.id)"
+                    >
+                      <span class="pi pi-trash"></span>
+                    </button>
+                    <div class="card flex justify-center gap-2">
+                      <p-toast />
+                      <p-confirmpopup />
+                    </div>
                   </div>
-                </div>
+                }
                 <p class="skill-name" (click)="openService(service.id)">
                   {{ service?.name }}
                 </p>
@@ -133,7 +137,7 @@
                   <h6>
                     {{ review.reviewer.firstName }} {{ review.reviewer.lastName }}
                   </h6>
-                  <h5> {{ serviceProvider.name }}</h5>
+                  <h5>{{ serviceProvider.name }}</h5>
                   <p>{{ review.content }}</p>
                   <div class="rating">
                     @for (star of getStars(review.rating); track $index) {
@@ -158,9 +162,9 @@
 }
 
 @if(isEditModalOpen) {
-<app-edit-profile-modal
-  [user]="user"
-  (closeModal)="closeEditModal()"
-  (closeModalWithData)="updateUser($event)"
-></app-edit-profile-modal>
+  <app-edit-profile-modal
+    [user]="user"
+    (closeModal)="closeEditModal()"
+    (closeModalWithData)="updateUser($event)"
+  ></app-edit-profile-modal>
 }

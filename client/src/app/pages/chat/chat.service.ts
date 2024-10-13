@@ -23,7 +23,7 @@ export class ChatService {
 
   getMessages(chatId: string) {
     return this.#httpClient.get(
-      `${environment.baseUrl}${ApiRoutes.apiRoute}${ApiRoutes.chatsRoute}/${chatId}`
+      `${environment.baseUrl}${ApiRoutes.apiRoute}${ApiRoutes.chatsRoute}/${chatId}/messages`
     );
   }
 
