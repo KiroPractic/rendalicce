@@ -36,16 +36,16 @@ export class ProfileComponent {
   isEmailModalOpen = false;
 
   ngOnInit() {
-    this.isLoading = true; // Set loading to true when starting the fetch
+    this.isLoading = true;
     this.activateRoute.params.subscribe((params: any) => {
       const userId = params.id;
       this.service.getAccountInformation(userId).subscribe(
         (user: User) => {
           this.user = user;
-          this.isLoading = false; // Set loading to false once data is fetched
+          this.isLoading = false;
         },
         () => {
-          this.isLoading = false; // Set loading to false if there's an error
+          this.isLoading = false;
         }
       );
     });
@@ -127,4 +127,6 @@ export class ProfileComponent {
     });
     this.closeEditModal();
   }
+
+  calculateNumberOfTransactions() {}
 }
