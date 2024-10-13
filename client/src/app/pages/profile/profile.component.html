@@ -24,17 +24,17 @@
           <i class="pi pi-user text-white"></i>
         </div>
       }
-        <h2>{{ user?.user.firstName }} {{ user?.user.lastName }}</h2>
+        <h2>{{ user?.user?.firstName }} {{ user?.user?.lastName }}</h2>
         <p>
           <span class="pi pi-envelope"></span>
-          <a [href]="'mailto:' + user?.user.email">{{ user?.user.email }}</a>
+          <a [href]="'mailto:' + user?.user?.email">{{ user?.user?.email }}</a>
         </p>
         <p>
           <span class="pi pi-phone"></span>
-          <a [href]="'tel:' + user?.user.phone">{{ user?.user.phoneNumber }}</a>
+          <a [href]="'tel:' + user?.user?.phone">{{ user?.user?.phoneNumber }}</a>
         </p>
         @if (jwtService.token().Id !== user?.user.id) {
-          <button class="message-btn" (click)="openChat(user?.user.id)">
+          <button class="message-btn" (click)="openChat(user?.user?.id)">
             Poruka
           </button>
         }
@@ -96,11 +96,11 @@
         <div class="stats">
           <div class="stat">
           <span class="stat-icon">
-            <i class="pi pi-folder"></i>
+            <i class="pi pi-check"></i>
           </span>
             <div class="stat-info">
-              <p class="stat-label">Projekti</p>
-              <p class="stat-number">48</p>
+              <p class="stat-label">Broj transakcija</p>
+              <p class="stat-number">{{ calculateNumberOfTransactions() }}</p>
             </div>
           </div>
           <div class="stat">
@@ -135,7 +135,7 @@
               <div class="review">
                 <div class="review-info">
                   <h6>
-                    {{ review.reviewer.firstName }} {{ review.reviewer.lastName }}
+                    {{ review?.reviewer?.firstName }} {{ review?.reviewer?.lastName }}
                   </h6>
                   <h5>{{ serviceProvider.name }}</h5>
                   <p>{{ review.content }}</p>
