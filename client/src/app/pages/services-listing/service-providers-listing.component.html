@@ -5,29 +5,25 @@
     <div>
       <h4>Kategorija usluge</h4>
       <p-select
-        [options]="categories"
+        [filter]="true"
+        filterBy="name"
+        [options]="serviceCategories"
         (onChange)="filterByCategory($event.value)"
         showClear
+        optionLabel="name"
         placeholder="Sve kategorije"
-        class="w-[200px]" />
-    </div>
-    <div>
-      <h4>Tip usluge</h4>
-      <p-select
-        [options]="serviceTypes"
-        (onChange)="filterByServiceType($event.value)"
-        showClear
-        placeholder="Svi tipovi usluge"
         class="w-[200px]" />
     </div>
     <div>
       <h4>Vrsta plaćanja</h4>
       <p-select
+        [filter]="true"
+        filterBy="name"
         [options]="paymentTypes"
         (onChange)="filterByPaymentType($event.value.value)"
         showClear
         placeholder="Sve vrste plaćanja"
-        optionLabel="label"
+        optionLabel="name"
         class="w-[200px]" />
     </div>
     <div>
@@ -45,7 +41,14 @@
   <div class="w-3/4 space-y-6">
     <h3 class="text-4xl font-bold">Popis usluga</h3>
     <div class="flex items-center gap-4">
-      <input type="text" class="w-full" pInputText placeholder="Pretraži usluge" />
+      <input
+        type="text"
+        class="w-full"
+        pInputText
+        placeholder="Pretraži usluge"
+        [(ngModel)]="searchText"
+        (input)="applyFilters()"
+      />
       <button class="flex h-[42px] rounded-md bg-[#FF5722] hover:bg-[#ff8a50] transition-colors text-white px-8 items-center gap-2">
         <i class="pi pi-search"></i>
         <span>Pretraži</span>

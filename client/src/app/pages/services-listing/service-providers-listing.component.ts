@@ -1,7 +1,7 @@
 import {CurrencyPipe, DecimalPipe, UpperCasePipe} from '@angular/common';
-import { Component, inject } from '@angular/core';
-import { Router } from '@angular/router';
-import { ServiceModalComponent } from '../../components/service-modal/service-modal.component';
+import {Component, inject} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {ServiceModalComponent} from '../../components/service-modal/service-modal.component';
 import {FormsModule} from "@angular/forms";
 import {InputTextModule} from "primeng/inputtext";
 import {ButtonModule} from "primeng/button";
@@ -9,6 +9,8 @@ import {Select} from "primeng/select";
 import {ServiceProvidersListingService} from "./service-providers-listing.service";
 import {MapInputComponent} from "../../components/map-input/map-input.component";
 import {MapViewComponent} from "../../components/map-view/map-view.component";
+import {serviceCategories} from "../../utils/service-categories";
+import {paymentTypes} from '../../utils/payment-types';
 
 @Component({
   selector: 'app-services-listing',
@@ -23,32 +25,41 @@ export class ServiceProvidersListingComponent {
   selectedCategories = [];
   selectedServiceTypes = [];
   selectedPaymentTypes = [];
+  route = inject(ActivatedRoute);
   private router = inject(Router);
   private service = inject(ServiceProvidersListingService);
   public serviceModalOpen = false;
   public selectedService = null;
-  public categories = [
-    'category1', 'category2'
-  ];
-  public serviceTypes = [
-    'type1', 'type2'
-  ];
-  public paymentTypes = [
-    { label: 'Gotovina', value: 'paymentType1' },
-    { label: 'Kartica', value: 'paymentType2' },
-  ];
+  searchText: string = '';
+  paymentTypes = paymentTypes;
+
   public sortOptions = [
-    { label: 'Rastući', value: 'asc' },
-    { label: 'Padajući', value: 'desc' },
+    {label: 'Rastući', value: 'asc'},
+    {label: 'Padajući', value: 'desc'},
   ];
   public selectedSortOrder = this.sortOptions[0];
 
   ngOnInit() {
-    this.service.getAll().subscribe((services: any) => {
-      this.services = services.serviceProviders;
-      this.filteredServices = services.serviceProviders;
+    this.route.queryParams.subscribe((params) => {
+      this.searchText = params['searchText'] || '';
+      this.service.getAll().subscribe((services: any) => {
+        this.services = services.serviceProviders.map((service) => {
+          service.searchableText = (`
+          ${service.name}
+          ${service.description}
+          ${service.category}
+          ${service.type}
+          ${service.paymentType}
+          ${service.price}
+          ${Array.isArray(service.tags) ? service.tags.join(' ') : service.tags}
+        `).toLowerCase();
+          return service;
+        });
+        this.applyFilters();
+      });
     });
   }
+
 
   // Filter by category
   filterByCategory(category: string) {
@@ -90,6 +101,8 @@ export class ServiceProvidersListingComponent {
 
   // Apply all filters
   applyFilters() {
+    const searchTextLower = this.searchText.toLowerCase();
+
     this.filteredServices = this.services.filter((service) => {
       const matchesCategory = this.selectedCategories.length
         ? this.selectedCategories.includes(service.category)
@@ -98,11 +111,31 @@ export class ServiceProvidersListingComponent {
         ? this.selectedServiceTypes.includes(service.type)
         : true;
       const matchesPayment = this.selectedPaymentTypes.length
-        ? this.selectedPaymentTypes.includes(service.payment)
+        ? this.selectedPaymentTypes.includes(service.paymentType)
         : true;
-      return matchesCategory && matchesType && matchesPayment;
+
+      const matchesSearchText = this.searchText
+        ? this.serviceMatchesSearchText(service, searchTextLower)
+        : true;
+
+      return matchesCategory && matchesType && matchesPayment && matchesSearchText;
     });
   }
+
+  private serviceMatchesSearchText(service: any, searchText: string): boolean {
+    const combinedText = `
+    ${service.name}
+    ${service.description}
+    ${service.category}
+    ${service.type}
+    ${service.paymentType}
+    ${service.price}
+    ${Array.isArray(service.tags) ? service.tags.join(' ') : service.tags}
+  `.toLowerCase();
+
+    return combinedText.includes(searchText);
+  }
+
 
   // Sort by price
   sortByPrice(sortOrder: string) {
@@ -132,4 +165,6 @@ export class ServiceProvidersListingComponent {
     }
     return null;
   }
+
+  protected readonly serviceCategories = serviceCategories;
 }
