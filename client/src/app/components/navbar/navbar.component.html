@@ -43,8 +43,17 @@
               </div>
             }
           </div>
-          <div tabindex="0" class="dropdown-content flex flex-col gap-2 menu bg-base-100 rounded-lg border z-[1] min-w-[200px] p-2 shadow">
+          <div tabindex="0" class="dropdown-content flex flex-col gap-2 menu bg-base-100 rounded-lg border z-[1] min-w-[250px] p-2 shadow">
             <ul>
+              <div class="flex items-center justify-between gap-4">
+                <li class="flex-1">
+                  <a href="/how-it-works">
+                    <i class="pi pi-question-circle"></i>
+                    <span>Kako radi?</span>
+                  </a>
+                </li>
+                <span class="py-1 px-4 bg-[#03A9F4] text-[#004f90] font-bold rounded-lg text-">{{ user?.creditsBalance }}</span>
+              </div>
               <li><a [href]="'/profile/' + jwtService.token().Id">
                 <i class="pi pi-user"></i>
                 <span>{{user?.firstName}}  {{user?.lastName}}</span>

@@ -6,4 +6,5 @@ export interface User {
   phone?: string;
   profilePhotoBase64?: string;
   description?: string;
+  creditsBalance?: number;
 }
