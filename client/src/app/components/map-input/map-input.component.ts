@@ -4,7 +4,7 @@ import * as L from 'leaflet';
 
 @Component({
   selector: 'app-map-input',
-  template: '<div id="map" style="height: 100%; width: 100%"></div>',
+  template: '<div id="map" style="height: 400px; width: 100%"></div>\n',
   standalone: true,
   providers: [
     {

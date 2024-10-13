@@ -109,9 +109,9 @@
       </div>
 
     </div>
-    <div class="mt-6">
-      <app-map-input [formControl]="$any(createOrUpdateServiceProviderForm.get('geoLocation'))"></app-map-input>
-    </div>
+      <div class="mt-6">
+        <app-map-input [formControl]="$any(createOrUpdateServiceProviderForm.get('geoLocation'))"></app-map-input>
+      </div>
 
     <div class="flex items-center justify-between mt-6">
       <p-button [icon]="state === 'create' ? 'pi pi-plus': 'pi pi-pencil'" [disabled]="createOrUpdateServiceProviderForm.invalid" type="submit" class="w-full" styleClass="w-full" [label]="state === 'create' ? 'Objavi uslugu': 'Ažuriraj objavu'" />
