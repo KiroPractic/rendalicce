@@ -26,6 +26,7 @@ export class ChatComponent implements OnInit {
   otherParticipants = [];
   newMessage = '';
   user: User | null = null;
+  isLoading = false;
 
   async ngOnInit() {
     await this.loadUser();
@@ -123,6 +124,7 @@ export class ChatComponent implements OnInit {
   }
 
   sendMessage(chatId, message) {
+    this.isLoading = true;
     this.chatService.sendMessage(message, chatId).subscribe({
       next: (data: any) => {
         this.newMessage = '';
