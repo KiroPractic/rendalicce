@@ -2,6 +2,9 @@ import {Component, inject} from '@angular/core';
 import {ActivatedRoute, RouterLink} from "@angular/router";
 import {ViewServiceProviderService} from "./view-service-provider.service";
 import {DatePipe, DecimalPipe, NgForOf, NgIf} from "@angular/common";
+import { DialogModule } from 'primeng/dialog';
+import { RatingModule } from 'primeng/rating';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-view-service-provider',
@@ -11,7 +14,10 @@ import {DatePipe, DecimalPipe, NgForOf, NgIf} from "@angular/common";
     NgIf,
     NgForOf,
     DecimalPipe,
-    RouterLink
+    RouterLink,
+    DialogModule,
+    RatingModule,
+    FormsModule
   ],
   templateUrl: './view-service-provider.component.html',
   styleUrl: './view-service-provider.component.scss'
@@ -20,6 +26,10 @@ export class ViewServiceProviderComponent {
   activatedRoute: ActivatedRoute = inject(ActivatedRoute);
   service = inject(ViewServiceProviderService)
   serviceProvider: any;
+  displayRatingModal: boolean = false;
+  rating: number = 0;
+  reviewText: string = '';
+  image: any;
 
   ngOnInit() {
     this.activatedRoute.params.subscribe((params) => {
@@ -30,6 +40,29 @@ export class ViewServiceProviderComponent {
   }
 
   onAddReview() {
-    console.log('Add Review');
+    if (this.rating > 0 && this.reviewText) {
+      console.log('Rating:', this.rating);
+      console.log('Review:', this.reviewText);
+
+      this.displayRatingModal = false;
+
+      this.rating = 0;
+      this.reviewText = '';
+    } else {
+      alert('Please provide a rating and a review.');
+    }
+  }
+  
+  onFileChange(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.image = file;
+
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.image.profilePhotoBase64 = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
   }
 }
