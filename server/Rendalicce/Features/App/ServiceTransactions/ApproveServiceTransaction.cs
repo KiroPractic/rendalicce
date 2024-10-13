@@ -35,7 +35,7 @@ public sealed class ApproveServiceTransaction
             transaction.Approve(authenticatedUser);
             
             if(transaction.Completed && transaction.Participants.Any(p => p.User.GetCreditsValance() < 0))
-                ThrowError("Korisnicic nemaju dovoljno resursa.");
+                ThrowError("Korisnici nemaju dovoljno resursa.");
             
             DbContext.ServiceTransactions.Update(transaction);
             await DbContext.SaveChangesAsync(ct);
