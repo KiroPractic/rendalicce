@@ -1,12 +1,10 @@
 ﻿using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
-using Rendalicce.Domain.Chats;
-using Rendalicce.Infrastructure.Authentication;
 using Rendalicce.Persistency;
 
 namespace Rendalicce.Features.App.Chats;
 
-public sealed class GetChatMessages
+public sealed class GetMessages
 {
     public sealed record GetChatMessagesRequest(Guid Id);
 
