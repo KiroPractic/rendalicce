@@ -1,19 +1,42 @@
-import {inject, Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
-import {environment} from "../../../environments/environment";
-import {ApiRoutes} from "../../enums/api-routes.enum";
+import { inject, Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
+import { ApiRoutes } from '../../enums/api-routes.enum';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class CreateOrUpdateServiceProviderService {
+export class ChatService {
   #httpClient: HttpClient = inject(HttpClient);
 
   getChats() {
-    return this.#httpClient.get(`${environment.baseUrl}${ApiRoutes.apiRoute}${ApiRoutes.serviceProvidersRoute}`);
+    return this.#httpClient.get(
+      `${environment.baseUrl}${ApiRoutes.apiRoute}${ApiRoutes.chatsRoute}`
+    );
   }
 
   getChatByUserId(id: string) {
-    return this.#httpClient.get(`${environment.baseUrl}${ApiRoutes.apiRoute}${ApiRoutes.serviceProvidersRoute}/${id}`);
+    return this.#httpClient.get(
+      `${environment.baseUrl}${ApiRoutes.apiRoute}${ApiRoutes.chatsRoute}/${id}`
+    );
+  }
+
+  getMessages(chatId: string) {
+    return this.#httpClient.get(
+      `${environment.baseUrl}${ApiRoutes.apiRoute}${ApiRoutes.chatsRoute}/${chatId}`
+    );
+  }
+
+  getMessagesByUserId(userId: string) {
+    return this.#httpClient.get(
+      `${environment.baseUrl}${ApiRoutes.apiRoute}${ApiRoutes.chatsRoute}/users/${userId}`
+    );
+  }
+
+  sendMessage(message: string, chatId: string) {
+    return this.#httpClient.post(
+      `${environment.baseUrl}${ApiRoutes.apiRoute}${ApiRoutes.chatsRoute}/${chatId}/messages`,
+      { content: message }
+    );
   }
 }

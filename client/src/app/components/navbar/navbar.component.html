@@ -36,7 +36,7 @@
         <div class="dropdown dropdown-end">
           <div tabindex="0" role="button" class="rounded-full">
             @if (user?.profilePhotoBase64) {
-              <img [src]="'data:image/png;base64,' + user.profilePhotoBase64" alt="User profile image" CLASS="w-12 h-12 rounded-full">
+              <img [src]="'data:image/png;base64,' + user.profilePhotoBase64" alt="User profile image" class="w-12 h-12 rounded-full">
             } @else {
               <div class="w-12 h-12 rounded-full bg-[#FF5722] hover:bg-[#ff8a50] transition-colors grid place-items-center">
                 <i class="pi pi-user text-white"></i>

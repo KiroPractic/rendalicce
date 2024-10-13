@@ -5,10 +5,17 @@
         <span class="pi pi-pencil"></span>
       </button>
       @if (user?.user.profilePhotoBase64) {
-        <img [src]="'data:image/png;base64,' + user.user.profilePhotoBase64" alt="Profile Picture" class="profile-img" />
+      <img
+        [src]="'data:image/png;base64,' + user.user.profilePhotoBase64"
+        alt="Profile Picture"
+        class="profile-img"
+      />
       } @else {
-        <div class="profile-img bg-gray-700">
-        </div>
+      <div
+        class="w-12 h-12 rounded-full bg-[#FF5722] grid place-items-center user-icon profile-img"
+      >
+        <i class="pi pi-user text-white"></i>
+      </div>
       }
       <h2>{{ user?.user.firstName }} {{ user?.user.lastName }}</h2>
       <p>
@@ -20,7 +27,9 @@
         <a [href]="'tel:' + user?.user.phone">{{ user?.user.phoneNumber }}</a>
       </p>
       @if (jwtService.token().Id !== user?.user.id) {
-        <button class="message-btn" (click)="openChat(user?.user.id)">Poruka</button>
+      <button class="message-btn" (click)="openChat(user?.user.id)">
+        Poruka
+      </button>
       }
     </div>
 
@@ -35,38 +44,40 @@
       <h4>Usluge</h4>
       <div class="skills-list">
         @for (service of user?.serviceProviders; track $index) {
-          <div class="skill-tag">
-            <img
-              [src]="'data:image/png;base64,' + service?.headerPhotoBase64"
-              alt="{{ service.name }}"
-              class="skill-img"
-              (click)="openService(service.id)"
-            />
-            <div class="skill-info">
-              <div class="skill-buttons">
-                <button [routerLink]="['/service-provider/edit', service.id]"
-                        class="edit-skill-button"
-                >
-                  <span class="pi pi-pencil"></span>
-                </button>
-                <button
-                  class="delete-skill-button"
-                  (click)="confirm2($event, service.id)">
-                  <span class="pi pi-trash"></span>
-                </button>
-                <div class="card flex justify-center gap-2">
-                  <p-toast/>
-                  <p-confirmpopup/>
-                </div>
+        <div class="skill-tag">
+          <img
+            [src]="'data:image/png;base64,' + service?.headerPhotoBase64"
+            alt="{{ service.name }}"
+            class="skill-img"
+            (click)="openService(service.id)"
+          />
+          <div class="skill-info">
+            <div class="skill-buttons">
+              <button
+                [routerLink]="['/service-provider/edit', service.id]"
+                class="edit-skill-button"
+              >
+                <span class="pi pi-pencil"></span>
+              </button>
+              <button
+                class="delete-skill-button"
+                (click)="confirm2($event, service.id)"
+              >
+                <span class="pi pi-trash"></span>
+              </button>
+              <div class="card flex justify-center gap-2">
+                <p-toast />
+                <p-confirmpopup />
               </div>
-              <p class="skill-name" (click)="openService(service.id)">
-                {{ service?.name }}
-              </p>
-              <p class="skill-description" (click)="openService(service.id)">
-                {{ service?.description }}
-              </p>
             </div>
+            <p class="skill-name" (click)="openService(service.id)">
+              {{ service?.name }}
+            </p>
+            <p class="skill-description" (click)="openService(service.id)">
+              {{ service?.description }}
+            </p>
           </div>
+        </div>
         }
       </div>
     </div>
@@ -108,22 +119,31 @@
 
     <div class="reviews-section section">
       <h4>Recenzije</h4>
-      @for (serviceProvider of user?.serviceProviders; track serviceProvider.id) {
-        <div class="service-provider">
-          @for (review of serviceProvider.reviews; track review.id) {
-            <div class="review">
-              <div class="review-info">
-                <h6>{{ review.reviewer.firstName }} {{ review.reviewer.lastName }}</h6>
-                <p>{{ review.content }}</p>
-                <div class="rating">
-                  @for (star of getStars(review.rating); track $index) {
-                    <span [ngClass]="{ filled: star === 'filled', empty: star === 'empty' }">&#9733;</span>
-                  }
-                </div>
-              </div>
+      @for (serviceProvider of user?.serviceProviders; track serviceProvider.id)
+      {
+      <div class="service-provider">
+        @for (review of serviceProvider.reviews; track review.id) {
+        <div class="review">
+          <div class="review-info">
+            <h6>
+              {{ review.reviewer.firstName }} {{ review.reviewer.lastName }}
+            </h6>
+            <p>{{ review.content }}</p>
+            <div class="rating">
+              @for (star of getStars(review.rating); track $index) {
+              <span
+                [ngClass]="{
+                  filled: star === 'filled',
+                  empty: star === 'empty'
+                }"
+                >&#9733;</span
+              >
+              }
             </div>
-          }
+          </div>
         </div>
+        }
+      </div>
       }
     </div>
   </div>

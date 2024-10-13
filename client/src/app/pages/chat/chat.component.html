@@ -2,13 +2,25 @@
   <div class="user-list">
     <h3>Razgovori</h3>
     <ul>
-      @for(user of users; track $index) {
+      @for(participant of otherParticipants; track participant.id) {
       <li
-        (click)="getSelectedUser(user.id)"
-        [class.active]="selectedUser?.id === user.id"
+        (click)="getSelectedUser(participant.id, participant.chatId)"
+        [class.active]="selectedUser?.id === participant.id"
       >
-        <img [src]="user.image" alt="{{ user.firstName }}" class="user-icon" />
-        <span>{{ user.firstName }}</span>
+        @if (participant.profilePhotoBase64) {
+        <img
+          [src]="'data:image/png;base64,' + participant.profilePhotoBase64"
+          alt="{{ participant.firstName }}"
+          class="user-icon"
+        />
+        } @else {
+        <div
+          class="w-12 h-12 rounded-full bg-[#FF5722] grid place-items-center user-icon"
+        >
+          <i class="pi pi-user text-white"></i>
+        </div>
+        }
+        <span>{{ participant.firstName }} {{ participant.lastName }}</span>
       </li>
       }
     </ul>
@@ -17,12 +29,21 @@
   @if(selectedUser) {
   <div class="chat-view">
     <div class="chat-header">
+      @if (selectedUser?.profilePhotoBase64) {
       <img
-        [src]="selectedUser.image"
+        [src]="'data:image/png;base64,' + selectedUser.profilePhotoBase64"
         alt="{{ selectedUser.firstName }}"
         (click)="openProfile(selectedUser.id)"
         class="user-icon"
       />
+      } @else {
+      <div
+        (click)="openProfile(selectedUser.id)"
+        class="w-12 h-12 rounded-full bg-[#FF5722] grid place-items-center user-icon"
+      >
+        <i class="pi pi-user text-white"></i>
+      </div>
+      }
       <span class="user-name" (click)="openProfile(selectedUser.id)">{{
         selectedUser.firstName
       }}</span>
@@ -32,19 +53,28 @@
       @for(message of messages; track $index) {
       <div
         class="message"
-        [class.sent]="message.senderId === currentUser.id"
-        [class.received]="message.senderId !== currentUser.id"
+        [class.sent]="message.sender.id === user.id"
+        [class.received]="message.sender.id !== user.id"
       >
+        @if (message.sender?.profilePhotoBase64) {
         <img
-          [src]="getUserById(message.senderId)?.image"
-          alt="{{ getUserById(message.senderId)?.firstName }}"
-          (click)="openProfile(selectedUser.id)"
+          [src]="'data:image/png;base64,' + message.sender.profilePhotoBase64"
+          alt="{{ message.sender.firstName }}"
+          (click)="openProfile(message.sender.id)"
           class="message-icon"
         />
+        } @else {
+        <div
+          (click)="openProfile(message.sender.id)"
+          class="w-12 h-12 rounded-full bg-[#FF5722] grid place-items-center message-icon"
+        >
+          <i class="pi pi-user text-white"></i>
+        </div>
+        }
         <div class="message-content">
-          <p>{{ message.text }}</p>
+          <p>{{ message.content }}</p>
           <span class="message-date">{{
-            message.date | date : "dd.MM.yyyy. HH:mm"
+            message.createdOn | date : "dd.MM.yyyy. HH:mm"
           }}</span>
         </div>
       </div>
@@ -57,7 +87,9 @@
         [(ngModel)]="newMessage"
         placeholder="Upišite poruku..."
       />
-      <button (click)="sendMessage()">Pošalji</button>
+      <button (click)="sendMessage(selectedUser.chatId, newMessage)">
+        Pošalji
+      </button>
     </div>
   </div>
   }
