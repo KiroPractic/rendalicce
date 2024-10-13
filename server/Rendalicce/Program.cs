@@ -10,6 +10,7 @@ using Hangfire.PostgreSql;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Rendalicce.Configurations;
+using Rendalicce.Features.App.Chats;
 using Rendalicce.Infrastructure.Authentication;
 using Rendalicce.Infrastructure.BackgroundJobs;
 using Rendalicce.Infrastructure.Emails;
@@ -113,6 +114,8 @@ builder.Services.AddCors(
     }
 );
 
+builder.Services.AddSignalR();
+
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
 // var columnOptions = new ColumnOptions
@@ -204,5 +207,7 @@ app.UseHangfireDashboard(
         DefaultRecordsPerPage = 500
     }
 );
+
+app.MapHub<ChatHub>("/chats/hub");
 
 app.Run();
