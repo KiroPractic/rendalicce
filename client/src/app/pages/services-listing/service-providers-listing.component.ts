@@ -1,4 +1,4 @@
-import { CurrencyPipe, UpperCasePipe } from '@angular/common';
+import {CurrencyPipe, DecimalPipe, UpperCasePipe} from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { ServiceModalComponent } from '../../components/service-modal/service-modal.component';
@@ -6,46 +6,25 @@ import {FormsModule} from "@angular/forms";
 import {InputTextModule} from "primeng/inputtext";
 import {ButtonModule} from "primeng/button";
 import {Select} from "primeng/select";
+import {ServiceProvidersListingService} from "./service-providers-listing.service";
+import {MapInputComponent} from "../../components/map-input/map-input.component";
+import {MapViewComponent} from "../../components/map-view/map-view.component";
 
 @Component({
   selector: 'app-services-listing',
   standalone: true,
-  imports: [CurrencyPipe, ServiceModalComponent, UpperCasePipe, FormsModule, InputTextModule, ButtonModule, Select],
-  templateUrl: './services-listing.component.html',
-  styleUrl: './services-listing.component.scss',
+  imports: [CurrencyPipe, ServiceModalComponent, UpperCasePipe, FormsModule, InputTextModule, ButtonModule, Select, DecimalPipe, MapInputComponent, MapViewComponent],
+  templateUrl: './service-providers-listing.component.html',
+  styleUrl: './service-providers-listing.component.scss',
 })
-export class ServicesListingComponent {
-  services = [
-    {
-      id: '1',
-      name: 'Service 1',
-      description: 'Description 1',
-      price: 100,
-      tags: ['tag1', 'tag2'],
-      category: 'category1',
-      type: 'type1',
-      payment: 'paymentType1',
-      city: 'New York',
-      image: 'https://via.placeholder.com/100',
-    },
-    {
-      id: '2',
-      name: 'Service 2',
-      tags: ['tag1', 'tag2'],
-      description: 'Description 2',
-      price: 150,
-      city: 'New York',
-      category: 'category2',
-      type: 'type2',
-      payment: 'paymentType2',
-      image: 'https://via.placeholder.com/100',
-    },
-  ];
-  filteredServices = [...this.services];
+export class ServiceProvidersListingComponent {
+  services = [];
+  filteredServices: any = [...this.services];
   selectedCategories = [];
   selectedServiceTypes = [];
   selectedPaymentTypes = [];
   private router = inject(Router);
+  private service = inject(ServiceProvidersListingService);
   public serviceModalOpen = false;
   public selectedService = null;
   public categories = [
@@ -63,6 +42,13 @@ export class ServicesListingComponent {
     { label: 'Padajući', value: 'desc' },
   ];
   public selectedSortOrder = this.sortOptions[0];
+
+  ngOnInit() {
+    this.service.getAll().subscribe((services: any) => {
+      this.services = services.serviceProviders;
+      this.filteredServices = services.serviceProviders;
+    });
+  }
 
   // Filter by category
   filterByCategory(category: string) {
@@ -133,5 +119,17 @@ export class ServicesListingComponent {
   closeServiceModal() {
     this.serviceModalOpen = false;
     this.selectedService = null;
+  }
+
+  getCoordinates(geolocation: string): [number, number] | null {
+    if (geolocation) {
+      const coords = geolocation
+        .split(',')
+        .map((coord) => parseFloat(coord.trim()));
+      if (coords.length === 2 && !isNaN(coords[0]) && !isNaN(coords[1])) {
+        return [coords[0], coords[1]];
+      }
+    }
+    return null;
   }
 }
