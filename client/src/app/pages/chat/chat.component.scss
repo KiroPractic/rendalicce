@@ -70,6 +70,26 @@
   padding: 20px;
   overflow-y: auto;
   background-color: #f0f0f0;
+
+  scrollbar-width: thin;
+  scrollbar-color: #ff5722 #f0f0f0;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: #f0f0f0;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #ff5722;
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: #ff3300;
+  }
 }
 
 .message {
