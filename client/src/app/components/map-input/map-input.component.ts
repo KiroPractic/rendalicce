@@ -1,5 +1,13 @@
-import {AfterViewInit, Component, forwardRef, OnDestroy, OnInit} from '@angular/core';
-import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
+import {
+  AfterViewInit,
+  Component,
+  forwardRef,
+  inject,
+  OnDestroy,
+  OnInit,
+  Renderer2,
+} from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import * as L from 'leaflet';
 
 @Component({
@@ -10,16 +18,19 @@ import * as L from 'leaflet';
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => MapInputComponent),
-      multi: true
-    }
-  ]
+      multi: true,
+    },
+  ],
 })
-export class MapInputComponent implements OnInit, AfterViewInit, ControlValueAccessor, OnDestroy {
+export class MapInputComponent
+  implements OnInit, AfterViewInit, ControlValueAccessor, OnDestroy
+{
   private map: L.Map;
   private marker: L.Marker;
   private value: [number, number] | null = null;
   private onChange: (value: [number, number] | null) => void = () => {};
   private onTouched: () => void = () => {};
+  private renderer = inject(Renderer2);
 
   ngOnInit() {
     const iconRetinaUrl = 'assets/marker-icon-2x.png';
@@ -33,7 +44,7 @@ export class MapInputComponent implements OnInit, AfterViewInit, ControlValueAcc
       iconAnchor: [12, 41],
       popupAnchor: [1, -34],
       tooltipAnchor: [16, -28],
-      shadowSize: [41, 41]
+      shadowSize: [41, 41],
     });
   }
 
@@ -42,6 +53,11 @@ export class MapInputComponent implements OnInit, AfterViewInit, ControlValueAcc
       this.map.invalidateSize();
     } else {
       this.initMap();
+    }
+
+    const element = document.querySelector('.leaflet-bottom.leaflet-right');
+    if (element) {
+      this.renderer.removeChild(element.parentNode, element);
     }
   }
 
@@ -53,7 +69,7 @@ export class MapInputComponent implements OnInit, AfterViewInit, ControlValueAcc
     this.map = L.map('map').setView([45.815, 15.9819], 13);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© OpenStreetMap contributors'
+      attribution: '© OpenStreetMap contributors',
     }).addTo(this.map);
 
     this.map.on('click', (e: L.LeafletMouseEvent) => {

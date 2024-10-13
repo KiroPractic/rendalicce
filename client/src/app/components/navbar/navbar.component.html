@@ -4,8 +4,7 @@
       <h1>Logo</h1>
     </div>
     <nav class="flex justify-center items-center gap-6 flex-1">
-      <a href="#" class="hover:text-[#FF5722] transition-colors whitespace-nowrap">Započni</a>
-      <a href="#" class="hover:text-[#FF5722] transition-colors whitespace-nowrap">Pridruži nam se</a>
+      <a href="/" class="hover:text-[#FF5722] transition-colors whitespace-nowrap">Početna</a>
       <div class="dropdown">
         <div tabindex="0" role="button" class="hover:text-[#FF5722] transition-colors flex items-center gap-2">
           <span>Usluge</span>
@@ -22,7 +21,6 @@
           </a></li>
         </ul>
       </div>
-      <a href="#" class="hover:text-[#FF5722] transition-colors whitespace-nowrap">O nama</a>
       @if (jwtService.token()) {
         <a href="/chat" class="hover:text-[#FF5722] transition-colors whitespace-nowrap">Poruke</a>
       }
