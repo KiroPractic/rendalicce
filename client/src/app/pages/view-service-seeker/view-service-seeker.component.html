@@ -1,0 +1,63 @@
+<div class="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md">
+  <!-- Loading Spinner -->
+  <div class="flex justify-center ">
+    <p-progress-spinner *ngIf="isLoading" ariaLabel="loading"></p-progress-spinner>
+  </div>
+  <!-- Header Section -->
+  <div class="flex items-center">
+    <div class="w-16 h-16 bg-gray-200 rounded-full overflow-hidden">
+      <!-- Service Header Image -->
+      <img
+        *ngIf="serviceProvider?.headerPhotoBase64"
+        [src]="'data:image/png;base64,' + serviceProvider?.headerPhotoBase64"
+        alt="Service Header Image"
+        class="w-full h-full object-cover"
+      />
+    </div>
+    <div class="ml-4">
+      <h1 class="text-2xl font-bold">{{ serviceProvider?.name }}</h1>
+      <p class="text-gray-500">{{ serviceProvider?.category }}</p>
+    </div>
+  </div>
+
+  <!-- Description -->
+  <div class="mt-4">
+    <p>{{ serviceProvider?.description }}</p>
+  </div>
+
+  <!-- Tags -->
+  <div class="mt-4">
+    <span class="text-gray-700 font-semibold">Oznake: </span>
+    <ng-container *ngFor="let tag of serviceProvider?.tags.split(',')">
+      <span
+        class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2"
+      >
+        {{ tag.trim() }}
+      </span>
+    </ng-container>
+  </div>
+
+  <!-- Owner Info -->
+  <div class="mt-6 border-t pt-4">
+    <h2 class="text-xl font-bold">Informacije o vlasniku oglasa</h2>
+    <div class="flex items-center mt-2">
+      <div class="w-12 h-12 bg-gray-200 rounded-full overflow-hidden">
+        <!-- Owner Photo -->
+        <img
+          *ngIf="serviceProvider?.owner.profilePhotoBase64"
+          [src]="'data:image/png;base64,' + serviceProvider?.owner.profilePhotoBase64"
+          alt="Owner Photo"
+          class="w-full h-full object-cover"
+        />
+      </div>
+      <div class="ml-4">
+        <p class="font-semibold">
+          {{ serviceProvider?.owner.firstName }} {{ serviceProvider?.owner.lastName }}
+        </p>
+        <p class="text-gray-500">{{ serviceProvider?.owner.email }}</p>
+        <p class="text-gray-500">{{ serviceProvider?.owner.phoneNumber }}</p>
+      </div>
+    </div>
+    <p class="mt-2">{{ serviceProvider?.owner.description }}</p>
+  </div>
+</div>

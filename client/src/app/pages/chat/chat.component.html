@@ -49,32 +49,57 @@
       }}</span>
     </div>
 
-    <div class="message-list">
+    <div class="message-list" #messageList>
       @for(message of messages; track $index) {
-        <div class="chat" [ngClass]="message.sender.id === user.id ? 'chat-end' : 'chat-start'">
-          <div class="chat-image">
-            @if (message.sender?.profilePhotoBase64) {
-              <img
-                [src]="'data:image/png;base64,' + message.sender.profilePhotoBase64"
-                alt="{{ message.sender.firstName }}"
-                (click)="openProfile(message.sender.id)"
-                class="message-icon"
-              />
-            } @else {
-              <div
-                (click)="openProfile(message.sender.id)"
-                class="w-12 h-12 rounded-full bg-[#FF5722] grid place-items-center message-icon"
-              >
-                <i class="pi pi-user text-white"></i>
-              </div>
-            }
+      <div
+        class="chat"
+        [ngClass]="message.senderId === user.id ? 'chat-end' : 'chat-start'"
+      >
+        <div class="chat-image">
+          @if (message.senderId === user.id) { @if (user?.profilePhotoBase64) {
+          <img
+            [src]="'data:image/png;base64,' + user.profilePhotoBase64"
+            alt="{{ user.firstName }}"
+            (click)="openProfile(user.id)"
+            class="message-icon"
+          />
+          } @else {
+          <div
+            (click)="openProfile(user.id)"
+            class="w-12 h-12 rounded-full bg-[#FF5722] grid place-items-center message-icon"
+          >
+            <i class="pi pi-user text-white"></i>
           </div>
-          <div class="chat-header !bg-transparent !border-none !pb-1 flex items-center gap-2">
-            {{ message.sender.firstName }} {{ message.sender.lastName }}
-            <time class="text-xs opacity-50">{{ message.createdOn | date: 'HH:mm, dd.MM.YYYY.' }}</time>
+          } } @else { @if (selectedUser?.profilePhotoBase64) {
+          <img
+            [src]="'data:image/png;base64,' + selectedUser.profilePhotoBase64"
+            alt="{{ selectedUser.firstName }}"
+            (click)="openProfile(selectedUser.id)"
+            class="message-icon"
+          />
+          } @else {
+          <div
+            (click)="openProfile(selectedUser.id)"
+            class="w-12 h-12 rounded-full bg-[#FF5722] grid place-items-center message-icon"
+          >
+            <i class="pi pi-user text-white"></i>
           </div>
-          <div class="chat-bubble" [ngClass]="message.sender.id !== user.id ? 'bg-white text-[#333]' : ''">{{ message.content }}</div>
+          } }
         </div>
+        <div
+          class="chat-header !bg-transparent !border-none !pb-1 flex items-center gap-2"
+        >
+          <time class="text-xs opacity-50">{{
+            message.createdOn | date : "HH:mm, dd.MM.YYYY."
+          }}</time>
+        </div>
+        <div
+          class="chat-bubble"
+          [ngClass]="message.senderId !== user.id ? 'bg-white text-[#333]' : ''"
+        >
+          {{ message.content }}
+        </div>
+      </div>
       }
     </div>
 
@@ -85,12 +110,13 @@
         [(ngModel)]="newMessage"
         placeholder="Upišite poruku..."
       />
-      <button class="bg-[#ff5722] hover:bg-[#ff8a50] transition-colors cursor-pointer disabled:cursor-not-allowed text-white py-3 px-6 rounded-md disabled:bg-opacity-30 disabled:hover:bg-opacity-35" (click)="sendMessage(selectedUser.chatId, newMessage)">
+      <button
+        class="bg-[#ff5722] hover:bg-[#ff8a50] transition-colors cursor-pointer disabled:cursor-not-allowed text-white py-3 px-6 rounded-md disabled:bg-opacity-30 disabled:hover:bg-opacity-35"
+        (click)="sendMessage(selectedUser.chatId, newMessage)"
+      >
         @if (isLoading) {
-          <span class="loading loading-spinner loading-md"></span>
-        } @else {
-          Pošalji
-        }
+        <span class="loading loading-spinner loading-md"></span>
+        } @else { Pošalji }
       </button>
     </div>
   </div>

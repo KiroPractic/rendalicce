@@ -1,159 +1,170 @@
-<div class="profile-container">
-  <div class="left-section">
-    <div class="profile-card">
-      <button class="edit-btn" (click)="openEditModal()">
-        <span class="pi pi-pencil"></span>
-      </button>
-      @if (user?.user.profilePhotoBase64) {
-      <img
-        [src]="'data:image/png;base64,' + user.user.profilePhotoBase64"
-        alt="Profile Picture"
-        class="profile-img"
-      />
-      } @else {
-      <div
-        class="w-12 h-12 rounded-full bg-[#FF5722] grid place-items-center user-icon profile-img"
-      >
-        <i class="pi pi-user text-white"></i>
-      </div>
-      }
-      <h2>{{ user?.user.firstName }} {{ user?.user.lastName }}</h2>
-      <p>
-        <span class="pi pi-envelope"></span>
-        <a [href]="'mailto:' + user?.user.email">{{ user?.user.email }}</a>
-      </p>
-      <p>
-        <span class="pi pi-phone"></span>
-        <a [href]="'tel:' + user?.user.phone">{{ user?.user.phoneNumber }}</a>
-      </p>
-      @if (jwtService.token().Id !== user?.user.id) {
-      <button class="message-btn" (click)="openChat(user?.user.id)">
-        Poruka
-      </button>
-      }
-    </div>
-
-    <div class="about-section section">
-      <h4>O Meni</h4>
-      <p>{{ user?.user.description }}</p>
-    </div>
+@if (isLoading) {
+  <div class="flex justify-center w-full">
+    <p-progress-spinner ariaLabel="Loading"></p-progress-spinner>
   </div>
+} @else {
 
-  <div class="right-section">
-    <div class="skills-section section">
-      <h4>Usluge</h4>
-      <div class="skills-list">
-        @for (service of user?.serviceProviders; track $index) {
-        <div class="skill-tag">
-          <img
-            [src]="'data:image/png;base64,' + service?.headerPhotoBase64"
-            alt="{{ service.name }}"
-            class="skill-img"
-            (click)="openService(service.id)"
-          />
-          <div class="skill-info">
-            <div class="skill-buttons">
-              <button
-                [routerLink]="['/service-provider/edit', service.id]"
-                class="edit-skill-button"
-              >
-                <span class="pi pi-pencil"></span>
-              </button>
-              <button
-                class="delete-skill-button"
-                (click)="confirm2($event, service.id)"
-              >
-                <span class="pi pi-trash"></span>
-              </button>
-              <div class="card flex justify-center gap-2">
-                <p-toast />
-                <p-confirmpopup />
-              </div>
-            </div>
-            <p class="skill-name" (click)="openService(service.id)">
-              {{ service?.name }}
-            </p>
-            <p class="skill-description" (click)="openService(service.id)">
-              {{ service?.description }}
-            </p>
-          </div>
+  <div class="profile-container">
+    <div class="left-section">
+      <div class="profile-card">
+        @if (jwtService.token().Id === user?.user.id) {
+          <button class="edit-btn" (click)="openEditModal()">
+            <span class="pi pi-pencil"></span>
+          </button>
+        } @if (user?.user.profilePhotoBase64) {
+        <img
+          [src]="'data:image/png;base64,' + user.user.profilePhotoBase64"
+          alt="Profile Picture"
+          class="profile-img"
+        />
+      } @else {
+        <div
+          class="w-12 h-12 rounded-full bg-[#FF5722] grid place-items-center user-icon profile-img"
+        >
+          <i class="pi pi-user text-white"></i>
         </div>
+      }
+        <h2>{{ user?.user.firstName }} {{ user?.user.lastName }}</h2>
+        <p>
+          <span class="pi pi-envelope"></span>
+          <a [href]="'mailto:' + user?.user.email">{{ user?.user.email }}</a>
+        </p>
+        <p>
+          <span class="pi pi-phone"></span>
+          <a [href]="'tel:' + user?.user.phone">{{ user?.user.phoneNumber }}</a>
+        </p>
+        @if (jwtService.token().Id !== user?.user.id) {
+          <button class="message-btn" (click)="openChat(user?.user.id)">
+            Poruka
+          </button>
         }
       </div>
+
+      <div class="about-section section">
+        <h4>O Meni</h4>
+        <p>{{ user?.user.description }}</p>
+      </div>
     </div>
 
-    <div class="stats-section section">
-      <h4>Statistika</h4>
-      <div class="stats">
-        <div class="stat">
+    <div class="right-section">
+      <div class="skills-section section">
+        <h4>Usluge</h4>
+        <div class="skills-list">
+          @for (service of user?.serviceProviders; track $index) {
+            <div class="skill-tag">
+              <img
+                [src]="'data:image/png;base64,' + service?.headerPhotoBase64"
+                alt="{{ service.name }}"
+                class="skill-img"
+                (click)="openService(service.id)"
+              />
+              <div class="skill-info">
+                @if (jwtService.token().Id === user?.user.id) {
+                  <div class="skill-buttons">
+                    <button
+                      [routerLink]="['/service-provider/edit', service.id]"
+                      class="edit-skill-button"
+                    >
+                      <span class="pi pi-pencil"></span>
+                    </button>
+                    <button
+                      class="delete-skill-button"
+                      (click)="confirm2($event, service.id)"
+                    >
+                      <span class="pi pi-trash"></span>
+                    </button>
+                    <div class="card flex justify-center gap-2">
+                      <p-toast />
+                      <p-confirmpopup />
+                    </div>
+                  </div>
+                }
+                <p class="skill-name" (click)="openService(service.id)">
+                  {{ service?.name }}
+                </p>
+                <p class="skill-description" (click)="openService(service.id)">
+                  {{ service?.description }}
+                </p>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+
+      <div class="stats-section section">
+        <h4>Statistika</h4>
+        <div class="stats">
+          <div class="stat">
           <span class="stat-icon">
             <i class="pi pi-folder"></i>
           </span>
-          <div class="stat-info">
-            <p class="stat-label">Projekti</p>
-            <p class="stat-number">48</p>
+            <div class="stat-info">
+              <p class="stat-label">Projekti</p>
+              <p class="stat-number">48</p>
+            </div>
           </div>
-        </div>
-        <div class="stat">
+          <div class="stat">
           <span class="stat-icon">
             <i class="pi pi-cog"></i>
           </span>
-          <div class="stat-info">
-            <p class="stat-label">Broj Usluga</p>
-            <p class="stat-number">{{ user?.serviceProviders?.length }}</p>
+            <div class="stat-info">
+              <p class="stat-label">Broj Usluga</p>
+              <p class="stat-number">{{ user?.serviceProviders?.length }}</p>
+            </div>
           </div>
-        </div>
-        <div class="stat">
+          <div class="stat">
           <span class="stat-icon">
             <i class="pi pi-star"></i>
           </span>
-          <div class="stat-info">
-            <p class="stat-label">Prosječna Ocjena</p>
-            <p class="stat-number">
-              {{ calculateAverageRating(user) | number : "1.1-1" }} / 5
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="reviews-section section">
-      <h4>Recenzije</h4>
-      @for (serviceProvider of user?.serviceProviders; track serviceProvider.id)
-      {
-      <div class="service-provider">
-        @for (review of serviceProvider.reviews; track review.id) {
-        <div class="review">
-          <div class="review-info">
-            <h6>
-              {{ review.reviewer.firstName }} {{ review.reviewer.lastName }}
-            </h6>
-            <h5> {{ serviceProvider.name }}</h5>
-            <p>{{ review.content }}</p>
-            <div class="rating">
-              @for (star of getStars(review.rating); track $index) {
-              <span
-                [ngClass]="{
-                  filled: star === 'filled',
-                  empty: star === 'empty'
-                }"
-                >&#9733;</span
-              >
-              }
+            <div class="stat-info">
+              <p class="stat-label">Prosječna Ocjena</p>
+              <p class="stat-number">
+                {{ calculateAverageRating(user) | number : "1.1-1" }} / 5
+              </p>
             </div>
           </div>
         </div>
+      </div>
+
+      <div class="reviews-section section">
+        <h4>Recenzije</h4>
+        @for (serviceProvider of user?.serviceProviders; track serviceProvider.id)
+        {
+          <div class="service-provider">
+            @for (review of serviceProvider.reviews; track review.id) {
+              <div class="review">
+                <div class="review-info">
+                  <h6>
+                    {{ review.reviewer.firstName }} {{ review.reviewer.lastName }}
+                  </h6>
+                  <h5>{{ serviceProvider.name }}</h5>
+                  <p>{{ review.content }}</p>
+                  <div class="rating">
+                    @for (star of getStars(review.rating); track $index) {
+                      <span
+                        [ngClass]="{
+                  filled: star === 'filled',
+                  empty: star === 'empty'
+                }"
+                      >&#9733;</span
+                      >
+                    }
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
         }
       </div>
-      }
     </div>
   </div>
-</div>
+
+}
 
 @if(isEditModalOpen) {
-<app-edit-profile-modal
-  [user]="user"
-  (closeModal)="closeEditModal()"
-  (closeModalWithData)="updateUser($event)"
-></app-edit-profile-modal>
+  <app-edit-profile-modal
+    [user]="user"
+    (closeModal)="closeEditModal()"
+    (closeModalWithData)="updateUser($event)"
+  ></app-edit-profile-modal>
 }
