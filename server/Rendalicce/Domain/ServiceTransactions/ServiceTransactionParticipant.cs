@@ -28,10 +28,15 @@ public sealed class ServiceTransactionParticipant : Entity
         Approved = true;
     }
     
-    public void Complete()
+    public void Complete(List<ServiceTransactionParticipant> participants)
     {
+        var otherParticipant = participants.FirstOrDefault(p => p.User.Id != User.Id);
+        
         if(Credits.HasValue)
             User.DeductCredits(Credits.Value);
+        
+        if(otherParticipant!.Credits.HasValue)
+            User.AddCredits(otherParticipant.Credits.Value);
     }
 }
 
