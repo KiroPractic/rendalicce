@@ -16,6 +16,7 @@ import {ServiceProvidersListingComponent} from "./pages/service-providers-listin
 import {ServiceSeekersListingComponent} from "./pages/service-seekers-listing/service-seekers-listing.component";
 import {ViewServiceProviderComponent} from "./pages/view-service-provider/view-service-provider.component";
 import {ViewServiceSeekerComponent} from "./pages/view-service-seeker/view-service-seeker.component";
+import {HowItWorksComponent} from "./pages/how-it-works/how-it-works.component";
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -48,5 +49,6 @@ export const routes: Routes = [
   {path: 'service-seekers', component: ServiceSeekersListingComponent},
   {path: 'service-providers/:id', component: ViewServiceProviderComponent},
   {path: 'service-seekers/:id', component: ViewServiceSeekerComponent},
+  {path: 'how-it-works', component: HowItWorksComponent},
   { path: '**', redirectTo: '' },
 ];
